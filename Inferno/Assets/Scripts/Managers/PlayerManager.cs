@@ -2,7 +2,7 @@
 using System.Collections.Generic;
 using UnityEngine;
 
-public class PlayerManager : MonoBehaviour {
+public class PlayerManager : SingletonBehaviour<PlayerManager> {
 
     [SerializeField]
     private GameObject player;
