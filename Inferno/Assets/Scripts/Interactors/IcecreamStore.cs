@@ -7,7 +7,6 @@ public class IcecreamStore : Interactor {
     private int cost;
     public void interact()
     {
-        GameManager.Inst().subMoney(cost);
-
+        GameManager.Inst().money -= cost;
     }
 }

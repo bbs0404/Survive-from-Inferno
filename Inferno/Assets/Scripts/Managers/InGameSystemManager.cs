@@ -89,6 +89,6 @@ public class InGameSystemManager : SingletonBehaviour<InGameSystemManager> {
                 
             }
         }
-        health -= lossHealth * constant;
+        health -= lossHealth * constant * Time.deltaTime;
     }
 }
