@@ -1,4 +1,4 @@
 sceneSetups:
-- path: Assets/Scene/dummy.unity
+- path: Assets/Scene/HasuDummy.unity
   isLoaded: 1
   isActive: 1
