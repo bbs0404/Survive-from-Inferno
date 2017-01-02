@@ -17,10 +17,11 @@ public class InGameSystemManager : SingletonBehaviour<InGameSystemManager> {
     public float battery; //남은 배터리
     public int chargePerSec; //초당 배터리 충전량
     public DayNight time; //낮밤
+    public float timeRemain; //낮밤바뀌기까지 남은 시간
     public bool inShadow; // 그림자 여부
     public bool isFan; //선풍기 사용 여부
 
-    public int lossHealth; //초당 땡볕에서 잃는 체력
+    public float lossHealth; //초당 잃는 체력
     public float constant;
 
     public List<Field> fields;
@@ -47,9 +48,19 @@ public class InGameSystemManager : SingletonBehaviour<InGameSystemManager> {
             chargePerSec = 10 + 5 * GameManager.Inst().fanChargerLevel;
         }
         time = DayNight.Day;
+        timeRemain = 10f;
     }
     private void Update()
     {
+        timeRemain -= Time.deltaTime;
+        if (timeRemain < 0)
+        {
+            if (time == DayNight.Day)
+                time = DayNight.Night;
+            else
+                time = DayNight.Day;
+            timeRemain = 10f;
+        }
         if (time == DayNight.Day)
         {
             battery += chargePerSec * Time.deltaTime;
@@ -66,6 +77,8 @@ public class InGameSystemManager : SingletonBehaviour<InGameSystemManager> {
             }
             else if (item.type == field.SUN)
             {
+                if (GameManager.Inst().fanCharger)
+                    battery += 10 + GameManager.Inst().fanChargerLevel * 5;
                 inShadow = false;
             }
             else if (item.type == field.ASPHALT)
@@ -89,6 +102,19 @@ public class InGameSystemManager : SingletonBehaviour<InGameSystemManager> {
                 
             }
         }
-        health -= lossHealth * constant * Time.deltaTime;
+        lossHealth *= constant;
+        if (isFan)
+        {
+            float consume = 100 * Mathf.Pow(0.9f, GameManager.Inst().fanEnergyConsumeLevel) * Time.deltaTime; // 배터리 소모량
+            if (battery < consume)
+                lossHealth -= (10 + GameManager.Inst().fanPerformLevel)*(battery/consume);
+            else
+                lossHealth -= 10 + GameManager.Inst().fanPerformLevel;
+            battery -= consume;
+            if (battery < 0)
+                isFan = !isFan;
+        }
+        if (lossHealth * constant * Time.deltaTime > 0)
+            health -= lossHealth * constant * Time.deltaTime;
     }
 }
