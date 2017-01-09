@@ -15,17 +15,21 @@ public class Field : MonoBehaviour {
 
     private bool isPlayerIn = false;
     public field type;
-    private void OnCollisionEnter2D(Collision2D collision)
+
+
+
+    private void OnTriggerEnter2D(Collider2D collision)
     {
-        if (collision.gameObject == GameManager.Inst().player)
+        if (collision.gameObject == PlayerManager.Inst().player)
         {
             InGameSystemManager.Inst().fields.Add(this);
             isPlayerIn = true;
         }
     }
-    private void OnCollisionExit2D(Collision2D collision)
+
+    private void OnTriggerExit2D(Collider2D collision)
     {
-        if (collision.gameObject == GameManager.Inst().player && isPlayerIn)
+        if (collision.gameObject == PlayerManager.Inst().player && isPlayerIn)
         {
             InGameSystemManager.Inst().fields.Remove(this);
         }

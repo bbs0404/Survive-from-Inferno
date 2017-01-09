@@ -5,10 +5,6 @@ using UnityEngine;
 public class PlayerManager : SingletonBehaviour<PlayerManager> {
 
     [SerializeField]
-    private GameObject player;
+    public GameObject player;
 
-    public GameObject getPlayer()
-    {
-        return player;
-    }
 }

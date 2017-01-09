@@ -20,8 +20,6 @@ public class GameManager : SingletonBehaviour<GameManager>
     public int maxDistance; //최대 거리
     public int maxStage; //클리어한 스테이지
 
-    public GameObject player;
-
     void Awake()
     {
         setStatic();

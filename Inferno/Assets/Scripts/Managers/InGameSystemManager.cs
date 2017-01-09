@@ -12,6 +12,7 @@ public class InGameSystemManager : SingletonBehaviour<InGameSystemManager> {
 
     public int maxHealth; //최대 체력
     public float health; //체력
+    public int maxWater; //최대 수분
     public float water; //수분
     public int batteryCapacity; //최대 배터리
     public float battery; //남은 배터리
@@ -32,6 +33,7 @@ public class InGameSystemManager : SingletonBehaviour<InGameSystemManager> {
         maxHealth = 100;
         health = 100f;
         water = 100f;
+        lossHealth = 40;
 
         if (GameManager.Inst().fan)
         {
@@ -52,6 +54,7 @@ public class InGameSystemManager : SingletonBehaviour<InGameSystemManager> {
     }
     private void Update()
     {
+        lossHealth = 40;
         timeRemain -= Time.deltaTime;
         if (timeRemain < 0)
         {
@@ -61,46 +64,47 @@ public class InGameSystemManager : SingletonBehaviour<InGameSystemManager> {
                 time = DayNight.Day;
             timeRemain = 10f;
         }
+        constant = 1;
         if (time == DayNight.Day)
         {
-            battery += chargePerSec * Time.deltaTime;
-            if (battery > batteryCapacity)
-                battery = (float)batteryCapacity;
-        }
-        constant = 1;
-        foreach (var item in fields)
-        {
-            if (item.type == field.SHADOW)
+            foreach (var item in fields)
             {
-                constant *= 0.1f;
-                inShadow = true;
-            }
-            else if (item.type == field.SUN)
-            {
-                if (GameManager.Inst().fanCharger)
-                    battery += 10 + GameManager.Inst().fanChargerLevel * 5;
-                inShadow = false;
-            }
-            else if (item.type == field.ASPHALT)
-            {
-                if (!inShadow)
+                if (item.type == field.SHADOW)
                 {
-                    constant *= 1.5f;
+                    constant *= 0.1f;
+                    inShadow = true;
+                }
+                else if (item.type == field.SUN)
+                {
+                    if (GameManager.Inst().fanCharger)
+                        battery += 10 + chargePerSec * Time.deltaTime;
+                    inShadow = false;
+                }
+                else if (item.type == field.ASPHALT)
+                {
+                    if (!inShadow)
+                    {
+                        constant *= 1.5f;
+                    }
+                }
+                else if (item.type == field.OUTDOORFAN)
+                {
+                    constant *= 1.2f;
+                }
+                else if (item.type == field.FOUNTAIN)
+                {
+                    constant *= 0.5f;
+                    water += 10 * Time.deltaTime;
+                }
+                else if (item.type == field.CROSSWALK)
+                {
+
                 }
             }
-            else if (item.type == field.OUTDOORFAN)
-            {
-                constant *= 1.2f;
-            }
-            else if (item.type == field.FOUNTAIN)
-            {
-                constant *= 0.5f;
-                water += 10 * Time.deltaTime;
-            }
-            else if (item.type == field.CROSSWALK)
-            {
-                
-            }
+        }
+        else
+        {
+            constant = 0.5f;
         }
         lossHealth *= constant;
         if (isFan)
@@ -114,7 +118,16 @@ public class InGameSystemManager : SingletonBehaviour<InGameSystemManager> {
             if (battery < 0)
                 isFan = !isFan;
         }
-        if (lossHealth * constant * Time.deltaTime > 0)
-            health -= lossHealth * constant * Time.deltaTime;
+        if (lossHealth * Time.deltaTime > 0)
+            health -= lossHealth * Time.deltaTime * (1 - GameManager.Inst().hitResistLevel * 0.1f);
+        if (health < 0) //player dead
+        {
+
+        }
+    }
+
+    public void playerDead()
+    {
+        
     }
 }

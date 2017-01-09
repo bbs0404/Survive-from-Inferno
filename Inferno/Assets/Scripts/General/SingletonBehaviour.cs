@@ -26,7 +26,7 @@ public class SingletonBehaviour<T> : MonoBehaviour where T : MonoBehaviour{
         }
         else
         {
-            Debug.Log("Referencing existing singleton : " + inst.gameObject.name);
+//            Debug.Log("Referencing existing singleton : " + inst.gameObject.name);
         }
         return inst;
     }
