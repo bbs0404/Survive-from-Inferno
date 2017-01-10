@@ -43,7 +43,7 @@ public class UserInterfaceManager : SingletonBehaviour<UserInterfaceManager> {
 
     public void disableCanvas(Canvas canvas)
     {
-        canvas.gameObject.SetActive(false);
+        canvas.gameObject.SetActive(true);
     }
 
     public void enableCanvas(Canvas canvas)
