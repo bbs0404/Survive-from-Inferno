@@ -4,7 +4,7 @@ using UnityEngine;
 
 public class Waterbottle : Item {
 
-    public static int[] amount = {300, 500, 1000};
+    public static int[] cost = {300, 500, 1000};
     public static int num = 0;
     public float water;
     public float health; 

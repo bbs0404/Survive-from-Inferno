@@ -4,7 +4,7 @@ using UnityEngine;
 
 public class BBong : Item {
 
-    public static int amount = 3000;
+    public static int cost = 3000;
     public static int num = 0;
 	public void use()
 	{

@@ -4,7 +4,7 @@ using UnityEngine;
 
 public class Battery : Item {
 
-    public static int[] amount = { 500, 1000, 2500 };
+    public static int[] cost = { 500, 1000, 2500 };
     public static int num = 0;
 	public void use()
 	{

@@ -3,7 +3,7 @@ using System.Collections.Generic;
 using UnityEngine;
 
 public class Icecream : Item {
-    public static int amount = 300;
+    public static int cost = 300;
     public float health;
     public float water;
 	public void use()

@@ -30,7 +30,7 @@ public class Shop : MonoBehaviour {
     public void buyWaterBottle()
     {
         if (Waterbottle.num >= 3) Debug.Log("You can't have this item more than now");
-        else if (GameManager.Inst().money < Waterbottle.amount[Waterbottle.num]) Debug.Log("You don't have enough money");
+        else if (GameManager.Inst().money < Waterbottle.cost[Waterbottle.num]) Debug.Log("You don't have enough money");
         else
         {
             Waterbottle water = new Waterbottle();
@@ -42,13 +42,13 @@ public class Shop : MonoBehaviour {
                 }
             }
             Waterbottle.num++;
-            GameManager.Inst().money -= Waterbottle.amount[Waterbottle.num];
+            GameManager.Inst().money -= Waterbottle.cost[Waterbottle.num];
         }
     }
 
     public void buyBattery() {
         if (Battery.num >= 3) Debug.Log("You can't have this item more than now");
-        else if (GameManager.Inst().money < Battery.amount[Battery.num]) Debug.Log("You don't have enough money");
+        else if (GameManager.Inst().money < Battery.cost[Battery.num]) Debug.Log("You don't have enough money");
         else {
             Battery battery = new Battery();
             for (int i = 0; i < 3; i++) {
@@ -57,7 +57,7 @@ public class Shop : MonoBehaviour {
                 }
             }
             Battery.num++;
-            GameManager.Inst().money -= Battery.amount[Battery.num];
+            GameManager.Inst().money -= Battery.cost[Battery.num];
         }
     }
 
