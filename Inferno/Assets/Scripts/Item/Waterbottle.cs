@@ -2,13 +2,15 @@
 using System.Collections.Generic;
 using UnityEngine;
 
-public class Icecream : Item {
-    public static int amount = 300;
-    public float health;
+public class Waterbottle : Item {
+
+    public static int[] amount = {300, 500, 1000};
+    public static int num = 0;
     public float water;
+    public float health; 
 	public void use()
-    {
-        InGameSystemManager.Inst().water = Mathf.Max(InGameSystemManager.Inst().water + water, 100f);
+	{
+        InGameSystemManager.Inst().water = Mathf.Max(InGameSystemManager.Inst().water+water,100);
         InGameSystemManager.Inst().health = Mathf.Max(InGameSystemManager.Inst().health + health, InGameSystemManager.Inst().maxHealth);
-    }
+	}
 }
