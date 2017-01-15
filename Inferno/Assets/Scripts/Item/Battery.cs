@@ -4,8 +4,11 @@ using UnityEngine;
 
 public class Battery : Item {
 
+    public Battery()
+    {
+        type = itemList.BATTERY;
+    }
     public static int[] cost = { 500, 1000, 2500 };
-    public static int num = 0;
 	public void use()
 	{
         InGameSystemManager.Inst().battery = Mathf.Max(InGameSystemManager.Inst().battery, InGameSystemManager.Inst().batteryCapacity);
