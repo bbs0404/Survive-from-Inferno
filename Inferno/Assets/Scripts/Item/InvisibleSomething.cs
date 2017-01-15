@@ -6,7 +6,7 @@ public class InvisibleSomething : Item {
 
     public static int[] cost = { 1000, 2000 };
     public static int num = 0;
-    public void use()
+    public override void use()
 	{
 
 	}

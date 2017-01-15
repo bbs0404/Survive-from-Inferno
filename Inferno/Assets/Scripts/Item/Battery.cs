@@ -9,7 +9,7 @@ public class Battery : Item {
         type = itemList.BATTERY;
     }
     public static int[] cost = { 500, 1000, 2500 };
-	public void use()
+	public override void use()
 	{
         InGameSystemManager.Inst().battery = Mathf.Max(InGameSystemManager.Inst().battery, InGameSystemManager.Inst().batteryCapacity);
     }

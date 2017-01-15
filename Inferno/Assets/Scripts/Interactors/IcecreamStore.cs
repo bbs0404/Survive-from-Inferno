@@ -7,22 +7,17 @@ public class IcecreamStore : Interactor {
     private int cost = 300;
     public override void interact()
     {
-        for (int i=0; i<3; ++i)
+        Debug.Log(GameManager.Inst().itemList.Count);
+        if(GameManager.Inst().itemList.Contains(ItemManager.Inst().gameObject.GetComponent<Icecream>()))
         {
-            if (GameManager.Inst().itemList[i].type == itemList.NONE)
-            {
-                GameManager.Inst().itemList[i] = new Icecream();
-                GameManager.Inst().all_Items.Add(GameManager.Inst().itemList[i]);
-                ++GameManager.Inst().itemList[i].amount;
-                GameManager.Inst().money -= cost;
-                break;
-            }
-            if (GameManager.Inst().itemList[i].type == itemList.ICECREAM)
-            {
-                ++GameManager.Inst().itemList[i].amount;
-                GameManager.Inst().money -= cost;
-                break;
-            }
+            ++ItemManager.Inst().gameObject.GetComponent<Icecream>().amount;
+            GameManager.Inst().money -= cost;
+        }
+        else if(GameManager.Inst().itemList.Count < 3)
+        {
+            ++ItemManager.Inst().gameObject.GetComponent<Icecream>().amount;
+            GameManager.Inst().itemList.Add(ItemManager.Inst().gameObject.GetComponent<Icecream>());
+            GameManager.Inst().money -= cost;
         }
     }
 }

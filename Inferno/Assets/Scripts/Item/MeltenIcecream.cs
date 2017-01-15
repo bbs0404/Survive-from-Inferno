@@ -4,11 +4,11 @@ using UnityEngine;
 
 public class MeltenIcecream : Item {
 
-    public MeltenIcecream()
-    {
-        GameManager.Inst().speedLevel -= 10;
-    }
-	public void use()
+    //public MeltenIcecream()
+    //{
+    //    GameManager.Inst().speedLevel -= 10;
+    //}
+	public override void use()
 	{
         Debug.Log("Icecream Melten");
 	}

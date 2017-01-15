@@ -6,11 +6,11 @@ public class BBong : Item {
 
     public static int cost = 3000;
     public static int num = 0;
-	public void use()
+	public override void use()
 	{
         GameManager.Inst().speedLevel += 10;
         GameManager.Inst().hitResistLevel += 50;
-        Invoke("off", 5);
+         Invoke("off", 5);
         Debug.Log("수분고정은 나중에");
     } 
     public void off() {
