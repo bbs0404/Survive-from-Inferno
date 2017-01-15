@@ -5,6 +5,8 @@ using UnityEngine;
 public class GameManager : SingletonBehaviour<GameManager>
 {
     public float distance;
+    public List<Item> all_Items;
+    public List<Item> ingame_Items;
     public Item[] itemList = new Item[3];
     public int speedLevel; //속도
     public int hitResistLevel; // 열저항

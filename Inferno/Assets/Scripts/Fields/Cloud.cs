@@ -4,17 +4,19 @@ using UnityEngine;
 
 public class Cloud : Field {
 
+    [SerializeField]
     private float existTime;
+    [SerializeField]
     private Color thisColor;
     private bool isExist = false;
     private float speed;
+    private bool isFadeOut = false;
 
     private void Awake()
     {
-        existTime = (Random.Range(0, 5) + Random.Range(0, 10)) / 2;
+        existTime = (Random.Range(10, 20) + Random.Range(5, 10)) / 2;
         speed = Random.Range(0.5f, 1);
-        thisColor = this.gameObject.GetComponent<SpriteRenderer>().color;
-        thisColor = new Color(thisColor.r, thisColor.g, thisColor.b, 0);
+        this.gameObject.GetComponent<SpriteRenderer>().color = new Color(thisColor.r, thisColor.g, thisColor.b, 0);
         this.gameObject.GetComponent<Collider2D>().enabled = false;
         
         StartCoroutine(FadeIn());
@@ -22,7 +24,14 @@ public class Cloud : Field {
     private void Update()
     {
         if (isExist)
+        {
             existTime -= Time.deltaTime;
+            if (existTime < 0 && !isFadeOut)
+            {
+                StartCoroutine(FadeOut());
+                isFadeOut = true;
+            }
+        }
         this.transform.position += new Vector3(speed * 0.1f,0);
     }
 
@@ -34,9 +43,9 @@ public class Cloud : Field {
 
     IEnumerator FadeIn()
     {
-        for (float i=0; i<=0.5; i += 0.01f)
+        for (float i=0; i<=0.5; i += 0.05f)
         {
-            thisColor = new Color(thisColor.r, thisColor.g, thisColor.b, i);
+            this.gameObject.GetComponent<SpriteRenderer>().color = new Color(thisColor.r, thisColor.g, thisColor.b, i);
             yield return null;
         }
         isExist = true;
@@ -45,9 +54,9 @@ public class Cloud : Field {
 
     IEnumerator FadeOut()
     {
-        for (float i=0.5f; i>=0; i -= 0.01f)
+        for (float i=0.5f; i>=0; i -= 0.05f)
         {
-            thisColor = new Color(thisColor.r, thisColor.g, thisColor.b, i);
+            this.gameObject.GetComponent<SpriteRenderer>().color = new Color(thisColor.r, thisColor.g, thisColor.b, i);
             yield return null;
         }
         isExist = false;

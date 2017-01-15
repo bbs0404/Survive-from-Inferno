@@ -10,14 +10,25 @@ public enum itemList
     MELTENICECREAM,
     BBONG,
     HAPPINESSCIRCUIT,
-    INVISIBLESOMETHING
+    INVISIBLESOMETHING,
+    NONE
 }
 
-public class Item : MonoBehaviour {
+[System.Serializable]
+public class Item {
 
     public int amount;
-	public void use()
+    public itemList type;
+
+    public Item()
+    {
+        type = itemList.NONE;
+        amount = 0;
+    }
+
+	public virtual void use()
     {
 
     }
+    
 }

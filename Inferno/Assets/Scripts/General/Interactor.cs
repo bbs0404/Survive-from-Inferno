@@ -4,8 +4,14 @@ using UnityEngine;
 
 public class Interactor : MonoBehaviour {
     
-    public void interact()
+    public virtual void interact()
     {
 
+    }
+
+    private void OnMouseDown()
+    {
+        Debug.Log(this.gameObject.name);
+        interact();
     }
 }

@@ -69,7 +69,7 @@ public class InGameSystemManager : SingletonBehaviour<InGameSystemManager> {
         {
             foreach (var item in fields)
             {
-                if (item.type == field.SHADOW)
+                if (item.type == field.SHADOW && !inShadow)
                 {
                     constant *= 0.1f;
                     inShadow = true;
