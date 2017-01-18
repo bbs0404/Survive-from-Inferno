@@ -51,6 +51,8 @@ public class InGameSystemManager : SingletonBehaviour<InGameSystemManager> {
         }
         time = DayNight.Day;
         timeRemain = 10f;
+
+        UserInterfaceManager.Inst().updateInGameCanvas();
     }
     private void Update()
     {

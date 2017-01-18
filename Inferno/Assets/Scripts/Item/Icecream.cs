@@ -16,5 +16,6 @@ public class Icecream : Item {
     {
         InGameSystemManager.Inst().water = Mathf.Max(InGameSystemManager.Inst().water + water, 100f);
         InGameSystemManager.Inst().health = Mathf.Max(InGameSystemManager.Inst().health + health, InGameSystemManager.Inst().maxHealth);
+        --amount;
     }
 }

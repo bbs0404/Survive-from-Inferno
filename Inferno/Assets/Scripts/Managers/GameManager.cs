@@ -1,6 +1,7 @@
 ﻿using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using UnityEngine.SceneManagement;
 
 public class GameManager : SingletonBehaviour<GameManager>
 {
@@ -25,5 +26,10 @@ public class GameManager : SingletonBehaviour<GameManager>
     void Awake()
     {
         setStatic();
+    }
+
+    public void sceneChange(int num)
+    {
+        SceneManager.LoadScene(num);
     }
 }

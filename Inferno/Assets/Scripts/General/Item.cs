@@ -11,6 +11,7 @@ public enum itemList
     BBONG,
     HAPPINESSCIRCUIT,
     INVISIBLESOMETHING,
+    FAN,
     NONE
 }
 

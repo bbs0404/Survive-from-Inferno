@@ -13,6 +13,9 @@ public class UserInterfaceManager : SingletonBehaviour<UserInterfaceManager> {
     private Canvas UpgradeCanvas = null;
     [SerializeField]
     private Canvas[] CanvasList;
+    [SerializeField]
+    private Sprite[] spriteOfItems;
+
     private int level;
 
 	void Awake () {
@@ -49,5 +52,23 @@ public class UserInterfaceManager : SingletonBehaviour<UserInterfaceManager> {
     public void enableCanvas(Canvas canvas)
     {
         canvas.gameObject.SetActive(true);
+    }
+
+    public void updateInGameCanvas()
+    {
+        int i;
+        GameObject itemButton;
+        for (i=0; i< GameManager.Inst().itemList.Count; ++i)
+        {
+            (itemButton = GameObject.Find("ItemButton" + i.ToString())).GetComponent<Image>().sprite =
+                spriteOfItems[(int)GameManager.Inst().itemList[i].type];
+            itemButton.GetComponentInChildren<Text>().text = GameManager.Inst().itemList[i].amount.ToString();
+        }
+        for (; i < 3; ++i)
+        {
+            (itemButton = GameObject.Find("ItemButton" + i.ToString())).GetComponent<Image>().sprite =
+               spriteOfItems[8];
+            itemButton.GetComponentInChildren<Text>().text = "";
+        }
     }
 }
