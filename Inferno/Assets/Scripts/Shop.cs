@@ -12,6 +12,10 @@ public class Shop : MonoBehaviour {
             {
                 case itemList.WATERBOTTLE:  buyWaterBottle(); break;
                 case itemList.BATTERY: buyBattery(); break;
+                case itemList.BBONG: buyBBong(); break;
+                case itemList.HAPPINESSCIRCUIT: buyHappinessCircuit(); break;
+                case itemList.INVISIBLESOMETHING: buyInvisibleSomething(); break;
+                default: break;
             }
         }
         else Debug.Log("Your item list is full");
