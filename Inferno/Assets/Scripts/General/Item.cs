@@ -14,6 +14,7 @@ public enum itemList
     NONE
 }
 
+[System.Serializable]
 public class Item : MonoBehaviour {
 
     public int amount;
