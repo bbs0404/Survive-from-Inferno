@@ -26,7 +26,9 @@ public class InGameSystemManager : SingletonBehaviour<InGameSystemManager> {
     public float constant;
 
     public List<Field> fields;
-    
+
+    public GameObject cloud;
+    private float cloudTimer;
 
     private void Awake()
     {
@@ -34,6 +36,8 @@ public class InGameSystemManager : SingletonBehaviour<InGameSystemManager> {
         health = 100f;
         water = 100f;
         lossHealth = 40;
+        cloudTimer = Random.Range(5, 10);
+
 
         if (GameManager.Inst().fan)
         {
@@ -58,6 +62,8 @@ public class InGameSystemManager : SingletonBehaviour<InGameSystemManager> {
     {
         lossHealth = 40;
         timeRemain -= Time.deltaTime;
+        cloudTimer -= Time.deltaTime;
+
         if (timeRemain < 0)
         {
             if (time == DayNight.Day)
@@ -125,6 +131,16 @@ public class InGameSystemManager : SingletonBehaviour<InGameSystemManager> {
         if (health < 0) //player dead
         {
 
+        }
+
+        if (cloudTimer < 0)
+        {
+            cloudTimer = Random.Range(5f, 10);
+            int n = Random.Range(0, 3);
+            for (int i = 0; i < n; ++i)
+            {
+                Instantiate(cloud).transform.position = PlayerManager.Inst().player.transform.position + new Vector3(Random.Range(-30, 30), 3); ;
+            }
         }
     }
 

@@ -62,7 +62,7 @@ public class doYouKnow : Interactor {
 
     private void OnTriggerEnter2D(Collider2D collision)
     {
-        if (collision.gameObject == PlayerManager.Inst().player)
+        if (!faded && collision.gameObject == PlayerManager.Inst().player)
         {
             FindObjectOfType<PlayerController>().enabled = false;
             istriggered = true;

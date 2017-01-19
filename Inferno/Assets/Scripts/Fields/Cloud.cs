@@ -15,7 +15,7 @@ public class Cloud : Field {
     private void Awake()
     {
         existTime = (Random.Range(10, 20) + Random.Range(5, 10)) / 2;
-        speed = Random.Range(0.5f, 1);
+        speed = Random.Range(-1f, 1);
         this.gameObject.GetComponent<SpriteRenderer>().color = new Color(thisColor.r, thisColor.g, thisColor.b, 0);
         this.gameObject.GetComponent<Collider2D>().enabled = false;
         
@@ -32,13 +32,13 @@ public class Cloud : Field {
                 isFadeOut = true;
             }
         }
-        this.transform.position += new Vector3(speed * 0.1f,0);
+        this.transform.position += new Vector3(speed * 0.05f,0);
     }
 
     private void OnDestroy()
     {
-        if (InGameSystemManager.Inst().fields.Contains(this))
-            InGameSystemManager.Inst().fields.Remove(this);
+        //if (InGameSystemManager.Inst().fields.Contains(this))
+        //    InGameSystemManager.Inst().fields.Remove(this);
     }
 
     IEnumerator FadeIn()
