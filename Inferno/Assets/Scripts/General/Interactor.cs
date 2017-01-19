@@ -11,6 +11,8 @@ public class Interactor : MonoBehaviour {
 
     private void OnMouseDown()
     {
+        if (UserInterfaceManager.Inst().isPaused)
+            return;
         Debug.Log(this.gameObject.name);
         interact();
     }

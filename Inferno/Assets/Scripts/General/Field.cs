@@ -16,7 +16,7 @@ public class Field : MonoBehaviour {
     private bool isPlayerIn = false;
     public field type;
 
-
+    
 
     private void OnTriggerEnter2D(Collider2D collision)
     {
@@ -32,6 +32,16 @@ public class Field : MonoBehaviour {
         if (collision.gameObject == PlayerManager.Inst().player && isPlayerIn)
         {
             InGameSystemManager.Inst().fields.Remove(this);
+            isPlayerIn = false;
+        }
+    }
+
+    private void OnTriggerStay2D(Collider2D collision)
+    {
+        if (collision.gameObject == PlayerManager.Inst().player && !isPlayerIn)
+        {
+            InGameSystemManager.Inst().fields.Add(this);
+            isPlayerIn = true;
         }
     }
 }

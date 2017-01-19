@@ -4,17 +4,29 @@ using UnityEngine;
 
 public class AutoDoor : Interactor {
 
-    private bool isOpened = false;
+    private bool isOpened;
+    [SerializeField]
     private float openTimer = 5.0f;
-    private float closeTimer = 5.0f;
+    [SerializeField]
+    private float closeTimer = 0;
     private Field thisField;
+    private Animator animator;
+
+    private void Awake()
+    {
+        animator = this.GetComponent<Animator>();
+        isOpened = false;
+        closeTimer = 0;
+    }
 
     public override void interact()
     {
+        Debug.Log(this.gameObject.name);
         if (!isOpened && closeTimer < 0)
         {
             (thisField = this.gameObject.AddComponent<Field>()).type = field.SHADOW;
             isOpened = true;
+            animator.SetBool("Opening", true);
         }
     }
 
@@ -26,7 +38,11 @@ public class AutoDoor : Interactor {
             if (openTimer < 0)
             {
                 isOpened = false;
+                if (InGameSystemManager.Inst().fields.Contains(thisField))
+                    InGameSystemManager.Inst().fields.Remove(thisField);
                 Destroy(thisField);
+                animator.SetBool("Opening", false);
+                closeTimer = 5;
             }
         }
         else
@@ -34,6 +50,8 @@ public class AutoDoor : Interactor {
             if (closeTimer >= 0)
             {
                 closeTimer -= Time.deltaTime;
+                if (closeTimer < 0)
+                    openTimer = 5f;
             }
         }
     }

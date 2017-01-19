@@ -21,6 +21,7 @@ public class InGameSystemManager : SingletonBehaviour<InGameSystemManager> {
     public float timeRemain; //낮밤바뀌기까지 남은 시간
     public bool inShadow; // 그림자 여부
     public bool isFan; //선풍기 사용 여부
+    public float distance;
 
     public float lossHealth; //초당 잃는 체력
     public float constant;
@@ -75,6 +76,7 @@ public class InGameSystemManager : SingletonBehaviour<InGameSystemManager> {
         constant = 1;
         if (time == DayNight.Day)
         {
+            inShadow = false;
             foreach (var item in fields)
             {
                 if (item.type == field.SHADOW && !inShadow)
