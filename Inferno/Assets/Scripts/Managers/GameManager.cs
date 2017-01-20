@@ -1,6 +1,8 @@
 ﻿using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using System.Xml;
+using System.IO;
 
 public class GameManager : SingletonBehaviour<GameManager>
 {
@@ -25,5 +27,99 @@ public class GameManager : SingletonBehaviour<GameManager>
     void Awake()
     {
         setStatic();
+
+        //save & load test
+        money = 10;
+        Debug.Log("original money before saving: " + money);
+        SaveGameState();
+        money = 123456;
+        Debug.Log("changed money: " + money);
+        LoadGameState();
+        Debug.Log("Loaded money: " + money);
+    }
+
+
+    //게임 상태 저장
+    public void SaveGameState()
+    {
+        XmlWriterSettings settings = new XmlWriterSettings();
+        settings.Indent = true;
+        settings.IndentChars = ("\t");
+
+        string path = Path.Combine(Application.persistentDataPath, @"test.xml");
+
+        using (XmlWriter writer = XmlWriter.Create(path, settings))
+        {
+            writer.WriteStartDocument();
+            writer.WriteComment(" Saved game data of the game Inferno");
+
+            //시작
+            writer.WriteStartElement("content");
+
+
+            //이름 기록
+            writer.WriteStartElement("user");
+            writer.WriteAttributeString("name", "HAPPYNARU");
+            writer.WriteEndElement();
+
+            //돈 기록
+            writer.WriteStartElement("asset");
+            writer.WriteAttributeString("money", this.money.ToString());
+            writer.WriteEndElement();
+
+            //최대거리, 스테이지 기록
+            writer.WriteStartElement("maximum");
+            writer.WriteAttributeString("maxDistance", this.maxDistance.ToString());
+            writer.WriteAttributeString("maxStage", this.maxStage.ToString());
+            writer.WriteEndElement();
+
+
+            //끝
+            writer.WriteEndElement();   //content 끝
+
+            writer.WriteEndDocument();
+            writer.Close();
+        }
+
+    }
+
+    //게임 상태 로드
+    public void LoadGameState()
+    {
+        XmlDocument doc = new XmlDocument();
+        doc.Load(Path.Combine(Application.persistentDataPath, @"test.xml"));
+        Debug.Log("Path of saved data: " + Path.Combine(Application.persistentDataPath, @"test.xml"));
+
+        XmlNode root = doc.FirstChild.NextSibling.NextSibling;      //xml버전과 comment를 생략. 바로 첫 노드로 넘어감
+
+        foreach (XmlNode node in root)
+        {
+            if (node.NodeType == XmlNodeType.Element)
+            {
+                switch (node.Name)
+                {
+                    case "user":
+                        string tmp = node.Attributes["name"].Value;
+                        break;
+                    case "asset":
+                        this.money = ReadIntFromXML(node, "money");
+                        break;
+                    case "maximum":
+                        this.maxDistance = ReadIntFromXML(node, "maxDistance");
+                        this.maxStage = ReadIntFromXML(node, "maxStage");
+                        break;
+                }
+            }
+        }
+    }
+
+    //Int 파싱
+    private int ReadIntFromXML(XmlNode node, string attributes)
+    {
+        string tmpValue = node.Attributes[attributes].Value;
+        int Value = 0;
+        int.TryParse(tmpValue, out Value);
+
+        return Value;
     }
 }
