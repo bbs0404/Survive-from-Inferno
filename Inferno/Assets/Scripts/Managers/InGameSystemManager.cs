@@ -29,6 +29,8 @@ public class InGameSystemManager : SingletonBehaviour<InGameSystemManager> {
     public List<Field> fields;
 
     public GameObject cloud;
+
+    [SerializeField]
     private float cloudTimer;
 
     private void Awake()
@@ -62,8 +64,8 @@ public class InGameSystemManager : SingletonBehaviour<InGameSystemManager> {
     private void Update()
     {
         lossHealth = 40;
-        timeRemain -= Time.deltaTime;
-        cloudTimer -= Time.deltaTime;
+        timeRemain -= Gametime.deltaTime;
+        cloudTimer -= Gametime.deltaTime;
 
         if (timeRemain < 0)
         {
@@ -87,7 +89,7 @@ public class InGameSystemManager : SingletonBehaviour<InGameSystemManager> {
                 else if (item.type == field.SUN)
                 {
                     if (GameManager.Inst().fanCharger)
-                        battery += 10 + chargePerSec * Time.deltaTime;
+                        battery += 10 + chargePerSec * Gametime.deltaTime;
                     inShadow = false;
                 }
                 else if (item.type == field.ASPHALT)
@@ -104,7 +106,7 @@ public class InGameSystemManager : SingletonBehaviour<InGameSystemManager> {
                 else if (item.type == field.FOUNTAIN)
                 {
                     constant *= 0.5f;
-                    water += 10 * Time.deltaTime;
+                    water += 10 * Gametime.deltaTime;
                 }
                 else if (item.type == field.CROSSWALK)
                 {
@@ -128,8 +130,8 @@ public class InGameSystemManager : SingletonBehaviour<InGameSystemManager> {
             if (battery < 0)
                 isFan = !isFan;
         }
-        if (lossHealth * Time.deltaTime > 0)
-            health -= lossHealth * Time.deltaTime * (1 - GameManager.Inst().hitResistLevel * 0.1f);
+        if (lossHealth * Gametime.deltaTime > 0)
+            health -= lossHealth * Gametime.deltaTime * (1 - GameManager.Inst().hitResistLevel * 0.1f);
         if (health < 0) //player dead
         {
 
@@ -148,6 +150,7 @@ public class InGameSystemManager : SingletonBehaviour<InGameSystemManager> {
 
     public void playerDead()
     {
+        GameManager.Inst().money += (int)(distance * 2);
         
     }
 }
