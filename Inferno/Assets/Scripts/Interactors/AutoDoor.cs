@@ -40,7 +40,7 @@ public class AutoDoor : Interactor {
                 isOpened = false;
                 if (InGameSystemManager.Inst().fields.Contains(thisField))
                     InGameSystemManager.Inst().fields.Remove(thisField);
-                Destroy(thisField);
+                thisField.DestroyField();
                 animator.SetBool("Opening", false);
                 closeTimer = 5;
             }

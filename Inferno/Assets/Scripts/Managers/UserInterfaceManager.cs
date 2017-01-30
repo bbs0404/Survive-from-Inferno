@@ -13,6 +13,8 @@ public class UserInterfaceManager : SingletonBehaviour<UserInterfaceManager>
     [SerializeField]
     private Canvas UpgradeCanvas = null;
     [SerializeField]
+    private Canvas GameOverCanvas = null;
+    [SerializeField]
     private Canvas[] CanvasList;
     [SerializeField]
     private Sprite[] spriteOfItems;
@@ -35,6 +37,8 @@ public class UserInterfaceManager : SingletonBehaviour<UserInterfaceManager>
                 PauseCanvas = item;
             else if (item.gameObject.name == "UpgradeCanvas")
                 UpgradeCanvas = item;
+            else if (item.gameObject.name == "GameOverCanvas")
+                GameOverCanvas = item;
         }
         setStatic();
     }
@@ -81,22 +85,41 @@ public class UserInterfaceManager : SingletonBehaviour<UserInterfaceManager>
 
     public void updateInGameCanvas()
     {
-        int i;
-        GameObject itemButton;
-        for (i = 0; i < GameManager.Inst().itemList.Count; ++i)
+        if (!isPaused && !InGameSystemManager.Inst().isGameOver)
         {
-            (itemButton = GameObject.Find("ItemButton" + i.ToString())).GetComponent<Image>().sprite =
-                spriteOfItems[(int)GameManager.Inst().itemList[i].type];
-            itemButton.GetComponentInChildren<Text>().text = GameManager.Inst().itemList[i].amount.ToString();
+            enableCanvas(InGameCanvas);
+            disableCanvas(GameOverCanvas);
+            disableCanvas(PauseCanvas);
+            int i;
+            GameObject itemButton;
+            for (i = 0; i < GameManager.Inst().itemList.Count; ++i)
+            {
+                (itemButton = GameObject.Find("ItemButton" + i.ToString())).GetComponent<Image>().sprite =
+                    spriteOfItems[(int)GameManager.Inst().itemList[i].type];
+                itemButton.GetComponentInChildren<Text>().text = GameManager.Inst().itemList[i].amount.ToString();
+            }
+            for (; i < 3; ++i)
+            {
+                (itemButton = GameObject.Find("ItemButton" + i.ToString())).GetComponent<Image>().sprite =
+                   spriteOfItems[8];
+                itemButton.GetComponentInChildren<Text>().text = "";
+            }
+
+            InGameCanvas.transform.FindChild("HP").GetComponent<RectTransform>().sizeDelta = new Vector2(InGameSystemManager.Inst().health, 100);
+            InGameCanvas.transform.FindChild("Water").GetComponent<RectTransform>().sizeDelta = new Vector2(InGameSystemManager.Inst().water, 100);
         }
-        for (; i < 3; ++i)
+        else if (isPaused)
         {
-            (itemButton = GameObject.Find("ItemButton" + i.ToString())).GetComponent<Image>().sprite =
-               spriteOfItems[8];
-            itemButton.GetComponentInChildren<Text>().text = "";
+            enableCanvas(PauseCanvas);
+            disableCanvas(GameOverCanvas);
+            disableCanvas(InGameCanvas);
         }
-
-
+        else
+        {
+            disableCanvas(PauseCanvas);
+            disableCanvas(InGameCanvas);
+            enableCanvas(GameOverCanvas);
+        }
     }
     public GameObject addFieldStateUI(field type)
     {
@@ -105,7 +128,7 @@ public class UserInterfaceManager : SingletonBehaviour<UserInterfaceManager>
         //if (type == field.SHADOW
         GameObject ui;
         fieldState.Add(ui = Instantiate(fieldStatePrefab));
-        ui.transform.parent = InGameCanvas.transform;
+        ui.transform.SetParent(InGameCanvas.transform);
         ui.GetComponent<RectTransform>().anchoredPosition = new Vector3(400 + fieldState.IndexOf(ui) * 50, ui.GetComponent<RectTransform>().position.y);
         //ui.GetComponent<RectTransform>().anchorMax = new Vector2(0, 1);
         //ui.GetComponent<RectTransform>().anchorMin = new Vector2(0, 1);

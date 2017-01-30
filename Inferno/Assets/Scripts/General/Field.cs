@@ -15,7 +15,7 @@ public class Field : MonoBehaviour {
 
     private bool isPlayerIn = false;
     public field type;
-    private GameObject fieldStateUI;
+    public GameObject fieldStateUI;
     
 
     private void OnTriggerEnter2D(Collider2D collision)
@@ -48,7 +48,14 @@ public class Field : MonoBehaviour {
         {
             InGameSystemManager.Inst().fields.Add(this);
             isPlayerIn = true;
-            UserInterfaceManager.Inst().addFieldStateUI(field.SHADOW);
+            fieldStateUI = UserInterfaceManager.Inst().addFieldStateUI(field.SHADOW);
         }
+    }
+
+    public void DestroyField()
+    {
+        if (fieldStateUI != null)
+            Destroy(fieldStateUI);
+        Destroy(this);
     }
 }

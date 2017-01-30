@@ -36,5 +36,11 @@ public class PlayerController : MonoBehaviour {
             //playerAnimator.SetBool("RUN_right", false);
             //playerAnimator.SetBool("RUN_left", false);
         }
+        if (Mathf.Abs(scrollController.rectTransform.localPosition.x) > 15)
+        {
+            InGameSystemManager.Inst().water -= Mathf.Abs(scrollController.rectTransform.localPosition.x) / 50;
+            if (InGameSystemManager.Inst().water < 0)
+                InGameSystemManager.Inst().water = 0;
+        }
     }
 }
