@@ -4,6 +4,8 @@ using UnityEngine;
 
 public class BBong : Item {
 
+    public int[] cost = { 3000 };
+
     public BBong()
     {
         type = itemList.BBONG;

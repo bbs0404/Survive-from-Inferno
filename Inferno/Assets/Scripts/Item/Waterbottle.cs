@@ -4,13 +4,16 @@ using UnityEngine;
 
 public class Waterbottle : Item {
 
+    public int[] cost = { 300, 500, 1000 };
+    public float water;
+    public float health;
+     
     public Waterbottle()
     {
         type = itemList.WATERBOTTLE;
         amount = 0;
     }
-    public float water;
-    public float health; 
+
 	public override void use()
 	{
         InGameSystemManager.Inst().water = Mathf.Max(InGameSystemManager.Inst().water+water,100);

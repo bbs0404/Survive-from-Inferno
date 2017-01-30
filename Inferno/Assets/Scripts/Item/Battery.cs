@@ -4,6 +4,8 @@ using UnityEngine;
 
 public class Battery : Item {
 
+    public int[] cost = { 500, 1000, 2500 };
+
     public Battery()
     {
         type = itemList.BATTERY;

@@ -4,6 +4,8 @@ using UnityEngine;
 
 public class HappinessCircuit : Item {
 
+    public int[] cost = { 2000 };
+
     public HappinessCircuit()
     {
         type = itemList.HAPPINESSCIRCUIT;

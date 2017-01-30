@@ -4,6 +4,8 @@ using UnityEngine;
 
 public class InvisibleSomething : Item {
 
+    public int[] cost = { 1000, 2000 };
+
     public InvisibleSomething()
     {
         type = itemList.INVISIBLESOMETHING;
@@ -14,6 +16,6 @@ public class InvisibleSomething : Item {
 	{
         ItemManager.Inst().GetComponent<InvisibleSomething>().amount--;
         if (ItemManager.Inst().GetComponent<InvisibleSomething>().amount == 0)
-            GameManager.Inst().itemList.Remove(ItemManager.Inst().GetComponent<InvisibleSomething>());
+            GameManager.Inst().itemList.Remove(ItemManager.Inst().GetComponent<InvisibleSomething>()); 
     }
 }
