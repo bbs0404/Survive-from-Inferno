@@ -7,7 +7,7 @@ using UnityEngine.SceneManagement;
 public class UserInterfaceManager : SingletonBehaviour<UserInterfaceManager>
 {
     [SerializeField]
-    private Canvas InGameCanvas = null;
+    public Canvas InGameCanvas = null;
     [SerializeField]
     private Canvas PauseCanvas = null;
     [SerializeField]
@@ -85,8 +85,21 @@ public class UserInterfaceManager : SingletonBehaviour<UserInterfaceManager>
 
     public void updateInGameCanvas()
     {
-        if (!isPaused && !InGameSystemManager.Inst().isGameOver)
+        if (InGameSystemManager.Inst().isGameOver)
         {
+            disableCanvas(PauseCanvas);
+            disableCanvas(InGameCanvas);
+            enableCanvas(GameOverCanvas);
+            GameOverCanvas.transform.GetChild(0).transform.FindChild("MoneyText").GetComponent<Text>().text = (InGameSystemManager.Inst().distance * 2).ToString();
+        }
+        else if (isPaused)
+        {
+            enableCanvas(PauseCanvas);
+            disableCanvas(GameOverCanvas);
+            disableCanvas(InGameCanvas);
+        }
+        else if (!isPaused && !InGameSystemManager.Inst().isGameOver)
+        { 
             enableCanvas(InGameCanvas);
             disableCanvas(GameOverCanvas);
             disableCanvas(PauseCanvas);
@@ -107,18 +120,6 @@ public class UserInterfaceManager : SingletonBehaviour<UserInterfaceManager>
 
             InGameCanvas.transform.FindChild("HP").GetComponent<RectTransform>().sizeDelta = new Vector2(InGameSystemManager.Inst().health, 100);
             InGameCanvas.transform.FindChild("Water").GetComponent<RectTransform>().sizeDelta = new Vector2(InGameSystemManager.Inst().water, 100);
-        }
-        else if (isPaused)
-        {
-            enableCanvas(PauseCanvas);
-            disableCanvas(GameOverCanvas);
-            disableCanvas(InGameCanvas);
-        }
-        else
-        {
-            disableCanvas(PauseCanvas);
-            disableCanvas(InGameCanvas);
-            enableCanvas(GameOverCanvas);
         }
     }
     public GameObject addFieldStateUI(field type)

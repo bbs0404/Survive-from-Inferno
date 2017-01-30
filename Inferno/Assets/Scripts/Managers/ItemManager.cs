@@ -30,4 +30,9 @@ public class ItemManager : SingletonBehaviour<ItemManager>
             UserInterfaceManager.Inst().updateInGameCanvas();
         }
     }
+
+    public void useFan()
+    {
+        InGameSystemManager.Inst().isFan = !InGameSystemManager.Inst().isFan;
+    }
 }

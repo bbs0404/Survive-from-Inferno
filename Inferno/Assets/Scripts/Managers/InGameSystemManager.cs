@@ -135,6 +135,9 @@ public class InGameSystemManager : SingletonBehaviour<InGameSystemManager> {
             }
             if (lossHealth * Gametime.deltaTime > 0)
                 health -= lossHealth * Gametime.deltaTime * (1 - GameManager.Inst().hitResistLevel * 0.1f) * (1 + (100 - water) / 100);
+
+            UserInterfaceManager.Inst().updateInGameCanvas();
+
             if (health < 0) //player dead
             {
                 playerDead();
@@ -149,13 +152,20 @@ public class InGameSystemManager : SingletonBehaviour<InGameSystemManager> {
                     Instantiate(cloud).transform.position = PlayerManager.Inst().player.transform.position + new Vector3(Random.Range(-30, 30), 3); ;
                 }
             }
-            UserInterfaceManager.Inst().updateInGameCanvas();
         }
     }
 
     public void playerDead()
     {
         isGameOver = true;
+        Invoke("GameOver", 3);
+        UserInterfaceManager.Inst().disableCanvas(UserInterfaceManager.Inst().InGameCanvas);
         GameManager.Inst().money += (int)(distance * 2);
+        PlayerManager.Inst().player.GetComponent<Animator>().SetTrigger("FAINT");
+    }
+
+    private void GameOver()
+    {
+        UserInterfaceManager.Inst().updateInGameCanvas();
     }
 }
