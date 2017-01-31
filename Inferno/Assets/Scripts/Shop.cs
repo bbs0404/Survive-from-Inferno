@@ -88,7 +88,7 @@ public class Shop : MonoBehaviour {
 
     public void buyInvisibleSomething() {
         int num = ItemManager.Inst().gameObject.GetComponent<InvisibleSomething>().amount;
-        int[] cost = ItemManager.Inst().gameObject.GetComponent<BBong>().cost;
+        int[] cost = ItemManager.Inst().gameObject.GetComponent<InvisibleSomething>().cost;
 
         if (num >= 2) Debug.Log("You can't have this item more than now");
         else if (GameManager.Inst().money < cost[num]) Debug.Log("You don't have enough money");
