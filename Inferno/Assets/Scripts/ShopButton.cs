@@ -8,7 +8,7 @@ public class ShopButton : MonoBehaviour {
     public Text priceText;
     public Item item;
     public int[] cost;
-	// Use this for initialization
+
     void Start()
     {
         priceText = GetComponentInChildren<Button>().gameObject.GetComponentInChildren<Text>();
@@ -21,12 +21,24 @@ public class ShopButton : MonoBehaviour {
                 cost = ItemManager.Inst().gameObject.GetComponent<Battery>().cost;
                 item = ItemManager.Inst().gameObject.GetComponent<Battery>();
                 break;
-            default: item = ItemManager.Inst().gameObject.GetComponent<BBong>(); break;
+            case "bbong":
+                cost = ItemManager.Inst().gameObject.GetComponent<BBong>().cost;
+                item = ItemManager.Inst().gameObject.GetComponent<BBong>();
+                break;
+            case "invisiblesomething":
+                cost = ItemManager.Inst().gameObject.GetComponent<InvisibleSomething>().cost;
+                item = ItemManager.Inst().gameObject.GetComponent<InvisibleSomething>();
+                break;
+            case "happinesscircuit":
+                cost = ItemManager.Inst().gameObject.GetComponent<HappinessCircuit>().cost;
+                item = ItemManager.Inst().gameObject.GetComponent<HappinessCircuit>();
+                break;
+            default:  break;
         }
         
         priceText.text = cost[item.amount] + "";
     }
-	public void test()
+	public void OnClick()
     {
         Debug.Log(gameObject.name);
         priceText = GetComponentInChildren<Button>().GetComponentInChildren<Text>();
@@ -35,10 +47,8 @@ public class ShopButton : MonoBehaviour {
             priceTextReload();
         else
             soldOutMessage();
-        //"ItemManager.Inst().GetComponent<Waterbottle>().amount";
 	}
 	
-	// Update is called once per frame
 	public void priceTextReload ()
     {
         priceText.text = cost[item.amount] + "";
