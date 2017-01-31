@@ -7,7 +7,7 @@ public class IcecreamStore : Interactor {
     private int cost = 300;
     public override void interact()
     {
-        Debug.Log(GameManager.Inst().itemList.Count);
+        //Debug.Log(GameManager.Inst().itemList.Count);
         if(GameManager.Inst().itemList.Contains(ItemManager.Inst().gameObject.GetComponent<Icecream>()))
         {
             ++ItemManager.Inst().gameObject.GetComponent<Icecream>().amount;

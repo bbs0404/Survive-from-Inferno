@@ -7,9 +7,10 @@ public class OutdoorUnit : Field {
     private float timer;
     private void Awake()
     {
-        timer = Random.Range(5f, 10f); ;
+        timer = Random.Range(5f, 10f);
+        type = field.OUTDOORFAN;
     }
-
+    
     void Update () {
         timer -= Gametime.deltaTime;
         if (timer < 0)
@@ -19,7 +20,10 @@ public class OutdoorUnit : Field {
             {
                 timer = 5.0f;
                 if (InGameSystemManager.Inst().fields.Contains(this))
+                {
                     InGameSystemManager.Inst().fields.Remove(this);
+                    Destroy(fieldStateUI);
+                }
                 Destroy(this.gameObject.GetComponent<BoxCollider2D>());
             }
             else

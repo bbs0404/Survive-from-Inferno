@@ -6,7 +6,13 @@ public class Icecream : Item {
 
     public float health;
     public float water;
-	public override void use()
+    private void Awake()
+    {
+        type = itemList.ICECREAM;
+        amount = 0;
+    }
+
+    public override void use()
     {
         InGameSystemManager.Inst().water = Mathf.Max(InGameSystemManager.Inst().water + water, 100f);
         InGameSystemManager.Inst().health = Mathf.Max(InGameSystemManager.Inst().health + health, InGameSystemManager.Inst().maxHealth);
