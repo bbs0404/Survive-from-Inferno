@@ -4,10 +4,18 @@ using UnityEngine;
 
 public class InvisibleSomething : Item {
 
-    public static int[] cost = { 1000, 2000 };
-    public static int num = 0;
+    public int[] cost = { 1000, 2000 };
+
+    public InvisibleSomething()
+    {
+        type = itemList.INVISIBLESOMETHING;
+        amount = 0;
+    }
+
     public override void use()
 	{
-
-	}
+        ItemManager.Inst().GetComponent<InvisibleSomething>().amount--;
+        if (ItemManager.Inst().GetComponent<InvisibleSomething>().amount == 0)
+            GameManager.Inst().itemList.Remove(ItemManager.Inst().GetComponent<InvisibleSomething>()); 
+    }
 }

@@ -1,6 +1,7 @@
 ﻿using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using UnityEngine.SceneManagement;
 using System.Xml;
 using System.IO;
 
@@ -121,5 +122,10 @@ public class GameManager : SingletonBehaviour<GameManager>
         int.TryParse(tmpValue, out Value);
 
         return Value;
+    }
+
+    public void sceneChange(int num)
+    {
+        SceneManager.LoadScene(num);
     }
 }

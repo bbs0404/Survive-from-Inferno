@@ -15,7 +15,7 @@ public class Cloud : Field {
     private void Awake()
     {
         existTime = (Random.Range(10, 20) + Random.Range(5, 10)) / 2;
-        speed = Random.Range(0.5f, 1);
+        speed = Random.Range(-1f, 1);
         this.gameObject.GetComponent<SpriteRenderer>().color = new Color(thisColor.r, thisColor.g, thisColor.b, 0);
         this.gameObject.GetComponent<Collider2D>().enabled = false;
         
@@ -25,25 +25,26 @@ public class Cloud : Field {
     {
         if (isExist)
         {
-            existTime -= Time.deltaTime;
+            existTime -= Gametime.deltaTime;
             if (existTime < 0 && !isFadeOut)
             {
                 StartCoroutine(FadeOut());
                 isFadeOut = true;
             }
         }
-        this.transform.position += new Vector3(speed * 0.1f,0);
+        if (!UserInterfaceManager.Inst().isPaused)
+            this.transform.position += new Vector3(speed * 0.05f,0);
     }
 
     private void OnDestroy()
     {
-        if (InGameSystemManager.Inst().fields.Contains(this))
-            InGameSystemManager.Inst().fields.Remove(this);
+        //if (InGameSystemManager.Inst().fields.Contains(this))
+        //    InGameSystemManager.Inst().fields.Remove(this);
     }
 
     IEnumerator FadeIn()
     {
-        for (float i=0; i<=0.5; i += 0.05f)
+        for (float i=0; i<=0.5 && !UserInterfaceManager.Inst().isPaused; i += 0.05f)
         {
             this.gameObject.GetComponent<SpriteRenderer>().color = new Color(thisColor.r, thisColor.g, thisColor.b, i);
             yield return null;
@@ -54,7 +55,7 @@ public class Cloud : Field {
 
     IEnumerator FadeOut()
     {
-        for (float i=0.5f; i>=0; i -= 0.05f)
+        for (float i=0.5f; i>=0 && !UserInterfaceManager.Inst().isPaused; i -= 0.05f)
         {
             this.gameObject.GetComponent<SpriteRenderer>().color = new Color(thisColor.r, thisColor.g, thisColor.b, i);
             yield return null;
