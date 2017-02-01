@@ -11,9 +11,11 @@ public enum itemList
     BBONG,
     HAPPINESSCIRCUIT,
     INVISIBLESOMETHING,
+    FAN,
     NONE
 }
 
+[System.Serializable]
 public class Item : MonoBehaviour {
 
     public int amount;

@@ -17,4 +17,22 @@ public class ItemManager : SingletonBehaviour<ItemManager>
 
         setStatic();
     }
+
+    public void useItem(int num)
+    {
+        if (GameManager.Inst().itemList.Count > num)
+        {
+            GameManager.Inst().itemList[num].use();
+            if (GameManager.Inst().itemList[num].amount <= 0 && GameManager.Inst().itemList[num].type != itemList.FAN)
+            {
+                GameManager.Inst().itemList.RemoveAt(num);
+            }
+            UserInterfaceManager.Inst().updateInGameCanvas();
+        }
+    }
+
+    public void useFan()
+    {
+        InGameSystemManager.Inst().isFan = !InGameSystemManager.Inst().isFan;
+    }
 }

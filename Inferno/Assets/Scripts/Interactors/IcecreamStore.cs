@@ -19,5 +19,6 @@ public class IcecreamStore : Interactor {
             GameManager.Inst().itemList.Add(ItemManager.Inst().gameObject.GetComponent<Icecream>());
             GameManager.Inst().money -= cost;
         }
+        UserInterfaceManager.Inst().updateInGameCanvas();
     }
 }
