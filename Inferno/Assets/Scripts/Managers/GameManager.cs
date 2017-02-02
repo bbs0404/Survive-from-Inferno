@@ -58,9 +58,36 @@ public class GameManager : SingletonBehaviour<GameManager>
             writer.WriteStartElement("content");
 
 
-            //이름 기록
+            //이름, 거리 기록
             writer.WriteStartElement("user");
             writer.WriteAttributeString("name", "HAPPYNARU");
+            writer.WriteAttributeString("distance", this.distance.ToString());
+            writer.WriteEndElement();
+
+            //전체 아이템 리스트 기록
+            writer.WriteStartElement("allItems");
+
+            foreach (Item i in all_Items)
+            {
+                writer.WriteStartElement("item");
+                writer.WriteAttributeString("amount", i.amount.ToString());
+                writer.WriteAttributeString("type", i.type.ToString());
+                writer.WriteEndElement();
+            }
+
+            writer.WriteEndElement();
+
+            //인게임 아이템 리스트 기록
+            writer.WriteStartElement("inGameItems");
+
+            foreach (Item i in ingame_Items)
+            {
+                writer.WriteStartElement("item");
+                writer.WriteAttributeString("amount", i.amount.ToString());
+                writer.WriteAttributeString("type", i.type.ToString());
+                writer.WriteEndElement();
+            }
+
             writer.WriteEndElement();
 
             //아이템 리스트 기록
@@ -128,9 +155,28 @@ public class GameManager : SingletonBehaviour<GameManager>
         XmlElement content = doc["content"];
 
         //string name = content["user"].GetAttribute("name");
-        
+        this.distance = (float) System.Convert.ToDouble(content["user"].GetAttribute("distance"));
+
+        //전체 아이템리스트 로드
+        foreach (XmlElement e in content["allItems"])
+        {
+            Item i = new Item();
+            i.amount = System.Convert.ToInt32(e.GetAttribute("amount"));
+            i.type = TryParseType(e.GetAttribute("type"));
+            all_Items.Add(i);
+        }
+
+        //인게임 아이템리스트 로드
+        foreach (XmlElement e in content["inGameItems"])
+        {
+            Item i = new Item();
+            i.amount = System.Convert.ToInt32(e.GetAttribute("amount"));
+            i.type = TryParseType(e.GetAttribute("type"));
+            ingame_Items.Add(i);
+        }
+
         //아이템리스트 로드
-        foreach(XmlElement e in content["items"])
+        foreach (XmlElement e in content["items"])
         {
             Item i = new Item();
             i.amount = System.Convert.ToInt32(e.GetAttribute("amount"));
