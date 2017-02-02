@@ -63,6 +63,40 @@ public class GameManager : SingletonBehaviour<GameManager>
             writer.WriteAttributeString("name", "HAPPYNARU");
             writer.WriteEndElement();
 
+            //아이템 리스트 기록
+            writer.WriteStartElement("items");
+
+            foreach(Item i in itemList)
+            {
+                writer.WriteStartElement("item");
+                writer.WriteAttributeString("amount", i.amount.ToString());
+                writer.WriteAttributeString("type", i.type.ToString());
+                writer.WriteEndElement();
+            }
+            
+            writer.WriteEndElement();
+
+            //스피드레벨, 열저항레벨, 수분소모레벨 기록
+            writer.WriteStartElement("level");
+            writer.WriteAttributeString("speedLevel", this.speedLevel.ToString());
+            writer.WriteAttributeString("hitResistLevel", this.hitResistLevel.ToString());
+            writer.WriteAttributeString("waterConsumeLevel", this.waterConsumeLevel.ToString());
+            writer.WriteEndElement();
+
+            //선풍기 관련 기록
+            writer.WriteStartElement("fan");
+            writer.WriteAttributeString("fan", this.fan.ToString());
+            writer.WriteAttributeString("fanPerformLevel", this.fanPerformLevel.ToString());
+            writer.WriteAttributeString("fanBatteryLevel", this.fanBatteryLevel.ToString());
+            writer.WriteEndElement();
+
+            //선풍기 충전기 관련 기록
+            writer.WriteStartElement("charger");
+            writer.WriteAttributeString("fanCharger", this.fanCharger.ToString());
+            writer.WriteAttributeString("fanChargerLevel", this.fanChargerLevel.ToString());
+            writer.WriteAttributeString("fanEnergyLevel", this.fanEnergyConsumeLevel.ToString());
+            writer.WriteEndElement();
+
             //돈 기록
             writer.WriteStartElement("asset");
             writer.WriteAttributeString("money", this.money.ToString());
