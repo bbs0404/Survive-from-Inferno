@@ -6,7 +6,7 @@ public class Shop : MonoBehaviour {
 
 	public void Buy(itemList item)
     {
-        if (isListFull() == 0 || isListContain(item) == 1) 
+        if (isListFull() == 0 ||isListContain(item) == 1) 
         {
             switch (item)
             {
@@ -23,8 +23,9 @@ public class Shop : MonoBehaviour {
 
     public int isListFull() 
     {
-        if (GameManager.Inst().itemList.Count < 3) return 0;
-        else return 1;
+        //if (GameManager.Inst().itemList.Count < 3) return 0;
+        //else return 1;
+        return 0;
     }
     public int isListContain(itemList item)
     {
