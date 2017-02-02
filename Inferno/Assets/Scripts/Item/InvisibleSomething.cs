@@ -12,10 +12,16 @@ public class InvisibleSomething : Item {
         amount = 0;
     }
 
+    public InvisibleSomething(int num)
+    {
+        type = itemList.INVISIBLESOMETHING;
+        amount = num;
+    }
+
     public override void use()
 	{
-        ItemManager.Inst().GetComponent<InvisibleSomething>().amount--;
-        if (ItemManager.Inst().GetComponent<InvisibleSomething>().amount == 0)
-            GameManager.Inst().itemList.Remove(ItemManager.Inst().GetComponent<InvisibleSomething>()); 
+        GameManager.Inst().all_items[itemList.INVISIBLESOMETHING].amount--;
+        if (GameManager.Inst().all_items[itemList.INVISIBLESOMETHING].amount == 0)
+            GameManager.Inst().itemList.Remove(GameManager.Inst().all_items[itemList.INVISIBLESOMETHING]); 
     }
 }

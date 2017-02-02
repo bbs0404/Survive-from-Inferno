@@ -12,12 +12,18 @@ public class Battery : Item {
         amount = 0;
     }
 
+    public Battery(int num)
+    {
+        type = itemList.BATTERY;
+        amount = num;
+    }
+
 	public override void use()
 	{
         InGameSystemManager.Inst().battery = Mathf.Max(InGameSystemManager.Inst().battery, InGameSystemManager.Inst().batteryCapacity);
 
-        ItemManager.Inst().GetComponent<Battery>().amount--;
-        if (ItemManager.Inst().GetComponent<Battery>().amount == 0)
-            GameManager.Inst().itemList.Remove(ItemManager.Inst().GetComponent<Battery>());
+        GameManager.Inst().all_items[itemList.BATTERY].amount--;
+        if (GameManager.Inst().all_items[itemList.BATTERY].amount == 0)
+            GameManager.Inst().itemList.Remove(GameManager.Inst().all_items[itemList.BATTERY]);
     }
 }

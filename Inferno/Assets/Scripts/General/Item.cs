@@ -16,10 +16,11 @@ public enum itemList
 }
 
 [System.Serializable]
-public class Item : MonoBehaviour {
+public class Item {
 
     public int amount;
     public itemList type;
+    public int[] cost;
 
     public Item()
     {

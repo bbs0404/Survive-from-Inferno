@@ -130,11 +130,54 @@ public class UserInterfaceManager : SingletonBehaviour<UserInterfaceManager>
         GameObject ui;
         fieldState.Add(ui = Instantiate(fieldStatePrefab));
         ui.transform.SetParent(InGameCanvas.transform);
-        ui.GetComponent<RectTransform>().anchoredPosition = new Vector3(400 + fieldState.IndexOf(ui) * 50, ui.GetComponent<RectTransform>().position.y);
+        ui.GetComponent<RectTransform>().anchoredPosition = new Vector3(600 + fieldState.IndexOf(ui) * 100, ui.GetComponent<RectTransform>().position.y);
         //ui.GetComponent<RectTransform>().anchorMax = new Vector2(0, 1);
         //ui.GetComponent<RectTransform>().anchorMin = new Vector2(0, 1);
         ui.GetComponent<Image>().sprite = spriteOfFieldState[(int)type];
         return ui;
     }
 
+    public void timeFog()
+    {
+        if (InGameSystemManager.Inst().time == DayNight.Day)
+        {
+            StartCoroutine(fogFadeOut());
+        }
+        else
+        {
+            StartCoroutine(fogFadeIn());
+        }
+    }
+
+    IEnumerator fogFadeIn()
+    {
+        for (float i = 0; i<0.8f; i += 0.01f)
+        {
+            InGameCanvas.transform.FindChild("Fog").GetComponent<Image>().color = new Color(0, 0, 0, i);
+            yield return null;
+        }
+    }
+
+    IEnumerator fogFadeOut()
+    {
+        for (float i = 0.8f; i >= 0; i -= 0.01f)
+        {
+            InGameCanvas.transform.FindChild("Fog").GetComponent<Image>().color = new Color(0, 0, 0, i);
+            yield return null;
+        }
+    }
+
+    public void useItem(int num)
+    {
+        if (GameManager.Inst().itemList.Count > num)
+        {
+            GameManager.Inst().itemList[num].use();
+            updateInGameCanvas();
+        }
+    }
+
+    public void useFan()
+    {
+        InGameSystemManager.Inst().isFan = !InGameSystemManager.Inst().isFan;
+    }
 }

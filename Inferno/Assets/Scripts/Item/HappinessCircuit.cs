@@ -12,10 +12,16 @@ public class HappinessCircuit : Item {
         amount = 0;
     }
 
+    public HappinessCircuit(int num)
+    {
+        type = itemList.HAPPINESSCIRCUIT;
+        amount = num;
+    }
+
     public override void use()
 	{
-        ItemManager.Inst().GetComponent<HappinessCircuit>().amount--;
-        if (ItemManager.Inst().GetComponent<HappinessCircuit>().amount == 0)
-            GameManager.Inst().itemList.Remove(ItemManager.Inst().GetComponent<HappinessCircuit>());
+        GameManager.Inst().all_items[itemList.HAPPINESSCIRCUIT].amount--;
+        if (GameManager.Inst().all_items[itemList.HAPPINESSCIRCUIT].amount == 0)
+            GameManager.Inst().itemList.Remove(GameManager.Inst().all_items[itemList.HAPPINESSCIRCUIT]);
     }
 }

@@ -6,10 +6,10 @@ public class Trashcan : Interactor {
 
     public override void interact()
     {
-        if (GameManager.Inst().itemList.Contains(ItemManager.Inst().gameObject.GetComponent<MeltenIcecream>()))
+        if (GameManager.Inst().hasItem(itemList.MELTENICECREAM))
         {
-            GameManager.Inst().itemList.Remove(ItemManager.Inst().gameObject.GetComponent<MeltenIcecream>());
-            ItemManager.Inst().gameObject.GetComponent<MeltenIcecream>().amount = 0;
+            GameManager.Inst().itemList.Remove(GameManager.Inst().all_items[itemList.MELTENICECREAM]);
+            GameManager.Inst().all_items[itemList.MELTENICECREAM].amount = 0;
         }
     }
 }

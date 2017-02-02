@@ -14,24 +14,24 @@ public class ShopButton : MonoBehaviour {
         priceText = GetComponentInChildren<Button>().gameObject.GetComponentInChildren<Text>();
         switch (gameObject.name.ToLower()) {
             case "waterbottle":
-                cost = ItemManager.Inst().gameObject.GetComponent<Waterbottle>().cost;
-                item = ItemManager.Inst().gameObject.GetComponent<Waterbottle>();
+                cost = GameManager.Inst().all_items[itemList.WATERBOTTLE].cost;
+                item = GameManager.Inst().all_items[itemList.WATERBOTTLE];
                 break;
             case "battery":
-                cost = ItemManager.Inst().gameObject.GetComponent<Battery>().cost;
-                item = ItemManager.Inst().gameObject.GetComponent<Battery>();
+                cost = GameManager.Inst().all_items[itemList.BATTERY].cost;
+                item = GameManager.Inst().all_items[itemList.BATTERY];
                 break;
             case "bbong":
-                cost = ItemManager.Inst().gameObject.GetComponent<BBong>().cost;
-                item = ItemManager.Inst().gameObject.GetComponent<BBong>();
+                cost = GameManager.Inst().all_items[itemList.BBONG].cost;
+                item = GameManager.Inst().all_items[itemList.BBONG];
                 break;
             case "invisiblesomething":
-                cost = ItemManager.Inst().gameObject.GetComponent<InvisibleSomething>().cost;
-                item = ItemManager.Inst().gameObject.GetComponent<InvisibleSomething>();
+                cost = GameManager.Inst().all_items[itemList.INVISIBLESOMETHING].cost;
+                item = GameManager.Inst().all_items[itemList.INVISIBLESOMETHING];
                 break;
             case "happinesscircuit":
-                cost = ItemManager.Inst().gameObject.GetComponent<HappinessCircuit>().cost;
-                item = ItemManager.Inst().gameObject.GetComponent<HappinessCircuit>();
+                cost = GameManager.Inst().all_items[itemList.HAPPINESSCIRCUIT].cost;
+                item = GameManager.Inst().all_items[itemList.HAPPINESSCIRCUIT];
                 break;
             default:  break;
         }

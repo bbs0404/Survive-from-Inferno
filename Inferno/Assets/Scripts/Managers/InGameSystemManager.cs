@@ -74,6 +74,7 @@ public class InGameSystemManager : SingletonBehaviour<InGameSystemManager> {
                     time = DayNight.Night;
                 else
                     time = DayNight.Day;
+                UserInterfaceManager.Inst().timeFog();
                 timeRemain = 10f;
             }
             constant = 1;
@@ -146,10 +147,13 @@ public class InGameSystemManager : SingletonBehaviour<InGameSystemManager> {
             if (cloudTimer < 0)
             {
                 cloudTimer = Random.Range(5f, 10);
-                int n = Random.Range(0, 3);
+                int n = Random.Range(0, 4);
                 for (int i = 0; i < n; ++i)
                 {
-                    Instantiate(cloud).transform.position = PlayerManager.Inst().player.transform.position + new Vector3(Random.Range(-30, 30), 3); ;
+                    GameObject cld;
+                    float j;
+                    (cld = Instantiate(cloud)).transform.position = PlayerManager.Inst().player.transform.position + new Vector3(Random.Range(-30, 30), 8);
+                    cld.transform.localScale = new Vector3(j = Random.Range(1f, 2f), j, j);
                 }
             }
         }

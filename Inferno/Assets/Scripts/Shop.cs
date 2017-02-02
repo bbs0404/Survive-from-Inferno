@@ -37,82 +37,82 @@ public class Shop : MonoBehaviour {
 
     public void buyWaterBottle()
     {
-        int num = ItemManager.Inst().gameObject.GetComponent<Waterbottle>().amount;
-        int[] cost = ItemManager.Inst().gameObject.GetComponent<Waterbottle>().cost;
+        int num = GameManager.Inst().all_items[itemList.WATERBOTTLE].amount;
+        int[] cost = GameManager.Inst().all_items[itemList.WATERBOTTLE].cost;
 
         if (num >= 3) Debug.Log("You can't have this item more than now");
         else if (GameManager.Inst().money < cost[num]) Debug.Log("You don't have enough money");
         else
         {
-            if (GameManager.Inst().itemList.Contains(ItemManager.Inst().gameObject.GetComponent<Waterbottle>())) ;
+            if (GameManager.Inst().itemList.Contains(GameManager.Inst().all_items[itemList.WATERBOTTLE])) ;
             else
-                GameManager.Inst().itemList.Add(ItemManager.Inst().gameObject.GetComponent<Waterbottle>());
+                GameManager.Inst().itemList.Add(GameManager.Inst().all_items[itemList.WATERBOTTLE]);
 
-            ItemManager.Inst().gameObject.GetComponent<Waterbottle>().amount++;
+            GameManager.Inst().all_items[itemList.WATERBOTTLE].amount++;
             GameManager.Inst().money -= cost[num];
         }
     }
 
     public void buyBattery() {
-        int num = ItemManager.Inst().gameObject.GetComponent<Battery>().amount;
-        int[] cost = ItemManager.Inst().gameObject.GetComponent<Battery>().cost;
+        int num = GameManager.Inst().all_items[itemList.BATTERY].amount;
+        int[] cost = GameManager.Inst().all_items[itemList.BATTERY].cost;
 
         if (num >= 3) Debug.Log("You can't have this item more than now");
         else if (GameManager.Inst().money < cost[num]) Debug.Log("You don't have enough money");
         else {
-            if (GameManager.Inst().itemList.Contains(ItemManager.Inst().gameObject.GetComponent<Battery>())) ;
+            if (GameManager.Inst().itemList.Contains(GameManager.Inst().all_items[itemList.BATTERY])) ;
             else
-                GameManager.Inst().itemList.Add(ItemManager.Inst().gameObject.GetComponent<Battery>());
+                GameManager.Inst().itemList.Add(GameManager.Inst().all_items[itemList.BATTERY]);
 
-            ItemManager.Inst().gameObject.GetComponent<Battery>().amount++;
+            GameManager.Inst().all_items[itemList.BATTERY].amount++;
             GameManager.Inst().money -= cost[num];
         }
     }
 
     public void buyBBong() {
-        int num = ItemManager.Inst().gameObject.GetComponent<BBong>().amount;
-        int[] cost = ItemManager.Inst().gameObject.GetComponent<BBong>().cost;
+        int num = GameManager.Inst().all_items[itemList.BBONG].amount;
+        int[] cost = GameManager.Inst().all_items[itemList.BBONG].cost;
 
         if (num >= 1) Debug.Log("You can't have this item more than now");
         else if (GameManager.Inst().money < cost[num]) Debug.Log("You don't have enough money");
         else {
-            if (GameManager.Inst().itemList.Contains(ItemManager.Inst().gameObject.GetComponent<BBong>())) ;
+            if (GameManager.Inst().itemList.Contains(GameManager.Inst().all_items[itemList.BBONG])) ;
             else
-                GameManager.Inst().itemList.Add(ItemManager.Inst().gameObject.GetComponent<BBong>());
+                GameManager.Inst().itemList.Add(GameManager.Inst().all_items[itemList.BBONG]);
 
-            ItemManager.Inst().gameObject.GetComponent<BBong>().amount++;
+            GameManager.Inst().all_items[itemList.BBONG].amount++;
             GameManager.Inst().money -= cost[num];
         }
     }
 
     public void buyInvisibleSomething() {
-        int num = ItemManager.Inst().gameObject.GetComponent<InvisibleSomething>().amount;
-        int[] cost = ItemManager.Inst().gameObject.GetComponent<BBong>().cost;
+        int num = GameManager.Inst().all_items[itemList.INVISIBLESOMETHING].amount;
+        int[] cost = GameManager.Inst().all_items[itemList.INVISIBLESOMETHING].cost;
 
         if (num >= 2) Debug.Log("You can't have this item more than now");
         else if (GameManager.Inst().money < cost[num]) Debug.Log("You don't have enough money");
         else {
-            if (GameManager.Inst().itemList.Contains(ItemManager.Inst().gameObject.GetComponent<InvisibleSomething>())) ;
+            if (GameManager.Inst().itemList.Contains(GameManager.Inst().all_items[itemList.INVISIBLESOMETHING])) ;
             else
-                GameManager.Inst().itemList.Add(ItemManager.Inst().gameObject.GetComponent<InvisibleSomething>());
+                GameManager.Inst().itemList.Add(GameManager.Inst().all_items[itemList.INVISIBLESOMETHING]);
 
-            ItemManager.Inst().gameObject.GetComponent<InvisibleSomething>().amount++;
+            GameManager.Inst().all_items[itemList.INVISIBLESOMETHING].amount++;
             GameManager.Inst().money -= cost[num];
         }
     }
 
     public void buyHappinessCircuit() {
-        int num = ItemManager.Inst().gameObject.GetComponent<HappinessCircuit>().amount;
-        int[] cost = ItemManager.Inst().gameObject.GetComponent<HappinessCircuit>().cost;
+        int num = GameManager.Inst().all_items[itemList.HAPPINESSCIRCUIT].amount;
+        int[] cost = GameManager.Inst().all_items[itemList.HAPPINESSCIRCUIT].cost;
 
         if (num >= 1) Debug.Log("You can't have this item more than now");
         else if (GameManager.Inst().money < cost[num]) Debug.Log("You don't have enough money");
         else {
-            if (GameManager.Inst().itemList.Contains(ItemManager.Inst().gameObject.GetComponent<HappinessCircuit>())) ;
+            if (GameManager.Inst().itemList.Contains(GameManager.Inst().all_items[itemList.HAPPINESSCIRCUIT])) ;
             else
-                GameManager.Inst().itemList.Add(ItemManager.Inst().gameObject.GetComponent<HappinessCircuit>());
+                GameManager.Inst().itemList.Add(GameManager.Inst().all_items[itemList.HAPPINESSCIRCUIT]);
 
-            ItemManager.Inst().gameObject.GetComponent<HappinessCircuit>().amount++;
+            GameManager.Inst().all_items[itemList.HAPPINESSCIRCUIT].amount++;
             GameManager.Inst().money -= cost[num];
         }
     }

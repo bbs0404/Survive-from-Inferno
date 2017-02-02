@@ -5,12 +5,33 @@ using UnityEngine.SceneManagement;
 using System.Xml;
 using System.IO;
 
-public class GameManager : SingletonBehaviour<GameManager>
+[System.Serializable]
+public class GameManager
 {
+    private static GameManager inst = null;
+
+    private GameManager()
+    {
+        all_items.Add(global::itemList.BATTERY, new Battery());
+        all_items.Add(global::itemList.BBONG, new BBong());
+        all_items.Add(global::itemList.HAPPINESSCIRCUIT, new HappinessCircuit());
+        all_items.Add(global::itemList.ICECREAM, new Icecream());
+        all_items.Add(global::itemList.INVISIBLESOMETHING, new InvisibleSomething());
+        all_items.Add(global::itemList.MELTENICECREAM, new MeltenIcecream());
+        all_items.Add(global::itemList.WATERBOTTLE, new Waterbottle());
+    }
+
+    public static GameManager Inst()
+    {
+        if (inst == null)
+        {
+            inst = new GameManager();
+        }
+        return inst;
+    }
+    public Dictionary<itemList, Item> all_items = new Dictionary<itemList, Item>();
     public float distance;
-    public List<Item> all_Items;
-    public List<Item> ingame_Items;
-    public List<Item> itemList;
+    public List<Item> itemList = new List<Item>();
     public int speedLevel; //속도
     public int hitResistLevel; // 열저항
     public int waterConsumeLevel; //수분 소모율
@@ -24,22 +45,7 @@ public class GameManager : SingletonBehaviour<GameManager>
 
     public int maxDistance; //최대 거리
     public int maxStage; //클리어한 스테이지
-
-    void Awake()
-    {
-        setStatic();
-
-        //save & load test
-        money = 10;
-        Debug.Log("original money before saving: " + money);
-        SaveGameState();
-        money = 123456;
-        Debug.Log("changed money: " + money);
-        LoadGameState();
-        Debug.Log("Loaded money: " + money);
-    }
-
-
+    
     //게임 상태 저장
     public void SaveGameState()
     {
@@ -123,9 +129,16 @@ public class GameManager : SingletonBehaviour<GameManager>
 
         return Value;
     }
-
-    public void sceneChange(int num)
+    
+    public bool hasItem(itemList type)
     {
-        SceneManager.LoadScene(num);
+        foreach (var item in itemList)
+        {
+            if (item.type == type)
+            {
+                return true;
+            }
+        }
+        return false;
     }
 }

@@ -24,7 +24,7 @@ public class Field : MonoBehaviour {
         {
             InGameSystemManager.Inst().fields.Add(this);
             isPlayerIn = true;
-            fieldStateUI = UserInterfaceManager.Inst().addFieldStateUI(field.SHADOW);
+            fieldStateUI = UserInterfaceManager.Inst().addFieldStateUI(type);
         }
     }
 
@@ -48,7 +48,7 @@ public class Field : MonoBehaviour {
         {
             InGameSystemManager.Inst().fields.Add(this);
             isPlayerIn = true;
-            fieldStateUI = UserInterfaceManager.Inst().addFieldStateUI(field.SHADOW);
+            fieldStateUI = UserInterfaceManager.Inst().addFieldStateUI(type);
         }
     }
 

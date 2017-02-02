@@ -14,13 +14,19 @@ public class Waterbottle : Item {
         amount = 0;
     }
 
+    public Waterbottle(int num)
+    {
+        type = itemList.WATERBOTTLE;
+        amount = num;
+    }
+
 	public override void use()
 	{
         InGameSystemManager.Inst().water = Mathf.Max(InGameSystemManager.Inst().water+water,100);
         InGameSystemManager.Inst().health = Mathf.Max(InGameSystemManager.Inst().health + health, InGameSystemManager.Inst().maxHealth);
 
-        ItemManager.Inst().GetComponent< Waterbottle >().amount--;
-        if (ItemManager.Inst().GetComponent<Waterbottle>().amount == 0)
-            GameManager.Inst().itemList.Remove(ItemManager.Inst().GetComponent<Waterbottle>());
+        GameManager.Inst().all_items[itemList.WATERBOTTLE].amount--;
+        if (GameManager.Inst().all_items[itemList.WATERBOTTLE].amount == 0)
+            GameManager.Inst().itemList.Remove(GameManager.Inst().all_items[itemList.WATERBOTTLE]);
 	}
 }
