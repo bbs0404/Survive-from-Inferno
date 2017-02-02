@@ -94,7 +94,7 @@ public class GameManager : SingletonBehaviour<GameManager>
             writer.WriteStartElement("charger");
             writer.WriteAttributeString("fanCharger", this.fanCharger.ToString());
             writer.WriteAttributeString("fanChargerLevel", this.fanChargerLevel.ToString());
-            writer.WriteAttributeString("fanEnergyLevel", this.fanEnergyConsumeLevel.ToString());
+            writer.WriteAttributeString("fanEnergyConsumeLevel", this.fanEnergyConsumeLevel.ToString());
             writer.WriteEndElement();
 
             //돈 기록
@@ -125,39 +125,63 @@ public class GameManager : SingletonBehaviour<GameManager>
         doc.Load(Path.Combine(Application.persistentDataPath, @"test.xml"));
         Debug.Log("Path of saved data: " + Path.Combine(Application.persistentDataPath, @"test.xml"));
 
-        XmlNode root = doc.FirstChild.NextSibling.NextSibling;      //xml버전과 comment를 생략. 바로 첫 노드로 넘어감
+        XmlElement content = doc["content"];
 
-        foreach (XmlNode node in root)
+        //string name = content["user"].GetAttribute("name");
+        
+        //아이템리스트 로드
+        foreach(XmlElement e in content["items"])
         {
-            if (node.NodeType == XmlNodeType.Element)
-            {
-                switch (node.Name)
-                {
-                    case "user":
-                        string tmp = node.Attributes["name"].Value;
-                        break;
-                    case "asset":
-                        this.money = ReadIntFromXML(node, "money");
-                        break;
-                    case "maximum":
-                        this.maxDistance = ReadIntFromXML(node, "maxDistance");
-                        this.maxStage = ReadIntFromXML(node, "maxStage");
-                        break;
-                }
-            }
+            Item i = new Item();
+            i.amount = System.Convert.ToInt32(e.GetAttribute("amount"));
+            i.type = TryParseType(e.GetAttribute("type"));
+            itemList.Add(i);
+        }
+
+        //그 외 로드
+        this.speedLevel = System.Convert.ToInt32(content["level"].GetAttribute("speedLevel"));
+        this.hitResistLevel = System.Convert.ToInt32(content["level"].GetAttribute("hitResistLevel"));
+        this.waterConsumeLevel = System.Convert.ToInt32(content["level"].GetAttribute("waterConsumeLevel"));
+        this.fan = System.Convert.ToBoolean(content["fan"].GetAttribute("fan"));
+        this.fanPerformLevel = System.Convert.ToInt32(content["fan"].GetAttribute("fanPerformLevel"));
+        this.fanBatteryLevel = System.Convert.ToInt32(content["fan"].GetAttribute("fanBatteryLevel"));
+        this.fanCharger = System.Convert.ToBoolean(content["charger"].GetAttribute("fanCharger"));
+        this.fanChargerLevel = System.Convert.ToInt32(content["charger"].GetAttribute("fanChargerLevel"));
+        this.fanEnergyConsumeLevel = System.Convert.ToInt32(content["charger"].GetAttribute("fanEnergyConsumeLevel"));
+        this.money = System.Convert.ToInt32(content["asset"].GetAttribute("money"));
+        this.maxDistance = System.Convert.ToInt32(content["maximum"].GetAttribute("maxDistance"));
+        this.maxStage = System.Convert.ToInt32(content["maximum"].GetAttribute("maxStage"));
+        
+    }
+
+    //아이템 타입 파싱
+    private itemList TryParseType(string type)
+    {
+        switch (type)
+        {
+            case "WATERBOTTLE":
+                return global::itemList.WATERBOTTLE;
+            case "BATTERY":
+                return global::itemList.BATTERY;
+            case "ICECREAM":
+                return global::itemList.ICECREAM;
+            case "MELTENICECREAM":
+                return global::itemList.MELTENICECREAM;
+            case "BBONG":
+                return global::itemList.BBONG;
+            case "HAPPINESSCIRCUIT":
+                return global::itemList.HAPPINESSCIRCUIT;
+            case "INVISIBLESOMETHING":
+                return global::itemList.INVISIBLESOMETHING;
+            case "FAN":
+                return global::itemList.FAN;
+            case "NONE":
+                return global::itemList.NONE;
+            default:
+                return global::itemList.NONE;
         }
     }
-
-    //Int 파싱
-    private int ReadIntFromXML(XmlNode node, string attributes)
-    {
-        string tmpValue = node.Attributes[attributes].Value;
-        int Value = 0;
-        int.TryParse(tmpValue, out Value);
-
-        return Value;
-    }
-
+    
     public void sceneChange(int num)
     {
         SceneManager.LoadScene(num);
