@@ -8,8 +8,8 @@ public class Trashcan : Interactor {
     {
         if (GameManager.Inst().hasItem(itemList.MELTENICECREAM))
         {
-            GameManager.Inst().itemList.Remove(GameManager.Inst().all_items[itemList.MELTENICECREAM]);
-            GameManager.Inst().all_items[itemList.MELTENICECREAM].amount = 0;
+            GameManager.Inst().itemList.Remove(GameManager.Inst().all_Items[itemList.MELTENICECREAM]);
+            GameManager.Inst().all_Items[itemList.MELTENICECREAM].amount = 0;
         }
     }
 }

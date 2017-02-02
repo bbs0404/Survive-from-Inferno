@@ -20,8 +20,8 @@ public class InvisibleSomething : Item {
 
     public override void use()
 	{
-        GameManager.Inst().all_items[itemList.INVISIBLESOMETHING].amount--;
-        if (GameManager.Inst().all_items[itemList.INVISIBLESOMETHING].amount == 0)
-            GameManager.Inst().itemList.Remove(GameManager.Inst().all_items[itemList.INVISIBLESOMETHING]); 
+        GameManager.Inst().all_Items[itemList.INVISIBLESOMETHING].amount--;
+        if (GameManager.Inst().all_Items[itemList.INVISIBLESOMETHING].amount == 0)
+            GameManager.Inst().itemList.Remove(GameManager.Inst().all_Items[itemList.INVISIBLESOMETHING]); 
     }
 }

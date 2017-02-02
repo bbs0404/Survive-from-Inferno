@@ -9,13 +9,13 @@ public class IcecreamStore : Interactor {
     {
         if(GameManager.Inst().hasItem(itemList.ICECREAM))
         {
-            GameManager.Inst().all_items[itemList.ICECREAM].amount++;
+            GameManager.Inst().all_Items[itemList.ICECREAM].amount++;
             GameManager.Inst().money -= cost;
         }
         else if(GameManager.Inst().itemList.Count < 3)
         {
-            GameManager.Inst().all_items[itemList.ICECREAM].amount++;
-            GameManager.Inst().itemList.Add(GameManager.Inst().all_items[itemList.ICECREAM]);
+            GameManager.Inst().all_Items[itemList.ICECREAM].amount++;
+            GameManager.Inst().itemList.Add(GameManager.Inst().all_Items[itemList.ICECREAM]);
             GameManager.Inst().money -= cost;
         }
         UserInterfaceManager.Inst().updateInGameCanvas();

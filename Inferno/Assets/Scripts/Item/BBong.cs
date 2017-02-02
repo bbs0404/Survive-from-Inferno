@@ -25,9 +25,9 @@ public class BBong : Item {
         // Invoke("off", 5);
         Debug.Log("수분고정은 나중에");
 
-        GameManager.Inst().all_items[itemList.BBONG].amount--;
-        if (GameManager.Inst().all_items[itemList.BBONG].amount == 0)
-            GameManager.Inst().itemList.Remove(GameManager.Inst().all_items[itemList.BBONG]);
+        GameManager.Inst().all_Items[itemList.BBONG].amount--;
+        if (GameManager.Inst().all_Items[itemList.BBONG].amount == 0)
+            GameManager.Inst().itemList.Remove(GameManager.Inst().all_Items[itemList.BBONG]);
     } 
     public void off() {
         GameManager.Inst().speedLevel -= 10;

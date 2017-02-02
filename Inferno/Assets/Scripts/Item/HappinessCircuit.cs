@@ -20,8 +20,8 @@ public class HappinessCircuit : Item {
 
     public override void use()
 	{
-        GameManager.Inst().all_items[itemList.HAPPINESSCIRCUIT].amount--;
-        if (GameManager.Inst().all_items[itemList.HAPPINESSCIRCUIT].amount == 0)
-            GameManager.Inst().itemList.Remove(GameManager.Inst().all_items[itemList.HAPPINESSCIRCUIT]);
+        GameManager.Inst().all_Items[itemList.HAPPINESSCIRCUIT].amount--;
+        if (GameManager.Inst().all_Items[itemList.HAPPINESSCIRCUIT].amount == 0)
+            GameManager.Inst().itemList.Remove(GameManager.Inst().all_Items[itemList.HAPPINESSCIRCUIT]);
     }
 }

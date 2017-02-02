@@ -30,9 +30,9 @@ public class Icecream : Item {
         InGameSystemManager.Inst().water = Mathf.Max(InGameSystemManager.Inst().water + water, 100f);
         InGameSystemManager.Inst().health = Mathf.Max(InGameSystemManager.Inst().health + health, InGameSystemManager.Inst().maxHealth);
 
-        GameManager.Inst().all_items[itemList.ICECREAM].amount--;
-        if (GameManager.Inst().all_items[itemList.ICECREAM].amount == 0)
-            GameManager.Inst().itemList.Remove(GameManager.Inst().all_items[itemList.ICECREAM]);
+        GameManager.Inst().all_Items[itemList.ICECREAM].amount--;
+        if (GameManager.Inst().all_Items[itemList.ICECREAM].amount == 0)
+            GameManager.Inst().itemList.Remove(GameManager.Inst().all_Items[itemList.ICECREAM]);
 
     }
 }

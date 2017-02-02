@@ -25,8 +25,8 @@ public class Waterbottle : Item {
         InGameSystemManager.Inst().water = Mathf.Max(InGameSystemManager.Inst().water+water,100);
         InGameSystemManager.Inst().health = Mathf.Max(InGameSystemManager.Inst().health + health, InGameSystemManager.Inst().maxHealth);
 
-        GameManager.Inst().all_items[itemList.WATERBOTTLE].amount--;
-        if (GameManager.Inst().all_items[itemList.WATERBOTTLE].amount == 0)
-            GameManager.Inst().itemList.Remove(GameManager.Inst().all_items[itemList.WATERBOTTLE]);
+        GameManager.Inst().all_Items[itemList.WATERBOTTLE].amount--;
+        if (GameManager.Inst().all_Items[itemList.WATERBOTTLE].amount == 0)
+            GameManager.Inst().itemList.Remove(GameManager.Inst().all_Items[itemList.WATERBOTTLE]);
 	}
 }

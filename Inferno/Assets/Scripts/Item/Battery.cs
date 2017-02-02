@@ -22,8 +22,8 @@ public class Battery : Item {
 	{
         InGameSystemManager.Inst().battery = Mathf.Max(InGameSystemManager.Inst().battery, InGameSystemManager.Inst().batteryCapacity);
 
-        GameManager.Inst().all_items[itemList.BATTERY].amount--;
-        if (GameManager.Inst().all_items[itemList.BATTERY].amount == 0)
-            GameManager.Inst().itemList.Remove(GameManager.Inst().all_items[itemList.BATTERY]);
+        GameManager.Inst().all_Items[itemList.BATTERY].amount--;
+        if (GameManager.Inst().all_Items[itemList.BATTERY].amount == 0)
+            GameManager.Inst().itemList.Remove(GameManager.Inst().all_Items[itemList.BATTERY]);
     }
 }

@@ -12,13 +12,13 @@ public class GameManager
 
     private GameManager()
     {
-        all_items.Add(global::itemList.BATTERY, new Battery());
-        all_items.Add(global::itemList.BBONG, new BBong());
-        all_items.Add(global::itemList.HAPPINESSCIRCUIT, new HappinessCircuit());
-        all_items.Add(global::itemList.ICECREAM, new Icecream());
-        all_items.Add(global::itemList.INVISIBLESOMETHING, new InvisibleSomething());
-        all_items.Add(global::itemList.MELTENICECREAM, new MeltenIcecream());
-        all_items.Add(global::itemList.WATERBOTTLE, new Waterbottle());
+        all_Items.Add(global::itemList.BATTERY, new Battery());
+        all_Items.Add(global::itemList.BBONG, new BBong());
+        all_Items.Add(global::itemList.HAPPINESSCIRCUIT, new HappinessCircuit());
+        all_Items.Add(global::itemList.ICECREAM, new Icecream());
+        all_Items.Add(global::itemList.INVISIBLESOMETHING, new InvisibleSomething());
+        all_Items.Add(global::itemList.MELTENICECREAM, new MeltenIcecream());
+        all_Items.Add(global::itemList.WATERBOTTLE, new Waterbottle());
     }
 
     public static GameManager Inst()
@@ -29,7 +29,7 @@ public class GameManager
         }
         return inst;
     }
-    public Dictionary<itemList, Item> all_items = new Dictionary<itemList, Item>();
+    public Dictionary<itemList, Item> all_Items = new Dictionary<itemList, Item>();
     public float distance;
     public List<Item> itemList = new List<Item>();
     public int speedLevel; //속도
@@ -64,9 +64,70 @@ public class GameManager
             writer.WriteStartElement("content");
 
 
-            //이름 기록
+            //이름, 거리 기록
             writer.WriteStartElement("user");
             writer.WriteAttributeString("name", "HAPPYNARU");
+            writer.WriteAttributeString("distance", this.distance.ToString());
+            writer.WriteEndElement();
+
+            //전체 아이템 리스트 기록
+            writer.WriteStartElement("allItems");
+
+            foreach (KeyValuePair<itemList,Item> i in all_Items)
+            {
+                writer.WriteStartElement("item");
+                writer.WriteAttributeString("amount", i.Value.amount.ToString());
+                writer.WriteAttributeString("type", i.Value.type.ToString());
+                writer.WriteEndElement();
+            }
+
+            writer.WriteEndElement();
+
+            //인게임 아이템 리스트 기록
+            //writer.WriteStartElement("inGameItems");
+
+            //foreach (Item i in ingame_Items)
+            //{
+            //    writer.WriteStartElement("item");
+            //    writer.WriteAttributeString("amount", i.amount.ToString());
+            //    writer.WriteAttributeString("type", i.type.ToString());
+            //    writer.WriteEndElement();
+            //}
+
+            //writer.WriteEndElement();
+
+            //아이템 리스트 기록
+            writer.WriteStartElement("items");
+
+            foreach(Item i in itemList)
+            {
+                writer.WriteStartElement("item");
+                writer.WriteAttributeString("amount", i.amount.ToString());
+                writer.WriteAttributeString("type", i.type.ToString());
+                writer.WriteEndElement();
+            }
+            
+            writer.WriteEndElement();
+
+            //스피드레벨, 열저항레벨, 수분소모레벨 기록
+            writer.WriteStartElement("level");
+            writer.WriteAttributeString("speedLevel", this.speedLevel.ToString());
+            writer.WriteAttributeString("hitResistLevel", this.hitResistLevel.ToString());
+            writer.WriteAttributeString("waterConsumeLevel", this.waterConsumeLevel.ToString());
+            writer.WriteEndElement();
+
+            //선풍기 관련 기록
+            writer.WriteStartElement("fan");
+            writer.WriteAttributeString("fan", this.fan.ToString());
+            writer.WriteAttributeString("fanPerformLevel", this.fanPerformLevel.ToString());
+            writer.WriteAttributeString("fanBatteryLevel", this.fanBatteryLevel.ToString());
+            writer.WriteEndElement();
+
+            //선풍기 충전기 관련 기록
+            writer.WriteStartElement("charger");
+            writer.WriteAttributeString("fanCharger", this.fanCharger.ToString());
+            writer.WriteAttributeString("fanChargerLevel", this.fanChargerLevel.ToString());
+            writer.WriteAttributeString("fanEnergyConsumeLevel", this.fanEnergyConsumeLevel.ToString());
             writer.WriteEndElement();
 
             //돈 기록
@@ -97,39 +158,84 @@ public class GameManager
         doc.Load(Path.Combine(Application.persistentDataPath, @"test.xml"));
         Debug.Log("Path of saved data: " + Path.Combine(Application.persistentDataPath, @"test.xml"));
 
-        XmlNode root = doc.FirstChild.NextSibling.NextSibling;      //xml버전과 comment를 생략. 바로 첫 노드로 넘어감
+        XmlElement content = doc["content"];
 
-        foreach (XmlNode node in root)
+        //string name = content["user"].GetAttribute("name");
+        this.distance = (float) System.Convert.ToDouble(content["user"].GetAttribute("distance"));
+
+        //전체 아이템리스트 로드
+        foreach (XmlElement e in content["allItems"])
         {
-            if (node.NodeType == XmlNodeType.Element)
-            {
-                switch (node.Name)
-                {
-                    case "user":
-                        string tmp = node.Attributes["name"].Value;
-                        break;
-                    case "asset":
-                        this.money = ReadIntFromXML(node, "money");
-                        break;
-                    case "maximum":
-                        this.maxDistance = ReadIntFromXML(node, "maxDistance");
-                        this.maxStage = ReadIntFromXML(node, "maxStage");
-                        break;
-                }
-            }
+            KeyValuePair<itemList, Item> i = new KeyValuePair<itemList, Item>();
+            //Item i = new Item();
+            i.Value.amount = System.Convert.ToInt32(e.GetAttribute("amount"));
+            i.Value.type = TryParseType(e.GetAttribute("type"));
+            all_Items[i.Value.type] = i.Value;
+            // all_Items.Add(i.Key,i.Value); 
+        }
+
+        //인게임 아이템리스트 로드
+        //foreach (XmlElement e in content["inGameItems"])
+        //{
+        //    Item i = new Item();
+        //    i.amount = System.Convert.ToInt32(e.GetAttribute("amount"));
+        //    i.type = TryParseType(e.GetAttribute("type"));
+        //    ingame_Items.Add(i);
+        //}
+
+        //아이템리스트 로드
+        foreach (XmlElement e in content["items"])
+        {
+            Item i = new Item();
+            i.amount = System.Convert.ToInt32(e.GetAttribute("amount"));
+            i.type = TryParseType(e.GetAttribute("type"));
+            itemList.Add(i);
+        }
+
+        //그 외 로드
+        this.speedLevel = System.Convert.ToInt32(content["level"].GetAttribute("speedLevel"));
+        this.hitResistLevel = System.Convert.ToInt32(content["level"].GetAttribute("hitResistLevel"));
+        this.waterConsumeLevel = System.Convert.ToInt32(content["level"].GetAttribute("waterConsumeLevel"));
+        this.fan = System.Convert.ToBoolean(content["fan"].GetAttribute("fan"));
+        this.fanPerformLevel = System.Convert.ToInt32(content["fan"].GetAttribute("fanPerformLevel"));
+        this.fanBatteryLevel = System.Convert.ToInt32(content["fan"].GetAttribute("fanBatteryLevel"));
+        this.fanCharger = System.Convert.ToBoolean(content["charger"].GetAttribute("fanCharger"));
+        this.fanChargerLevel = System.Convert.ToInt32(content["charger"].GetAttribute("fanChargerLevel"));
+        this.fanEnergyConsumeLevel = System.Convert.ToInt32(content["charger"].GetAttribute("fanEnergyConsumeLevel"));
+        this.money = System.Convert.ToInt32(content["asset"].GetAttribute("money"));
+        this.maxDistance = System.Convert.ToInt32(content["maximum"].GetAttribute("maxDistance"));
+        this.maxStage = System.Convert.ToInt32(content["maximum"].GetAttribute("maxStage"));
+        
+    }
+
+    //아이템 타입 파싱
+    private itemList TryParseType(string type)
+    {
+        switch (type)
+        {
+            case "WATERBOTTLE":
+                return global::itemList.WATERBOTTLE;
+            case "BATTERY":
+                return global::itemList.BATTERY;
+            case "ICECREAM":
+                return global::itemList.ICECREAM;
+            case "MELTENICECREAM":
+                return global::itemList.MELTENICECREAM;
+            case "BBONG":
+                return global::itemList.BBONG;
+            case "HAPPINESSCIRCUIT":
+                return global::itemList.HAPPINESSCIRCUIT;
+            case "INVISIBLESOMETHING":
+                return global::itemList.INVISIBLESOMETHING;
+            case "FAN":
+                return global::itemList.FAN;
+            case "NONE":
+                return global::itemList.NONE;
+            default:
+                return global::itemList.NONE;
         }
     }
 
-    //Int 파싱
-    private int ReadIntFromXML(XmlNode node, string attributes)
-    {
-        string tmpValue = node.Attributes[attributes].Value;
-        int Value = 0;
-        int.TryParse(tmpValue, out Value);
-
-        return Value;
-    }
-    
     public bool hasItem(itemList type)
     {
         foreach (var item in itemList)

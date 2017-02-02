@@ -14,24 +14,24 @@ public class ShopButton : MonoBehaviour {
         priceText = GetComponentInChildren<Button>().gameObject.GetComponentInChildren<Text>();
         switch (gameObject.name.ToLower()) {
             case "waterbottle":
-                cost = GameManager.Inst().all_items[itemList.WATERBOTTLE].cost;
-                item = GameManager.Inst().all_items[itemList.WATERBOTTLE];
+                cost = GameManager.Inst().all_Items[itemList.WATERBOTTLE].cost;
+                item = GameManager.Inst().all_Items[itemList.WATERBOTTLE];
                 break;
             case "battery":
-                cost = GameManager.Inst().all_items[itemList.BATTERY].cost;
-                item = GameManager.Inst().all_items[itemList.BATTERY];
+                cost = GameManager.Inst().all_Items[itemList.BATTERY].cost;
+                item = GameManager.Inst().all_Items[itemList.BATTERY];
                 break;
             case "bbong":
-                cost = GameManager.Inst().all_items[itemList.BBONG].cost;
-                item = GameManager.Inst().all_items[itemList.BBONG];
+                cost = GameManager.Inst().all_Items[itemList.BBONG].cost;
+                item = GameManager.Inst().all_Items[itemList.BBONG];
                 break;
             case "invisiblesomething":
-                cost = GameManager.Inst().all_items[itemList.INVISIBLESOMETHING].cost;
-                item = GameManager.Inst().all_items[itemList.INVISIBLESOMETHING];
+                cost = GameManager.Inst().all_Items[itemList.INVISIBLESOMETHING].cost;
+                item = GameManager.Inst().all_Items[itemList.INVISIBLESOMETHING];
                 break;
             case "happinesscircuit":
-                cost = GameManager.Inst().all_items[itemList.HAPPINESSCIRCUIT].cost;
-                item = GameManager.Inst().all_items[itemList.HAPPINESSCIRCUIT];
+                cost = GameManager.Inst().all_Items[itemList.HAPPINESSCIRCUIT].cost;
+                item = GameManager.Inst().all_Items[itemList.HAPPINESSCIRCUIT];
                 break;
             default:  break;
         }
