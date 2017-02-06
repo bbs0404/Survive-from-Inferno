@@ -21,6 +21,7 @@ public class Item {
     public int amount;
     public itemList type;
     public int[] cost;
+    public string label;
 
     public Item()
     {

@@ -4,18 +4,22 @@ using UnityEngine;
 
 public class InvisibleSomething : Item {
 
-    public int[] cost = { 1000, 2000 };
-
     public InvisibleSomething()
     {
         type = itemList.INVISIBLESOMETHING;
         amount = 0;
+        int[] temp = { 1000, 2000 };
+        cost = temp;
+        label = "보이지않는 무언가";
     }
 
     public InvisibleSomething(int num)
     {
         type = itemList.INVISIBLESOMETHING;
         amount = num;
+        int[] temp = { 1000, 2000 };
+        cost = temp;
+        label = "보이지않는 무언가";
     }
 
     public override void use()

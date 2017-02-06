@@ -4,18 +4,22 @@ using UnityEngine;
 
 public class Battery : Item {
 
-    public int[] cost = { 500, 1000, 2500 };
-
     public Battery()
     {
         type = itemList.BATTERY;
         amount = 0;
+        int[] temp = { 500, 1000, 2500 };
+        cost = temp;
+        label = "배터리";
     }
 
     public Battery(int num)
     {
         type = itemList.BATTERY;
         amount = num;
+        int[] temp = { 500, 1000, 2500 };
+        cost = temp;
+        label = "배터리";
     }
 
 	public override void use()
