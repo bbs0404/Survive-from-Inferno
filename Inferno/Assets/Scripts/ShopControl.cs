@@ -36,28 +36,28 @@ public class ShopControl : MonoBehaviour {
         itemName = itemSprite.name;
         switch (itemName.ToLower()) {
             case "waterbottle":
-                cost = ItemManager.Inst().gameObject.GetComponent<Waterbottle>().cost;
-                item = ItemManager.Inst().gameObject.GetComponent<Waterbottle>();
+                cost = GameManager.Inst().all_Items[itemList.WATERBOTTLE].cost;
+                item = GameManager.Inst().all_Items[itemList.WATERBOTTLE];
                 itemLabel = "500ml 물병";
                 break;
             case "battery":
-                cost = ItemManager.Inst().gameObject.GetComponent<Battery>().cost;
-                item = ItemManager.Inst().gameObject.GetComponent<Battery>();
+                cost = GameManager.Inst().all_Items[itemList.BATTERY].cost;
+                item = GameManager.Inst().all_Items[itemList.BATTERY];
                 itemLabel = "배터리";
                 break;
             case "bbong":
-                cost = ItemManager.Inst().gameObject.GetComponent<BBong>().cost;
-                item = ItemManager.Inst().gameObject.GetComponent<BBong>();
+                cost = GameManager.Inst().all_Items[itemList.BBONG].cost;
+                item = GameManager.Inst().all_Items[itemList.BBONG];
                 itemLabel = "간다 간다 뿅간다!";
                 break;
             case "invisiblesomething":
-                cost = ItemManager.Inst().gameObject.GetComponent<InvisibleSomething>().cost;
-                item = ItemManager.Inst().gameObject.GetComponent<InvisibleSomething>();
+                cost = GameManager.Inst().all_Items[itemList.INVISIBLESOMETHING].cost;
+                item = GameManager.Inst().all_Items[itemList.INVISIBLESOMETHING];
                 itemLabel = "보이지않는 무언가";
                 break;
             case "happinesscircuit":
-                cost = ItemManager.Inst().gameObject.GetComponent<HappinessCircuit>().cost;
-                item = ItemManager.Inst().gameObject.GetComponent<HappinessCircuit>();
+                cost = GameManager.Inst().all_Items[itemList.HAPPINESSCIRCUIT].cost;
+                item = GameManager.Inst().all_Items[itemList.HAPPINESSCIRCUIT];
                 itemLabel = "행복회로";
                 break;
             default:  break;
