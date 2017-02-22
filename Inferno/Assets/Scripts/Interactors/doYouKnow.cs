@@ -43,7 +43,7 @@ public class doYouKnow : Interactor {
 
     public override void interact()
     {
-        if (life > 0 && --life == 0)
+        if (!istriggered && life > 0 && --life == 0)
         {
             StartCoroutine(FadeOut());
         }

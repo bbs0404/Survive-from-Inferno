@@ -10,9 +10,21 @@ public class PlayerController : MonoBehaviour {
     private Image scrollController;
     [SerializeField]
     private Animator playerAnimator;
+    private float constant = 1;
+
+    public GameObject background;
 
     void Update()
     {
+        if(InGameSystemManager.Inst().stamina < 10)
+        {
+            constant = 0.5f;
+        }
+        else
+        {
+            constant = 1;
+        }
+
         if (!InGameSystemManager.Inst().isGameOver)
         {
             if (scrollController.rectTransform.localPosition.x > 25)
@@ -21,24 +33,35 @@ public class PlayerController : MonoBehaviour {
                 scrollController.rectTransform.localPosition = new Vector3(-25, scrollController.rectTransform.localPosition.y);
             if (scrollController.rectTransform.localPosition.x > 1)
             {
-                player.transform.localPosition += new Vector3(scrollController.rectTransform.localPosition.x * 0.008f * (1 + GameManager.Inst().speedLevel * 0.125f), 0);
+                player.transform.localPosition += new Vector3(scrollController.rectTransform.localPosition.x * 0.008f * (1 + GameManager.Inst().speedLevel * 0.125f), 0) * constant;
+                background.transform.localPosition += new Vector3(scrollController.rectTransform.localPosition.x * 0.008f * (1 + GameManager.Inst().speedLevel * 0.125f) *constant * 4 / 5f, 0);
                 InGameSystemManager.Inst().distance += scrollController.rectTransform.localPosition.x * 0.008f * (1 + GameManager.Inst().speedLevel * 0.125f);
                 playerAnimator.SetBool("RUN_right", true);
                 playerAnimator.SetBool("RUN_left", false);
                 PlayerManager.Inst().player.GetComponent<SpriteRenderer>().flipX = false;
+                InGameSystemManager.Inst().stamina -= scrollController.rectTransform.localPosition.x * 0.008f * (1 + GameManager.Inst().speedLevel * 0.125f) * 2;
+                if (InGameSystemManager.Inst().stamina < 0)
+                    InGameSystemManager.Inst().stamina = 0;
             }
             else if (scrollController.rectTransform.localPosition.x < -1)
             {
-                player.transform.localPosition += new Vector3(scrollController.rectTransform.localPosition.x * 0.008f * (1 + GameManager.Inst().speedLevel * 0.125f), 0);
+                player.transform.localPosition += new Vector3(scrollController.rectTransform.localPosition.x * 0.008f * (1 + GameManager.Inst().speedLevel * 0.125f), 0) * constant;
+                background.transform.localPosition += new Vector3(scrollController.rectTransform.localPosition.x * 0.008f * (1 + GameManager.Inst().speedLevel * 0.125f) * constant * 4 / 5f, 0);
                 InGameSystemManager.Inst().distance += scrollController.rectTransform.localPosition.x * 0.008f * (1 + GameManager.Inst().speedLevel * 0.125f);
                 playerAnimator.SetBool("RUN_left", true);
                 playerAnimator.SetBool("RUN_right", false);
                 PlayerManager.Inst().player.GetComponent<SpriteRenderer>().flipX = true;
+                InGameSystemManager.Inst().stamina += scrollController.rectTransform.localPosition.x * 0.008f * (1 + GameManager.Inst().speedLevel * 0.125f) * 2;
+                if (InGameSystemManager.Inst().stamina < 0)
+                    InGameSystemManager.Inst().stamina = 0;
             }
             else
             {
                 playerAnimator.SetBool("RUN_right", false);
                 playerAnimator.SetBool("RUN_left", false);
+                InGameSystemManager.Inst().stamina += InGameSystemManager.Inst().stamCharge * Time.deltaTime;
+                if (InGameSystemManager.Inst().stamina > 100)
+                    InGameSystemManager.Inst().stamina = 100;
             }
             if (Mathf.Abs(scrollController.rectTransform.localPosition.x) > 15)
             {

@@ -5,12 +5,13 @@ using UnityEngine.UI;
 
 public class UpGrade : MonoBehaviour {
     public GameManager gameManager;
-    public HitResist hitResist;
-    Text hitResistLevel, waterConsumeLevel, speedLevel, fanPerformLevel, fanBatteryLevel, fanChargerPerformLevel, fanEnergyConsumeLevel, Money,upgradeMoney;
+    public Text hitResistLevel, waterConsumeLevel, speedLevel, fanPerformLevel, fanBatteryLevel, fanChargerPerformLevel, fanEnergyConsumeLevel, Money,upgradeMoney;
 
-    enum Upgrades { HitResist, WaterConsume, Speed, Fan, FanPerform, FanBattery, FanCharger, FanChargerPerform, FanEnergyConsume };
+    public enum Upgrades { HitResist, WaterConsume, Speed, Fan, FanPerform, FanBattery, FanCharger, FanChargerPerform, FanEnergyConsume };
 
     public int upgradeCase = 0;
+    public int needcost;
+
     // Use this for initialization
     void Start() {
         gameManager = GameManager.Inst();
@@ -30,7 +31,7 @@ public class UpGrade : MonoBehaviour {
     // Update is called once per frame
     void Update()
     {
-        hitResistLevel.text = string.Format("{0:D2}", gameManager.hitResistLevel) + " / 05";
+        
         waterConsumeLevel.text = string.Format("{0:D2}", gameManager.waterConsumeLevel) + " / 05";
         speedLevel.text = string.Format("{0:D2}", gameManager.speedLevel) + " / 03";
         fanPerformLevel.text = string.Format("{0:D2}",gameManager.fanPerformLevel) + " / 10";
@@ -46,6 +47,8 @@ public class UpGrade : MonoBehaviour {
     {
         switch (upgradeCase) {
             case (int)Upgrades.HitResist:
+                needcost = costCalculate(upgradeCase);
+                UserInterfaceManager.Inst().updateUpgradeCostText(needcost);
                 hitResistLevelUpgrade();
                 break;
             case (int)Upgrades.WaterConsume:
@@ -79,7 +82,6 @@ public class UpGrade : MonoBehaviour {
 
     public void hitResistLevelUpgrade()
     { 
-        double needcost = 100 * Mathf.Pow(5, (gameManager.hitResistLevel - 1));
         if (gameManager.hitResistLevel < 5)
         {
             if (gameManager.money >= needcost)
@@ -96,6 +98,7 @@ public class UpGrade : MonoBehaviour {
         {
             Debug.Log("Level Complete.");//이미 만렙
         }
+        hitResistLevel.text = string.Format("{0:D2}", gameManager.hitResistLevel) + " / 05";
     }
 
     public void waterConsumeLevelUpgrade()
@@ -308,6 +311,25 @@ public class UpGrade : MonoBehaviour {
         }
     }
     
+    public void buttonClick(int type)
+    {
+        upgradeCase = type;
+        needcost = costCalculate(type);
+        UserInterfaceManager.Inst().updateUpgradeCostText(needcost);
+    }
+
+    public int costCalculate(int type)
+    {
+        switch (type)
+        {
+            case 0:
+                return needcost = (int)(100 * Mathf.Pow(5, gameManager.hitResistLevel));
+            default:
+                Debug.LogError("coding jotgachi hane");
+                return -1;
+        }
+    }
+
     public void hitResistButtonClick() {
         upgradeCase = (int)Upgrades.HitResist;
     }

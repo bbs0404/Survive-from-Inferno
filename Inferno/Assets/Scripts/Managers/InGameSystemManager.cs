@@ -23,6 +23,8 @@ public class InGameSystemManager : SingletonBehaviour<InGameSystemManager> {
     public bool isFan; //선풍기 사용 여부
     public bool isGameOver;
     public float distance;
+    public float stamina;
+    public float stamCharge = 30;
 
     public float lossHealth; //초당 잃는 체력
     public float constant;
@@ -39,6 +41,7 @@ public class InGameSystemManager : SingletonBehaviour<InGameSystemManager> {
         health = 100f;
         water = 100f;
         lossHealth = 4;
+        stamina = 100;
         cloudTimer = Random.Range(5, 10);
         isGameOver = false;
 
@@ -152,7 +155,7 @@ public class InGameSystemManager : SingletonBehaviour<InGameSystemManager> {
                 {
                     GameObject cld;
                     float j;
-                    (cld = Instantiate(cloud)).transform.position = PlayerManager.Inst().player.transform.position + new Vector3(Random.Range(-30, 30), 8);
+                    (cld = Instantiate(cloud)).transform.position = PlayerManager.Inst().player.transform.position + new Vector3(Random.Range(-30, 30), 10);
                     cld.transform.localScale = new Vector3(j = Random.Range(1f, 2f), j, j);
                 }
             }

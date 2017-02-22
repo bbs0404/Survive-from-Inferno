@@ -120,7 +120,10 @@ public class UserInterfaceManager : SingletonBehaviour<UserInterfaceManager>
 
             InGameCanvas.transform.FindChild("HP").GetComponent<RectTransform>().sizeDelta = new Vector2(InGameSystemManager.Inst().health, 100);
             InGameCanvas.transform.FindChild("Water").GetComponent<RectTransform>().sizeDelta = new Vector2(InGameSystemManager.Inst().water, 100);
+            InGameCanvas.transform.FindChild("Stamina").GetComponent<RectTransform>().sizeDelta = new Vector2(InGameSystemManager.Inst().stamina * 2, 20);
+            InGameCanvas.transform.FindChild("Battery").GetComponent<RectTransform>().sizeDelta = new Vector2(InGameSystemManager.Inst().battery, 20);
         }
+        InGameCanvas.transform.FindChild("Emergency").GetComponent<Image>().color = new Color(1, 1, 1, 0.5f - InGameSystemManager.Inst().health / (InGameSystemManager.Inst().maxHealth * 2));
     }
     public GameObject addFieldStateUI(field type)
     {
@@ -151,7 +154,7 @@ public class UserInterfaceManager : SingletonBehaviour<UserInterfaceManager>
 
     IEnumerator fogFadeIn()
     {
-        for (float i = 0; i<0.8f; i += 0.01f)
+        for (float i = 0; i<0.5f; i += 0.01f)
         {
             InGameCanvas.transform.FindChild("Fog").GetComponent<Image>().color = new Color(0, 0, 0, i);
             yield return null;
@@ -160,7 +163,7 @@ public class UserInterfaceManager : SingletonBehaviour<UserInterfaceManager>
 
     IEnumerator fogFadeOut()
     {
-        for (float i = 0.8f; i >= 0; i -= 0.01f)
+        for (float i = 0.5f; i >= 0; i -= 0.01f)
         {
             InGameCanvas.transform.FindChild("Fog").GetComponent<Image>().color = new Color(0, 0, 0, i);
             yield return null;
@@ -179,5 +182,10 @@ public class UserInterfaceManager : SingletonBehaviour<UserInterfaceManager>
     public void useFan()
     {
         InGameSystemManager.Inst().isFan = !InGameSystemManager.Inst().isFan;
+    }
+
+    public void updateUpgradeCostText(int cost)
+    {
+        UpgradeCanvas.transform.FindChild("upgradeMoney").GetComponent<Text>().text = cost.ToString();
     }
 }
