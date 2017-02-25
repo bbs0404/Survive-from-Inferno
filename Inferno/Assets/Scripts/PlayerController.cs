@@ -13,6 +13,7 @@ public class PlayerController : MonoBehaviour {
     private float constant = 1;
 
     public GameObject background;
+    public static bool isMoving = false;
 
     void Update()
     {
@@ -24,7 +25,6 @@ public class PlayerController : MonoBehaviour {
         {
             constant = 1;
         }
-
         if (!InGameSystemManager.Inst().isGameOver)
         {
             if (scrollController.rectTransform.localPosition.x > 25)
@@ -39,9 +39,11 @@ public class PlayerController : MonoBehaviour {
                 playerAnimator.SetBool("RUN_right", true);
                 playerAnimator.SetBool("RUN_left", false);
                 PlayerManager.Inst().player.GetComponent<SpriteRenderer>().flipX = false;
-                InGameSystemManager.Inst().stamina -= scrollController.rectTransform.localPosition.x * 0.008f * (1 + GameManager.Inst().speedLevel * 0.125f) * 2;
+                if (scrollController.rectTransform.localPosition.x > 10)
+                    InGameSystemManager.Inst().stamina -= scrollController.rectTransform.localPosition.x * 0.008f * (1 + GameManager.Inst().speedLevel * 0.125f) * 2;
                 if (InGameSystemManager.Inst().stamina < 0)
                     InGameSystemManager.Inst().stamina = 0;
+                isMoving = true;
             }
             else if (scrollController.rectTransform.localPosition.x < -1)
             {
@@ -51,9 +53,11 @@ public class PlayerController : MonoBehaviour {
                 playerAnimator.SetBool("RUN_left", true);
                 playerAnimator.SetBool("RUN_right", false);
                 PlayerManager.Inst().player.GetComponent<SpriteRenderer>().flipX = true;
-                InGameSystemManager.Inst().stamina += scrollController.rectTransform.localPosition.x * 0.008f * (1 + GameManager.Inst().speedLevel * 0.125f) * 2;
+                    if (scrollController.rectTransform.localPosition.x < -10)
+                        InGameSystemManager.Inst().stamina += scrollController.rectTransform.localPosition.x * 0.008f * (1 + GameManager.Inst().speedLevel * 0.125f) * 2;
                 if (InGameSystemManager.Inst().stamina < 0)
                     InGameSystemManager.Inst().stamina = 0;
+                isMoving = true;
             }
             else
             {
@@ -62,8 +66,9 @@ public class PlayerController : MonoBehaviour {
                 InGameSystemManager.Inst().stamina += InGameSystemManager.Inst().stamCharge * Time.deltaTime;
                 if (InGameSystemManager.Inst().stamina > 100)
                     InGameSystemManager.Inst().stamina = 100;
+                isMoving = false;
             }
-            if (Mathf.Abs(scrollController.rectTransform.localPosition.x) > 15)
+            if (Mathf.Abs(scrollController.rectTransform.localPosition.x) > 20)
             {
                 InGameSystemManager.Inst().water -= Mathf.Abs(scrollController.rectTransform.localPosition.x) / 50;
                 if (InGameSystemManager.Inst().water < 0)

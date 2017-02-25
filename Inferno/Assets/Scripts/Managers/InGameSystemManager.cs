@@ -38,9 +38,10 @@ public class InGameSystemManager : SingletonBehaviour<InGameSystemManager> {
     private void Awake()
     {
         maxHealth = 100;
+        maxWater = 100;
         health = 100f;
         water = 100f;
-        lossHealth = 4;
+        lossHealth = 8 * (1 - 0.1f * GameManager.Inst().hitResistLevel);
         stamina = 100;
         cloudTimer = Random.Range(5, 10);
         isGameOver = false;
@@ -67,7 +68,7 @@ public class InGameSystemManager : SingletonBehaviour<InGameSystemManager> {
         if (!isGameOver)
         {
             inShadow = false;
-            lossHealth = 4;
+            lossHealth = 8 * (1 - 0.1f * GameManager.Inst().hitResistLevel);
             timeRemain -= Gametime.deltaTime;
             cloudTimer -= Gametime.deltaTime;
 
@@ -81,37 +82,48 @@ public class InGameSystemManager : SingletonBehaviour<InGameSystemManager> {
                 timeRemain = 10f;
             }
             constant = 1;
-            if (time == DayNight.Day)
+            inShadow = false;
+            UserInterfaceManager.Inst().fieldStateOff();
+            foreach (var item in fields)
             {
-                inShadow = false;
-                foreach (var item in fields)
+                if (item.type == field.SHADOW && !inShadow)
                 {
-                    if (item.type == field.SHADOW && !inShadow)
+                    constant *= 0.1f;
+                    inShadow = true;
+                    if (time != DayNight.Night)
+                        UserInterfaceManager.Inst().fieldStateOn(field.SHADOW);
+                }
+                else if (item.type == field.ASPHALT)
+                {
+                    if (!inShadow)
                     {
-                        constant *= 0.1f;
-                        inShadow = true;
+                        constant *= 1.5f;
                     }
-                    else if (item.type == field.ASPHALT)
+                    else
                     {
-                        if (!inShadow)
-                        {
-                            constant *= 1.5f;
-                        }
-                    }
-                    else if (item.type == field.OUTDOORFAN)
-                    {
-                        constant *= 1.2f;
-                    }
-                    else if (item.type == field.FOUNTAIN)
-                    {
-                        constant *= 0.5f;
-                        water += 10 * Gametime.deltaTime;
-                    }
-                    else if (item.type == field.CROSSWALK)
-                    {
-
+                        constant *= 0.8f;
                     }
                 }
+                else if (item.type == field.OUTDOORFAN)
+                {
+                    constant *= 1.2f;
+                    UserInterfaceManager.Inst().fieldStateOn(field.OUTDOORFAN);
+                }
+                else if (item.type == field.FOUNTAIN)
+                {
+                    constant *= 0.5f;
+                    water += 20 * Gametime.deltaTime;
+                    if (water > maxWater)
+                        water = maxWater;
+                    UserInterfaceManager.Inst().fieldStateOn(field.FOUNTAIN);
+                }
+                else if (item.type == field.CROSSWALK)
+                {
+
+                }
+            }
+            if (time == DayNight.Day)
+            {
                 if (!inShadow) //그림자에 있지 않는 경우
                 {
                     if (GameManager.Inst().fanCharger)
@@ -171,6 +183,14 @@ public class InGameSystemManager : SingletonBehaviour<InGameSystemManager> {
         PlayerManager.Inst().player.GetComponent<Animator>().SetTrigger("FAINT");
     }
 
+    public void playerDeadByCar()
+    {
+        isGameOver = true;
+        Invoke("GameOver", 3);
+        UserInterfaceManager.Inst().disableCanvas(UserInterfaceManager.Inst().InGameCanvas);
+        Invoke("car",0.1f);
+    }
+
     private void GameOver()
     {
         UserInterfaceManager.Inst().updateInGameCanvas();
@@ -179,5 +199,42 @@ public class InGameSystemManager : SingletonBehaviour<InGameSystemManager> {
     public void useCoroutine(IEnumerator coroutine)
     {
         StartCoroutine(coroutine);
+    }
+
+    private void car()
+    {
+        StartCoroutine(carAccident());
+    }
+
+    IEnumerator carAccident()
+    {
+        CrossWalk cross = null;
+        foreach (var item in fields)
+        {
+            if (item.type == field.CROSSWALK)
+            {
+                cross = (CrossWalk)item;
+            }
+        }
+        if (PlayerController.isMoving)
+        {
+            if (PlayerManager.Inst().player.transform.position.x < cross.transform.position.x)
+            {
+                for (float i = PlayerManager.Inst().player.transform.position.x; i < cross.transform.position.x; i += 0.08f)
+                {
+                    PlayerManager.Inst().player.transform.position = new Vector3(i, PlayerManager.Inst().player.transform.position.y, PlayerManager.Inst().player.transform.position.z);
+                    yield return null;
+                }
+            }
+            else
+            {
+                for (float i = PlayerManager.Inst().player.transform.position.x; i > cross.transform.position.x; i -= 0.08f)
+                {
+                    PlayerManager.Inst().player.transform.position = new Vector3(i, PlayerManager.Inst().player.transform.position.y, PlayerManager.Inst().player.transform.position.z);
+                    yield return null;
+                }
+            }
+        }
+        PlayerManager.Inst().player.GetComponent<Animator>().SetTrigger("FAINT");
     }
 }

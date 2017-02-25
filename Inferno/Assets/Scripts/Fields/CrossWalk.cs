@@ -34,24 +34,43 @@ public class CrossWalk : Field {
 
     private void Update()
     {
-        if (timer > 0)
+        if (!UserInterfaceManager.Inst().isPaused)
         {
-            timer -= Time.deltaTime;
-        }
-        else
-        {
-            green = !green;
-            if (green)
-                timer = greenTime;
+            if (timer > 0)
+            {
+                timer -= Time.deltaTime;
+            }
             else
             {
-                timer = redTime;
-                if (isPlayerIn)
-                    cross();
+                green = !green;
+                if (green)
+                    timer = greenTime;
+                else
+                {
+                    timer = redTime;
+                    if (isPlayerIn)
+                        cross();
+                }
+                foreach (var item in signals)
+                {
+                    item.updateSignal(green);
+                }
             }
-            foreach (var item in signals)
+            if (green && timer < greenTime / 2 && timer % 1 > 0.5f)
             {
-                item.updateSignal(green);
+                foreach (var item in signals)
+                {
+                    if (item.GetComponent<SpriteRenderer>().color == new Color(0, 1, 0))
+                        item.blink();
+                }
+            }
+            else if (green && timer < greenTime / 2)
+            {
+                foreach (var item in signals)
+                {
+                    if (item.GetComponent<SpriteRenderer>().color == new Color(0, 0.3f, 0))
+                        item.blink();
+                }
             }
         }
     }
@@ -62,11 +81,14 @@ public class CrossWalk : Field {
         {
             if (Random.Range(0, 100) >= 95)
             {
-                InGameSystemManager.Inst().playerDead();
+                InGameSystemManager.Inst().playerDeadByCar();
             }
             else
             {
                 GameManager.Inst().money -= 300;
+                if (GameManager.Inst().money < 0)
+                    GameManager.Inst().money = 0;
+                Debug.Log(GameManager.Inst().money.ToString());
             }
         }
     }

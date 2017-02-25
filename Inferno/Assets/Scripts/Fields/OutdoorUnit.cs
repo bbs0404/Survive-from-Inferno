@@ -20,10 +20,7 @@ public class OutdoorUnit : Field {
             {
                 timer = 5.0f;
                 if (InGameSystemManager.Inst().fields.Contains(this))
-                {
                     InGameSystemManager.Inst().fields.Remove(this);
-                    Destroy(fieldStateUI);
-                }
                 Destroy(this.gameObject.GetComponent<BoxCollider2D>());
             }
             else

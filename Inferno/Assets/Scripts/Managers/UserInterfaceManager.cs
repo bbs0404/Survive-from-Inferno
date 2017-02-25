@@ -21,7 +21,6 @@ public class UserInterfaceManager : SingletonBehaviour<UserInterfaceManager>
     [SerializeField]
     private Sprite[] spriteOfFieldState;
     public List<GameObject> fieldState;
-    public GameObject fieldStatePrefab;
     public bool isPaused = false;
     private int level;
 
@@ -42,23 +41,6 @@ public class UserInterfaceManager : SingletonBehaviour<UserInterfaceManager>
         }
         setStatic();
     }
-
-
-
-    //private void OnLevelWasLoaded(int level)
-    //{
-    //    CanvasList = (Canvas[])GameObject.FindObjectsOfType(typeof(Canvas));
-    //    foreach (var item in CanvasList)
-    //    {
-    //        if (item.gameObject.name == "InGameCanvas")
-    //            InGameCanvas = item;
-    //        else if (item.gameObject.name == "PauseCanvas")
-    //            PauseCanvas = item;
-    //        else if (item.gameObject.name == "UpgradeCanvas")
-    //            UpgradeCanvas = item;
-    //    }
-    //    this.level = level;
-    //}
 
     // Update is called once per frame
     void Update()
@@ -118,26 +100,39 @@ public class UserInterfaceManager : SingletonBehaviour<UserInterfaceManager>
                 itemButton.GetComponentInChildren<Text>().text = "";
             }
 
-            InGameCanvas.transform.FindChild("HP").GetComponent<RectTransform>().sizeDelta = new Vector2(InGameSystemManager.Inst().health, 100);
-            InGameCanvas.transform.FindChild("Water").GetComponent<RectTransform>().sizeDelta = new Vector2(InGameSystemManager.Inst().water, 100);
-            InGameCanvas.transform.FindChild("Stamina").GetComponent<RectTransform>().sizeDelta = new Vector2(InGameSystemManager.Inst().stamina * 2, 20);
+            InGameCanvas.transform.FindChild("HP Bar").FindChild("Mask").FindChild("HP").GetComponent<RectTransform>().sizeDelta = new Vector2(InGameSystemManager.Inst().health * 7.5f, 60);
+            InGameCanvas.transform.FindChild("HP Bar").FindChild("HealthText").GetComponent<Text>().text = ((int)InGameSystemManager.Inst().health).ToString();
+            InGameCanvas.transform.FindChild("Water Bar").FindChild("Mask").FindChild("Water").GetComponent<RectTransform>().sizeDelta = new Vector2(InGameSystemManager.Inst().water * 5, 85);
+            InGameCanvas.transform.FindChild("HP Bar").FindChild("Stamina").GetComponent<RectTransform>().sizeDelta = new Vector2(InGameSystemManager.Inst().stamina * 3, 7.5f);
             InGameCanvas.transform.FindChild("Battery").GetComponent<RectTransform>().sizeDelta = new Vector2(InGameSystemManager.Inst().battery, 20);
         }
         InGameCanvas.transform.FindChild("Emergency").GetComponent<Image>().color = new Color(1, 1, 1, 0.5f - InGameSystemManager.Inst().health / (InGameSystemManager.Inst().maxHealth * 2));
+        InGameCanvas.transform.FindChild("DayNight").GetComponent<Animator>().SetBool("Night", InGameSystemManager.Inst().time == DayNight.Night);
     }
-    public GameObject addFieldStateUI(field type)
+
+    public void fieldStateOn(field type)
     {
         if (InGameCanvas == null)
-            return null;
-        //if (type == field.SHADOW
-        GameObject ui;
-        fieldState.Add(ui = Instantiate(fieldStatePrefab));
-        ui.transform.SetParent(InGameCanvas.transform);
-        ui.GetComponent<RectTransform>().anchoredPosition = new Vector3(600 + fieldState.IndexOf(ui) * 100, ui.GetComponent<RectTransform>().position.y);
-        //ui.GetComponent<RectTransform>().anchorMax = new Vector2(0, 1);
-        //ui.GetComponent<RectTransform>().anchorMin = new Vector2(0, 1);
-        ui.GetComponent<Image>().sprite = spriteOfFieldState[(int)type];
-        return ui;
+            Debug.LogError("InGameCanvas Invalid");
+        if (type == field.SHADOW)
+        {
+            GameObject.Find("FieldState0").GetComponent<Image>().color = new Color(1, 1, 1);
+            PlayerManager.Inst().player.GetComponent<SpriteRenderer>().color = new Color(0.8f, 0.8f, 0.8f);
+        }
+        else if (type == field.FOUNTAIN)
+            GameObject.Find("FieldState1").GetComponent<Image>().color = new Color(1, 1, 1);
+        else if (type == field.OUTDOORFAN)
+            GameObject.Find("FieldState2").GetComponent<Image>().color = new Color(1, 1, 1);
+    }
+
+    public void fieldStateOff()
+    {
+        if (InGameCanvas == null)
+            Debug.LogError("InGameCanvas Invalid");
+        GameObject.Find("FieldState0").GetComponent<Image>().color = new Color(0.7f, 0.7f, 0.7f);
+        GameObject.Find("FieldState1").GetComponent<Image>().color = new Color(0.7f, 0.7f, 0.7f);
+        GameObject.Find("FieldState2").GetComponent<Image>().color = new Color(0.7f, 0.7f, 0.7f);
+        PlayerManager.Inst().player.GetComponent<SpriteRenderer>().color = new Color(1, 1, 1);
     }
 
     public void timeFog()

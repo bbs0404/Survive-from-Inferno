@@ -11,12 +11,12 @@ public enum field
     CROSSWALK,
     FOUNTAIN
 }
-public class Field : MonoBehaviour {
+public class Field : MonoBehaviour
+{
 
     public bool isPlayerIn = false;
     public field type;
-    public GameObject fieldStateUI;
-    
+
 
     private void OnTriggerEnter2D(Collider2D collision)
     {
@@ -24,7 +24,6 @@ public class Field : MonoBehaviour {
         {
             InGameSystemManager.Inst().fields.Add(this);
             isPlayerIn = true;
-            fieldStateUI = UserInterfaceManager.Inst().addFieldStateUI(type);
         }
     }
 
@@ -34,11 +33,6 @@ public class Field : MonoBehaviour {
         {
             InGameSystemManager.Inst().fields.Remove(this);
             isPlayerIn = false;
-            if (fieldStateUI != null)
-            {
-                UserInterfaceManager.Inst().fieldState.Remove(fieldStateUI);
-                Destroy(fieldStateUI);
-            }
         }
     }
 
@@ -48,14 +42,6 @@ public class Field : MonoBehaviour {
         {
             InGameSystemManager.Inst().fields.Add(this);
             isPlayerIn = true;
-            fieldStateUI = UserInterfaceManager.Inst().addFieldStateUI(type);
         }
-    }
-
-    public void DestroyField()
-    {
-        if (fieldStateUI != null)
-            Destroy(fieldStateUI);
-        Destroy(this);
     }
 }

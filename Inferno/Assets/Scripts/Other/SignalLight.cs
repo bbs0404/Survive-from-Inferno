@@ -23,4 +23,12 @@ public class SignalLight : MonoBehaviour {
                 this.gameObject.GetComponent<SpriteRenderer>().color = new Color(0.3f, 0, 0);
         }
     }
+
+    public void blink()
+    {
+        if (this.gameObject.GetComponent<SpriteRenderer>().color == new Color(0, 0.3f, 0) && isGreen)
+            this.gameObject.GetComponent<SpriteRenderer>().color = new Color(0, 1, 0);
+        else if(isGreen)
+            this.gameObject.GetComponent<SpriteRenderer>().color = new Color(0, 0.3f, 0);
+    }
 }

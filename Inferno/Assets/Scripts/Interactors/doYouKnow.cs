@@ -21,24 +21,26 @@ public class doYouKnow : Interactor {
 
     private void Update()
     {
-        if (istriggered)
+        if (!UserInterfaceManager.Inst().isPaused)
         {
-            timer -= Time.deltaTime;
-            if (timer < 0)
+            if (istriggered)
             {
-                istriggered = false;
-                FindObjectOfType<PlayerController>().enabled = true;
-                StartCoroutine(FadeOut());
+                timer -= Time.deltaTime;
+                if (timer < 0)
+                {
+                    istriggered = false;
+                    FindObjectOfType<PlayerController>().enabled = true;
+                    StartCoroutine(FadeOut());
+                }
+            }
+            else if (Mathf.Abs(PlayerManager.Inst().player.transform.position.x - this.gameObject.transform.position.x) < 30 && !faded && !InGameSystemManager.Inst().isGameOver)
+            {
+                if (PlayerManager.Inst().player.transform.position.x - this.gameObject.transform.position.x < 0)
+                    this.gameObject.transform.position -= new Vector3(0.1f, 0);
+                else if (PlayerManager.Inst().player.transform.position.x - this.gameObject.transform.position.x > 0)
+                    this.gameObject.transform.position += new Vector3(0.1f, 0);
             }
         }
-        else if (Mathf.Abs(PlayerManager.Inst().player.transform.position.x - this.gameObject.transform.position.x) < 30 && !faded)
-        {
-            if (PlayerManager.Inst().player.transform.position.x - this.gameObject.transform.position.x < 0)
-                this.gameObject.transform.position -= new Vector3(0.1f, 0);
-            else if (PlayerManager.Inst().player.transform.position.x - this.gameObject.transform.position.x > 0)
-                this.gameObject.transform.position += new Vector3(0.1f, 0);
-        }
-
     }
 
     public override void interact()
