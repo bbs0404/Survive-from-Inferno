@@ -13,7 +13,7 @@ public enum field
 }
 public class Field : MonoBehaviour {
 
-    private bool isPlayerIn = false;
+    public bool isPlayerIn = false;
     public field type;
     public GameObject fieldStateUI;
     
