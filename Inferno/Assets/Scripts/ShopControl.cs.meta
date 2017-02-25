@@ -1,5 +1,9 @@
 fileFormatVersion: 2
+<<<<<<< HEAD
 guid: 6f9233533f4a72a4d87bca8556963167
+=======
+guid: ac932c5ae04b76f459c432b3337ce5e1
+>>>>>>> origin/hasutmp
 timeCreated: 1485843951
 licenseType: Free
 MonoImporter:
