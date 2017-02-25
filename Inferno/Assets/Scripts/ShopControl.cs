@@ -13,6 +13,7 @@ public class ShopControl : MonoBehaviour {
     public Image itemImage;
     public String itemName;
     public String itemLabel;
+    private itemList itemType;
     public int[] cost;
 
     void Start()
@@ -34,34 +35,10 @@ public class ShopControl : MonoBehaviour {
     public void getItemInfo(GameObject itemSprite)
     {
         itemName = itemSprite.name;
-        switch (itemName.ToLower()) {
-            case "waterbottle":
-                cost = GameManager.Inst().all_Items[itemList.WATERBOTTLE].cost;
-                item = GameManager.Inst().all_Items[itemList.WATERBOTTLE];
-                itemLabel = "500ml 물병";
-                break;
-            case "battery":
-                cost = GameManager.Inst().all_Items[itemList.BATTERY].cost;
-                item = GameManager.Inst().all_Items[itemList.BATTERY];
-                itemLabel = "배터리";
-                break;
-            case "bbong":
-                cost = GameManager.Inst().all_Items[itemList.BBONG].cost;
-                item = GameManager.Inst().all_Items[itemList.BBONG];
-                itemLabel = "간다 간다 뿅간다!";
-                break;
-            case "invisiblesomething":
-                cost = GameManager.Inst().all_Items[itemList.INVISIBLESOMETHING].cost;
-                item = GameManager.Inst().all_Items[itemList.INVISIBLESOMETHING];
-                itemLabel = "보이지않는 무언가";
-                break;
-            case "happinesscircuit":
-                cost = GameManager.Inst().all_Items[itemList.HAPPINESSCIRCUIT].cost;
-                item = GameManager.Inst().all_Items[itemList.HAPPINESSCIRCUIT];
-                itemLabel = "행복회로";
-                break;
-            default:  break;
-        }
+        itemType = (itemList)Enum.Parse(typeof(itemList), itemName);
+        item = GameManager.Inst().all_Items[itemType];
+        cost = item.cost;
+        itemLabel = item.label;
         itemImage.sprite = itemSprite.GetComponent<Image>().sprite;
         nameText.text = itemLabel;
         amountText.text = item.amount + " / " + cost.Length;
@@ -78,7 +55,7 @@ public class ShopControl : MonoBehaviour {
             Debug.Log("Please Select Item");
             return;
         }
-        GameObject.Find("Shop").GetComponent<Shop>().Buy((itemList)Enum.Parse(typeof(itemList),itemName));
+        GameObject.Find("Shop").GetComponent<Shop>().Buy(itemType);
         TextReload();
 	}
 	

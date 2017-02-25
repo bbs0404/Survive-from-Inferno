@@ -175,4 +175,9 @@ public class InGameSystemManager : SingletonBehaviour<InGameSystemManager> {
     {
         UserInterfaceManager.Inst().updateInGameCanvas();
     }
+
+    public void useCoroutine(IEnumerator coroutine)
+    {
+        StartCoroutine(coroutine);
+    }
 }

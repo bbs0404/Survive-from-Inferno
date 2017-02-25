@@ -4,7 +4,6 @@ using UnityEngine;
 
 public class Waterbottle : Item {
 
-    public int[] cost = { 300, 500, 1000 };
     public float water;
     public float health;
      
@@ -12,12 +11,18 @@ public class Waterbottle : Item {
     {
         type = itemList.WATERBOTTLE;
         amount = 0;
+        int[] temp = { 300, 500, 1000 };
+        cost = temp;
+        label = "500ml 물병";
     }
 
     public Waterbottle(int num)
     {
         type = itemList.WATERBOTTLE;
         amount = num;
+        int[] temp = { 300, 500, 1000 };
+        cost = temp;
+        label = "500ml 물병";
     }
 
 	public override void use()

@@ -4,18 +4,22 @@ using UnityEngine;
 
 public class HappinessCircuit : Item {
 
-    public int[] cost = { 2000 };
-
     public HappinessCircuit()
     {
         type = itemList.HAPPINESSCIRCUIT;
         amount = 0;
+        int[] temp = { 2000 };
+        cost = temp;
+        label = "행복회로";
     }
 
     public HappinessCircuit(int num)
     {
         type = itemList.HAPPINESSCIRCUIT;
         amount = num;
+        int[] temp = { 2000 };
+        cost = temp;
+        label = "행복회로";
     }
 
     public override void use()
