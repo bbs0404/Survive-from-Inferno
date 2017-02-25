@@ -35,10 +35,12 @@ public class ShopControl : MonoBehaviour {
     public void getItemInfo(GameObject itemSprite)
     {
         itemName = itemSprite.name;
+
         itemType = (itemList)Enum.Parse(typeof(itemList), itemName);
         item = GameManager.Inst().all_Items[itemType];
         cost = item.cost;
         itemLabel = item.label;
+
         itemImage.sprite = itemSprite.GetComponent<Image>().sprite;
         nameText.text = itemLabel;
         amountText.text = item.amount + " / " + cost.Length;
