@@ -22,6 +22,7 @@ public class InGameSystemManager : SingletonBehaviour<InGameSystemManager> {
     public bool inShadow; // 그림자 여부
     public bool isFan; //선풍기 사용 여부
     public bool isGameOver;
+    public bool isPaused;
     public float distance;
     public float stamina;
     public float stamCharge = 30;
@@ -45,6 +46,7 @@ public class InGameSystemManager : SingletonBehaviour<InGameSystemManager> {
         stamina = 100;
         cloudTimer = Random.Range(5, 10);
         isGameOver = false;
+        isPaused = false;
 
         if (GameManager.Inst().fan)
         {
@@ -65,7 +67,7 @@ public class InGameSystemManager : SingletonBehaviour<InGameSystemManager> {
     }
     private void Update()
     {
-        if (!isGameOver)
+        if (!isGameOver && !isPaused)
         {
             inShadow = false;
             lossHealth = 8 * (1 - 0.1f * GameManager.Inst().hitResistLevel);
@@ -140,7 +142,7 @@ public class InGameSystemManager : SingletonBehaviour<InGameSystemManager> {
             lossHealth *= constant;
             if (isFan)
             {
-                float consume = 100 * Mathf.Pow(0.9f, GameManager.Inst().fanEnergyConsumeLevel) * Time.deltaTime; // 배터리 소모량
+                float consume = 100 * Mathf.Pow(0.9f, GameManager.Inst().fanEnergyConsumeLevel) * Gametime.deltaTime; // 배터리 소모량
                 if (battery < consume)
                     lossHealth -= (10 + GameManager.Inst().fanPerformLevel) * (battery / consume);
                 else
@@ -236,5 +238,20 @@ public class InGameSystemManager : SingletonBehaviour<InGameSystemManager> {
             }
         }
         PlayerManager.Inst().player.GetComponent<Animator>().SetTrigger("FAINT");
+    }
+
+    public void useItem(int num)
+    {
+        if (GameManager.Inst().itemList.Count > num)
+        {
+            GameManager.Inst().itemList[num].use();
+            UserInterfaceManager.Inst().updateInGameCanvas();
+        }
+    }
+
+    public void useFan()
+    {
+        if (battery > 0)
+            isFan = !isFan;
     }
 }

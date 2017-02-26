@@ -34,7 +34,7 @@ public class CrossWalk : Field {
 
     private void Update()
     {
-        if (!UserInterfaceManager.Inst().isPaused)
+        if (!InGameSystemManager.Inst().isPaused)
         {
             if (timer > 0)
             {

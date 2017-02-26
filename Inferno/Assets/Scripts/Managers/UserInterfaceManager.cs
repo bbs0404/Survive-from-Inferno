@@ -18,15 +18,18 @@ public class UserInterfaceManager : SingletonBehaviour<UserInterfaceManager>
     private Canvas[] CanvasList;
     [SerializeField]
     private Sprite[] spriteOfItems;
-    [SerializeField]
-    private Sprite[] spriteOfFieldState;
     public List<GameObject> fieldState;
-    public bool isPaused = false;
+
     private int level;
     public Canvas shopCanvas;
-   
 
-    void Awake()
+    private void OnEnable()
+    {
+        SceneManager.sceneLoaded += AssignCanvases;
+        SceneManager.sceneLoaded += AssignSprites;
+    }
+
+    private void AssignCanvases(Scene arg0, LoadSceneMode arg1)
     {
         CanvasList = (Canvas[])GameObject.FindObjectsOfType(typeof(Canvas));
         foreach (var item in CanvasList)
@@ -43,13 +46,27 @@ public class UserInterfaceManager : SingletonBehaviour<UserInterfaceManager>
                 shopCanvas = item;
         }
         setStatic();
-        if (SceneManager.GetActiveScene().buildIndex == 1) {
+        if (SceneManager.GetActiveScene().buildIndex == 0)
+        {
             disableCanvas(shopCanvas);
             enableCanvas(UpgradeCanvas);
         }
+        else if(SceneManager.GetActiveScene().buildIndex == 1)
+        {
+            enableCanvas(InGameCanvas);
+            disableCanvas(PauseCanvas);
+            disableCanvas(GameOverCanvas);
+        }
     }
 
-    // Update is called once per frame
+    private void AssignSprites(Scene arg0, LoadSceneMode arg1)
+    {
+        if (arg0.buildIndex == 1) // InGameScene
+        {
+            spriteOfItems = GameObject.FindObjectOfType<DataForIngame>().spriteOfItems;
+        }
+    }
+
     void Update()
     {
         if (InGameCanvas != null && InGameCanvas.isActiveAndEnabled)
@@ -62,14 +79,14 @@ public class UserInterfaceManager : SingletonBehaviour<UserInterfaceManager>
     {
         canvas.gameObject.SetActive(false);
         if (InGameCanvas != null && canvas == InGameCanvas)
-            isPaused = true;
+            InGameSystemManager.Inst().isPaused = true;
     }
 
     public void enableCanvas(Canvas canvas)
     {
         canvas.gameObject.SetActive(true);
         if (InGameCanvas != null && canvas == InGameCanvas)
-            isPaused = false;
+            InGameSystemManager.Inst().isPaused = false;
     }
 
     public void updateInGameCanvas()
@@ -81,13 +98,13 @@ public class UserInterfaceManager : SingletonBehaviour<UserInterfaceManager>
             enableCanvas(GameOverCanvas);
             GameOverCanvas.transform.GetChild(0).transform.FindChild("MoneyText").GetComponent<Text>().text = (InGameSystemManager.Inst().distance * 2).ToString();
         }
-        else if (isPaused)
+        else if (InGameSystemManager.Inst().isPaused)
         {
             enableCanvas(PauseCanvas);
             disableCanvas(GameOverCanvas);
             disableCanvas(InGameCanvas);
         }
-        else if (!isPaused && !InGameSystemManager.Inst().isGameOver)
+        else if (!InGameSystemManager.Inst().isPaused && !InGameSystemManager.Inst().isGameOver)
         { 
             enableCanvas(InGameCanvas);
             disableCanvas(GameOverCanvas);
@@ -170,20 +187,6 @@ public class UserInterfaceManager : SingletonBehaviour<UserInterfaceManager>
             InGameCanvas.transform.FindChild("Fog").GetComponent<Image>().color = new Color(0, 0, 0, i);
             yield return null;
         }
-    }
-
-    public void useItem(int num)
-    {
-        if (GameManager.Inst().itemList.Count > num)
-        {
-            GameManager.Inst().itemList[num].use();
-            updateInGameCanvas();
-        }
-    }
-
-    public void useFan()
-    {
-        InGameSystemManager.Inst().isFan = !InGameSystemManager.Inst().isFan;
     }
 
     public void updateUpgradeCostText(int cost)

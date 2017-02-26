@@ -23,7 +23,7 @@ public class ShopControl : MonoBehaviour {
             if (t.gameObject.name == "ItemName") nameText = t;
             else if (t.name == "ItemAmount") amountText = t;
             else if (t.name == "ItemPrice") priceText = t;
-            else if (t.name == "Money") Money = t;
+            //else if (t.name == "Money") Money = t;
         }
         Image[] images = GetComponentsInChildren<Image>();
         foreach (Image i in images) {

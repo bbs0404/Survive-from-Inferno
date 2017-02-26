@@ -32,7 +32,7 @@ public class Cloud : Field {
                 isFadeOut = true;
             }
         }
-        if (!UserInterfaceManager.Inst().isPaused)
+        if (!InGameSystemManager.Inst().isPaused)
             this.transform.position += new Vector3(speed * 0.05f,0);
     }
 
@@ -44,7 +44,7 @@ public class Cloud : Field {
 
     IEnumerator FadeIn()
     {
-        for (float i=0; i<=0.5 && !UserInterfaceManager.Inst().isPaused; i += 0.05f)
+        for (float i=0; i<=0.5 && !InGameSystemManager.Inst().isPaused; i += 0.05f)
         {
             this.gameObject.GetComponent<SpriteRenderer>().color = new Color(thisColor.r, thisColor.g, thisColor.b, i);
             yield return null;
@@ -55,7 +55,7 @@ public class Cloud : Field {
 
     IEnumerator FadeOut()
     {
-        for (float i=0.5f; i>=0 && !UserInterfaceManager.Inst().isPaused; i -= 0.05f)
+        for (float i=0.5f; i>=0 && !InGameSystemManager.Inst().isPaused; i -= 0.05f)
         {
             this.gameObject.GetComponent<SpriteRenderer>().color = new Color(thisColor.r, thisColor.g, thisColor.b, i);
             yield return null;

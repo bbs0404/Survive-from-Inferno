@@ -11,8 +11,15 @@ public class ShopButton : MonoBehaviour {
 
     void Start()
     {
+
+        
+//        priceText.text = cost[item.amount] + "";
+    }
+	public void OnClick()
+    {
         priceText = GetComponentInChildren<Button>().gameObject.GetComponentInChildren<Text>();
-        switch (gameObject.name.ToLower()) {
+        switch (gameObject.name.ToLower())
+        {
             case "waterbottle":
                 cost = GameManager.Inst().all_Items[itemList.WATERBOTTLE].cost;
                 item = GameManager.Inst().all_Items[itemList.WATERBOTTLE];
@@ -33,13 +40,9 @@ public class ShopButton : MonoBehaviour {
                 cost = GameManager.Inst().all_Items[itemList.HAPPINESSCIRCUIT].cost;
                 item = GameManager.Inst().all_Items[itemList.HAPPINESSCIRCUIT];
                 break;
-            default:  break;
+            default: break;
         }
-        
-        priceText.text = cost[item.amount] + "";
-    }
-	public void OnClick()
-    {
+
         Debug.Log(gameObject.name);
         priceText = GetComponentInChildren<Button>().GetComponentInChildren<Text>();
         GameObject.Find("Shop").GetComponent<Shop>().Buy((itemList)Enum.Parse(typeof(itemList),gameObject.name));

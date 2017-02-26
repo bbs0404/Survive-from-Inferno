@@ -21,7 +21,7 @@ public class doYouKnow : Interactor {
 
     private void Update()
     {
-        if (!UserInterfaceManager.Inst().isPaused)
+        if (!InGameSystemManager.Inst().isPaused)
         {
             if (istriggered)
             {
