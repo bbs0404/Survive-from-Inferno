@@ -23,7 +23,8 @@ public class UserInterfaceManager : SingletonBehaviour<UserInterfaceManager>
     public List<GameObject> fieldState;
     public bool isPaused = false;
     private int level;
-
+    public Canvas shopCanvas;
+   
 
     void Awake()
     {
@@ -38,8 +39,14 @@ public class UserInterfaceManager : SingletonBehaviour<UserInterfaceManager>
                 UpgradeCanvas = item;
             else if (item.gameObject.name == "GameOverCanvas")
                 GameOverCanvas = item;
+            else if (item.gameObject.name == "ShopCanvas")
+                shopCanvas = item;
         }
         setStatic();
+        if (SceneManager.GetActiveScene().buildIndex == 1) {
+            disableCanvas(shopCanvas);
+            enableCanvas(UpgradeCanvas);
+        }
     }
 
     // Update is called once per frame
@@ -182,5 +189,11 @@ public class UserInterfaceManager : SingletonBehaviour<UserInterfaceManager>
     public void updateUpgradeCostText(int cost)
     {
         UpgradeCanvas.transform.FindChild("upgradeMoney").GetComponent<Text>().text = cost.ToString();
+    }
+
+    public void Upgrade_Shop()
+    {
+        UpgradeCanvas.gameObject.SetActive(!UpgradeCanvas.gameObject.activeSelf);
+        shopCanvas.gameObject.SetActive(!shopCanvas.gameObject.activeSelf);
     }
 }
