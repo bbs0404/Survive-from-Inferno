@@ -29,7 +29,7 @@ public class UpGrade : MonoBehaviour
             needcost[(int)Upgrades.FanChargerPerform] = 1000 * (int)Mathf.Pow(3, gameManager.fanChargerLevel);
             needcost[(int)Upgrades.FanEnergyConsume] = 3000 * (int)Mathf.Pow(2, gameManager.fanEnergyConsumeLevel);
         }
-        Money.text = "￦" + gameManager.money;
+        GameObject.Find("Money").GetComponent<Text>().text = gameManager.money.ToString();
 
         itemd[0, 0] = "열저항 업그레이드";itemd[0, 1] = "땡볕에 있을 때 체력 감소가 1레벨당 10%씩 줄어듭니다. (덧셈연산)";
         itemd[1, 0] = "수분 소모율 업그레이드"; itemd[1, 1] = "수분의 소모율이 1레벨당 10%씩 줄어듭니다. (덧셈연산)";
@@ -75,8 +75,8 @@ public class UpGrade : MonoBehaviour
             default:
                 break;
         }
-        Money.text = "￦" + gameManager.money;
-        upgradeMoney.text = (int)needcost[upgradeCase] != -1 ? "￦" + (int)needcost[upgradeCase] : "Level Complete";
+        Money.text = gameManager.money.ToString();
+        upgradeMoney.text = (int)needcost[upgradeCase] != -1 ? ((int)needcost[upgradeCase]).ToString() : "Level Complete";
     }
     public void hitResistLevelUpgrade()
     {
@@ -310,7 +310,7 @@ public class UpGrade : MonoBehaviour
     public void buttonClick(int upCase)
     {
         upgradeCase = upCase;
-        upgradeMoney.text = (int)needcost[upgradeCase] != -1 ? "￦" + (int)needcost[upgradeCase] : "Level Complete";
+        upgradeMoney.text = (int)needcost[upgradeCase] != -1 ? ((int)needcost[upgradeCase]).ToString() : "Level Complete";
 
         itemImage.sprite = ItemList[upCase];
         upgradename.text = itemd[upCase, 0];
