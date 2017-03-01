@@ -15,6 +15,7 @@ public class UpGrade : MonoBehaviour
     public string[,] itemd = new string[9, 2];
 
     // Use this for initialization
+
     void Start()
     {
         gameManager = GameManager.Inst();
@@ -40,6 +41,14 @@ public class UpGrade : MonoBehaviour
         itemd[6, 0] = "미니 선풍기 태양 충전기 구매";itemd[6, 1] = "미니 선풍기의 배터리를 햇볕 아래에서 충전시킬 수 있는 태양 충전기를 구매.";
         itemd[7, 0] = "태양 충전기 성능 업그레이드";itemd[7, 1] = "미니 선풍기가 햇볕 아래에서 충전되는 초당 배터리의 양이 5 증가합니다.";
         itemd[8, 0] = "선풍기 에너지 효율 업그레이드";itemd[8, 1] = "미니 선풍기의 초당 배터리 소모량을 10% 감소시킵니다. (곱연산)";
+
+        GameObject.Find("hitResistLevel").GetComponent<Text>().text = string.Format("{0:D2}", gameManager.hitResistLevel) + " / 05";
+        GameObject.Find("waterConsumeLevel").GetComponent<Text>().text = string.Format("{0:D2}", gameManager.waterConsumeLevel) + " / 05";
+        GameObject.Find("speedLevel").GetComponent<Text>().text = string.Format("{0:D2}", gameManager.speedLevel) + " / 03";
+        GameObject.Find("fanPerformLevel").GetComponent<Text>().text = string.Format("{0:D2}", gameManager.fanPerformLevel) + " / 10";
+        GameObject.Find("fanBatteryLevel").GetComponent<Text>().text = string.Format("{0:D2}", gameManager.fanBatteryLevel) + " / 04";
+        GameObject.Find("fanChargerPerformLevel").GetComponent<Text>().text = string.Format("{0:D2}", gameManager.fanChargerLevel) + " / 04";
+        GameObject.Find("fanEnergyConsumeLevel").GetComponent<Text>().text = string.Format("{0:D2}", gameManager.fanEnergyConsumeLevel) + " / 03";
     }
     public void upgradeClick()
     {

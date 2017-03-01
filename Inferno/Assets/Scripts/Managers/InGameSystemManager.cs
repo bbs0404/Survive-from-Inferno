@@ -64,6 +64,7 @@ public class InGameSystemManager : SingletonBehaviour<InGameSystemManager> {
         }
         time = DayNight.Day;
         timeRemain = 10f;
+
     }
     private void Update()
     {
@@ -137,12 +138,12 @@ public class InGameSystemManager : SingletonBehaviour<InGameSystemManager> {
             }
             else
             {
-                constant = 0.5f;
+                constant = 0.3f;
             }
             lossHealth *= constant;
             if (isFan)
             {
-                float consume = 100 * Mathf.Pow(0.9f, GameManager.Inst().fanEnergyConsumeLevel) * Gametime.deltaTime; // 배터리 소모량
+                float consume = 10 * Mathf.Pow(0.9f, GameManager.Inst().fanEnergyConsumeLevel) * Gametime.deltaTime; // 배터리 소모량
                 if (battery < consume)
                     lossHealth -= (10 + GameManager.Inst().fanPerformLevel) * (battery / consume);
                 else
@@ -181,7 +182,6 @@ public class InGameSystemManager : SingletonBehaviour<InGameSystemManager> {
         isGameOver = true;
         Invoke("GameOver", 3);
         UserInterfaceManager.Inst().disableCanvas(UserInterfaceManager.Inst().InGameCanvas);
-        GameManager.Inst().money += (int)(distance * 2);
         PlayerManager.Inst().player.GetComponent<Animator>().SetTrigger("FAINT");
     }
 
@@ -196,6 +196,7 @@ public class InGameSystemManager : SingletonBehaviour<InGameSystemManager> {
     private void GameOver()
     {
         UserInterfaceManager.Inst().updateInGameCanvas();
+        GameManager.Inst().money += (int)(distance * 5);
     }
 
     public void useCoroutine(IEnumerator coroutine)

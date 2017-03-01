@@ -23,7 +23,6 @@ public class ShopControl : MonoBehaviour {
             if (t.gameObject.name == "ItemName") nameText = t;
             else if (t.name == "ItemAmount") amountText = t;
             else if (t.name == "ItemPrice") priceText = t;
-            //else if (t.name == "Money") Money = t;
         }
         Image[] images = GetComponentsInChildren<Image>();
         foreach (Image i in images) {
@@ -45,7 +44,7 @@ public class ShopControl : MonoBehaviour {
         nameText.text = itemLabel;
         amountText.text = item.amount + " / " + cost.Length;
         if (item.amount < cost.Length)
-            priceText.text = cost[item.amount] + "원";
+            priceText.text = cost[item.amount].ToString();
         else
             priceText.text = "Sold Out";
     }
@@ -63,10 +62,10 @@ public class ShopControl : MonoBehaviour {
 	
 	public void TextReload ()
     {
-        Money.text = GameManager.Inst().money + "원";
+        Money.text = GameManager.Inst().money.ToString();
         amountText.text = item.amount + " / " + cost.Length;
         if (item.amount < cost.Length)
-            priceText.text = cost[item.amount] + "원";
+            priceText.text = cost[item.amount].ToString();
         else
             priceText.text = "Sold Out";
     }

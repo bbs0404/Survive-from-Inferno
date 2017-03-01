@@ -7,6 +7,8 @@ public class IcecreamStore : Interactor {
     private int cost = 300;
     public override void interact()
     {
+        if (GameManager.Inst().money < cost)
+            return;
         if(GameManager.Inst().hasItem(itemList.ICECREAM))
         {
             GameManager.Inst().all_Items[itemList.ICECREAM].amount++;

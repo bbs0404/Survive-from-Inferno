@@ -96,7 +96,7 @@ public class UserInterfaceManager : SingletonBehaviour<UserInterfaceManager>
             disableCanvas(PauseCanvas);
             disableCanvas(InGameCanvas);
             enableCanvas(GameOverCanvas);
-            GameOverCanvas.transform.GetChild(0).transform.FindChild("MoneyText").GetComponent<Text>().text = (InGameSystemManager.Inst().distance * 2).ToString();
+            GameOverCanvas.transform.GetChild(0).transform.FindChild("MoneyText").GetComponent<Text>().text = ((int)InGameSystemManager.Inst().distance * 5).ToString();
         }
         else if (InGameSystemManager.Inst().isPaused)
         {
@@ -129,6 +129,7 @@ public class UserInterfaceManager : SingletonBehaviour<UserInterfaceManager>
             InGameCanvas.transform.FindChild("Water Bar").FindChild("Mask").FindChild("Water").GetComponent<RectTransform>().sizeDelta = new Vector2(InGameSystemManager.Inst().water * 5, 85);
             InGameCanvas.transform.FindChild("HP Bar").FindChild("Stamina").GetComponent<RectTransform>().sizeDelta = new Vector2(InGameSystemManager.Inst().stamina * 3, 7.5f);
             InGameCanvas.transform.FindChild("Battery").GetComponent<RectTransform>().sizeDelta = new Vector2(InGameSystemManager.Inst().battery, 20);
+            InGameCanvas.transform.FindChild("Money").GetComponent<Text>().text = GameManager.Inst().money.ToString();
         }
         InGameCanvas.transform.FindChild("Emergency").GetComponent<Image>().color = new Color(1, 1, 1, 0.5f - InGameSystemManager.Inst().health / (InGameSystemManager.Inst().maxHealth * 2));
         InGameCanvas.transform.FindChild("DayNight").GetComponent<Animator>().SetBool("Night", InGameSystemManager.Inst().time == DayNight.Night);
