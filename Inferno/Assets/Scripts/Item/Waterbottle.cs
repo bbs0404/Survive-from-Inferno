@@ -4,8 +4,8 @@ using UnityEngine;
 
 public class Waterbottle : Item {
 
-    public float water;
-    public float health;
+    public float water = 50;
+    public float health = 10;
      
     public Waterbottle()
     {
@@ -27,8 +27,8 @@ public class Waterbottle : Item {
 
 	public override void use()
 	{
-        InGameSystemManager.Inst().water = Mathf.Max(InGameSystemManager.Inst().water+water,100);
-        InGameSystemManager.Inst().health = Mathf.Max(InGameSystemManager.Inst().health + health, InGameSystemManager.Inst().maxHealth);
+        InGameSystemManager.Inst().water = Mathf.Min(InGameSystemManager.Inst().water+water,100);
+        InGameSystemManager.Inst().health = Mathf.Min(InGameSystemManager.Inst().health + health, InGameSystemManager.Inst().maxHealth);
 
         GameManager.Inst().all_Items[itemList.WATERBOTTLE].amount--;
         if (GameManager.Inst().all_Items[itemList.WATERBOTTLE].amount == 0)

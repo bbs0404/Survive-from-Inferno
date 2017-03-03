@@ -38,8 +38,8 @@ public class Cloud : Field {
 
     private void OnDestroy()
     {
-        //if (InGameSystemManager.Inst().fields.Contains(this))
-        //    InGameSystemManager.Inst().fields.Remove(this);
+        if (InGameSystemManager.Inst().fields.Contains(this))
+            InGameSystemManager.Inst().fields.Remove(this);
     }
 
     IEnumerator FadeIn()

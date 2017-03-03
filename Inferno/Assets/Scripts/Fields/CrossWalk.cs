@@ -13,6 +13,8 @@ public class CrossWalk : Field {
     private bool green;
     [SerializeField]
     private SignalLight[] signals;
+    private AudioSource crashSFX;
+
     private void Awake()
     {
         if (Random.value > 0.5f)
@@ -30,6 +32,7 @@ public class CrossWalk : Field {
             item.updateSignal(green);
         }
         type = field.CROSSWALK;
+        crashSFX = GetComponent<AudioSource>();
     }
 
     private void Update()
@@ -82,6 +85,7 @@ public class CrossWalk : Field {
             if (Random.Range(0, 100) >= 95)
             {
                 InGameSystemManager.Inst().playerDeadByCar();
+                crashSFX.Play();
             }
             else
             {
@@ -97,6 +101,8 @@ public class CrossWalk : Field {
     {
         if (collision.gameObject == PlayerManager.Inst().player)
         {
+            InGameSystemManager.Inst().fields.Add(this);
+            isPlayerIn = true;
             cross();
         }
     }

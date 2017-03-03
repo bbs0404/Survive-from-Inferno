@@ -6,7 +6,9 @@ public class UpGrade : MonoBehaviour
 {
     public GameManager gameManager;
     public Text hitResistLevel, waterConsumeLevel, speedLevel, fanPerformLevel, fanBatteryLevel, fanChargerPerformLevel, fanEnergyConsumeLevel, Money, upgradeMoney, upgradediscription, upgradename;
-    int[] needcost = new int[9] { 0, 0, 0, 0, 0, 0, 0, 0, 0 };
+    private int[] needcost = new int[9] { 0, 0, 0, 0, 0, 0, 0, 0, 0 };
+    private int[] level = new int[9];
+    private int[] maxLevel = new int[9] { 5, 5, 3, 1, 10, 4, 1, 4, 3 };
     enum Upgrades { HitResist, WaterConsume, Speed, BuyFan, FanPerform, FanBattery, BuyFanCharger, FanChargerPerform, FanEnergyConsume };
     public int upgradeCase = 0;
     public Sprite[] ItemList;
@@ -29,6 +31,17 @@ public class UpGrade : MonoBehaviour
             needcost[(int)Upgrades.BuyFanCharger] = 1500;
             needcost[(int)Upgrades.FanChargerPerform] = 1000 * (int)Mathf.Pow(3, gameManager.fanChargerLevel);
             needcost[(int)Upgrades.FanEnergyConsume] = 3000 * (int)Mathf.Pow(2, gameManager.fanEnergyConsumeLevel);
+        }
+        {
+            level[(int)Upgrades.HitResist] = GameManager.Inst().hitResistLevel;
+            level[(int)Upgrades.WaterConsume] = GameManager.Inst().waterConsumeLevel;
+            level[(int)Upgrades.Speed] = GameManager.Inst().speedLevel;
+            level[(int)Upgrades.BuyFan] = GameManager.Inst().fan ? 1 : 0;
+            level[(int)Upgrades.FanPerform] = GameManager.Inst().fanPerformLevel;
+            level[(int)Upgrades.FanBattery] = GameManager.Inst().fanBatteryLevel;
+            level[(int)Upgrades.BuyFanCharger] = GameManager.Inst().fanCharger ? 1 : 0;
+            level[(int)Upgrades.FanChargerPerform] = GameManager.Inst().fanChargerLevel;
+            level[(int)Upgrades.FanEnergyConsume] = GameManager.Inst().fanEnergyConsumeLevel;
         }
         GameObject.Find("Money").GetComponent<Text>().text = gameManager.money.ToString();
 
@@ -319,7 +332,7 @@ public class UpGrade : MonoBehaviour
     public void buttonClick(int upCase)
     {
         upgradeCase = upCase;
-        upgradeMoney.text = (int)needcost[upgradeCase] != -1 ? ((int)needcost[upgradeCase]).ToString() : "Level Complete";
+        upgradeMoney.text =  level[upgradeCase] < maxLevel[upgradeCase] ? ((int)needcost[upgradeCase]).ToString() : "MAX";
 
         itemImage.sprite = ItemList[upCase];
         upgradename.text = itemd[upCase, 0];

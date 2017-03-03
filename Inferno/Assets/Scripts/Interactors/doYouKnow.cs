@@ -9,19 +9,24 @@ public class doYouKnow : Interactor {
     private float timer;
     private bool istriggered;
     private bool faded;
+    private Animator animator;
+    private GameObject Do;
 
     private void Awake()
     {
         timer = 3f;
-        life = 3;
+        life = 1;
         istriggered = false;
         faded = false;
         thisColor = this.gameObject.GetComponent<SpriteRenderer>().color;
+        animator = GetComponent<Animator>();
+        Do = transform.FindChild("Do").gameObject;
+        Do.SetActive(false);
     }
 
     private void Update()
     {
-        if (!InGameSystemManager.Inst().isPaused)
+        if (!InGameSystemManager.Inst().isPaused && !InGameSystemManager.Inst().isInvisible)
         {
             if (istriggered)
             {
@@ -36,9 +41,24 @@ public class doYouKnow : Interactor {
             else if (Mathf.Abs(PlayerManager.Inst().player.transform.position.x - this.gameObject.transform.position.x) < 30 && !faded && !InGameSystemManager.Inst().isGameOver)
             {
                 if (PlayerManager.Inst().player.transform.position.x - this.gameObject.transform.position.x < 0)
+                {
                     this.gameObject.transform.position -= new Vector3(0.1f, 0);
+                    animator.SetBool("Left", true);
+                    animator.SetBool("Right", false);
+                    gameObject.GetComponent<SpriteRenderer>().flipX = true;
+                }
                 else if (PlayerManager.Inst().player.transform.position.x - this.gameObject.transform.position.x > 0)
+                {
                     this.gameObject.transform.position += new Vector3(0.1f, 0);
+                    animator.SetBool("Left", false);
+                    animator.SetBool("Right", true);
+                    gameObject.GetComponent<SpriteRenderer>().flipX = false;
+                }
+            }
+            else
+            {
+                animator.SetBool("Left", false);
+                animator.SetBool("Right", false);
             }
         }
     }
@@ -57,6 +77,7 @@ public class doYouKnow : Interactor {
         for (float i = 1f; i >= 0; i -= 0.01f)
         {
             this.gameObject.GetComponent<SpriteRenderer>().color = new Color(thisColor.r, thisColor.g, thisColor.b, i);
+            Do.GetComponent<SpriteRenderer>().color = new Color(thisColor.r, thisColor.g, thisColor.b, i);
             yield return null;
         }
         Destroy(this.gameObject);
@@ -64,9 +85,16 @@ public class doYouKnow : Interactor {
 
     private void OnTriggerEnter2D(Collider2D collision)
     {
+        if (InGameSystemManager.Inst().isInvisible)
+            return;
         if (!faded && collision.gameObject == PlayerManager.Inst().player)
         {
             FindObjectOfType<PlayerController>().enabled = false;
+            Do.SetActive(true);
+            animator.SetBool("Left", false);
+            animator.SetBool("Right", false);
+            PlayerManager.Inst().player.GetComponent<Animator>().SetBool("RUN_left", false);
+            PlayerManager.Inst().player.GetComponent<Animator>().SetBool("RUN_right", false);
             istriggered = true;
             //3초간 움직일 수 없음
         }

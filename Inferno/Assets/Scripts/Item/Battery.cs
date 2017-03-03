@@ -24,7 +24,7 @@ public class Battery : Item {
 
 	public override void use()
 	{
-        InGameSystemManager.Inst().battery = Mathf.Max(InGameSystemManager.Inst().battery, InGameSystemManager.Inst().batteryCapacity);
+        InGameSystemManager.Inst().battery = Mathf.Min(InGameSystemManager.Inst().battery + 100, InGameSystemManager.Inst().batteryCapacity);
 
         GameManager.Inst().all_Items[itemList.BATTERY].amount--;
         if (GameManager.Inst().all_Items[itemList.BATTERY].amount == 0)

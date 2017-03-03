@@ -28,7 +28,7 @@ public class ShopControl : MonoBehaviour {
         foreach (Image i in images) {
             if (i.gameObject.name == "ItemImage") { itemImage = i; break; }
         }
-        Money.text = GameManager.Inst().money + "원";
+        Money.text = GameManager.Inst().money.ToString();
     }
 
     public void getItemInfo(GameObject itemSprite)

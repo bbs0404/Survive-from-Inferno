@@ -24,8 +24,15 @@ public class HappinessCircuit : Item {
 
     public override void use()
 	{
+        InGameSystemManager.Inst().useCoroutine(happyNaru());
         GameManager.Inst().all_Items[itemList.HAPPINESSCIRCUIT].amount--;
         if (GameManager.Inst().all_Items[itemList.HAPPINESSCIRCUIT].amount == 0)
             GameManager.Inst().itemList.Remove(GameManager.Inst().all_Items[itemList.HAPPINESSCIRCUIT]);
+    }
+
+    IEnumerator happyNaru() {
+        InGameSystemManager.Inst().isHappy = true;
+        yield return new WaitForSeconds(5);
+        InGameSystemManager.Inst().isHappy = false;
     }
 }

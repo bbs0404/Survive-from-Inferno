@@ -1,6 +1,7 @@
 ﻿using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using UnityEngine.SceneManagement;
 
 public enum DayNight
 {
@@ -36,7 +37,21 @@ public class InGameSystemManager : SingletonBehaviour<InGameSystemManager> {
     [SerializeField]
     private float cloudTimer;
 
-    private void Awake()
+    public bool isBbong;
+    public bool isBbongSideEffect;
+    public float sideEffectTimer;
+
+    public bool isHappy;
+    public bool isInvisible;
+
+    public bool deadByCar;
+
+    private void OnEnable()
+    {
+        SceneManager.sceneLoaded += Initialize;
+    }
+
+    private void Initialize(Scene arg0, LoadSceneMode arg1)
     {
         maxHealth = 100;
         maxWater = 100;
@@ -47,6 +62,12 @@ public class InGameSystemManager : SingletonBehaviour<InGameSystemManager> {
         cloudTimer = Random.Range(5, 10);
         isGameOver = false;
         isPaused = false;
+        isBbong = false;
+        isHappy = false;
+        isInvisible = false;
+        isBbongSideEffect = false;
+        sideEffectTimer = 5;
+        deadByCar = false;
 
         if (GameManager.Inst().fan)
         {
@@ -64,12 +85,14 @@ public class InGameSystemManager : SingletonBehaviour<InGameSystemManager> {
         }
         time = DayNight.Day;
         timeRemain = 10f;
-
     }
+
     private void Update()
     {
         if (!isGameOver && !isPaused)
         {
+            if (isBbongSideEffect)
+                water = 0;
             inShadow = false;
             lossHealth = 8 * (1 - 0.1f * GameManager.Inst().hitResistLevel);
             timeRemain -= Gametime.deltaTime;
@@ -130,7 +153,7 @@ public class InGameSystemManager : SingletonBehaviour<InGameSystemManager> {
                 if (!inShadow) //그림자에 있지 않는 경우
                 {
                     if (GameManager.Inst().fanCharger)
-                        battery += 10 + chargePerSec * Gametime.deltaTime;
+                        battery += Mathf.Min(battery + 10 + chargePerSec * Gametime.deltaTime, batteryCapacity);
                     water -= 0.1f;
                     if (water < 0)
                         water = 0;
@@ -138,23 +161,33 @@ public class InGameSystemManager : SingletonBehaviour<InGameSystemManager> {
             }
             else
             {
-                constant = 0.3f;
+                constant = 0.4f;
             }
+
+            if (isBbong)
+                constant *= 0.5f;
+
             lossHealth *= constant;
+
             if (isFan)
             {
                 float consume = 10 * Mathf.Pow(0.9f, GameManager.Inst().fanEnergyConsumeLevel) * Gametime.deltaTime; // 배터리 소모량
                 if (battery < consume)
-                    lossHealth -= (10 + GameManager.Inst().fanPerformLevel) * (battery / consume);
+                    lossHealth -= (4 + GameManager.Inst().fanPerformLevel * 0.4f) * (battery / consume);
                 else
-                    lossHealth -= 10 + GameManager.Inst().fanPerformLevel;
+                    lossHealth -= 4 + GameManager.Inst().fanPerformLevel * 0.4f;
                 battery -= consume;
                 if (battery < 0)
                     isFan = !isFan;
             }
             if (lossHealth * Gametime.deltaTime > 0)
-                health -= lossHealth * Gametime.deltaTime * (1 - GameManager.Inst().hitResistLevel * 0.1f) * (1 + (100 - water) / 100);
+            {
+                if (isHappy)
+                    health -= lossHealth * Gametime.deltaTime * (1 - GameManager.Inst().hitResistLevel * 0.1f);
+                else
+                    health -= lossHealth * Gametime.deltaTime * (1 - GameManager.Inst().hitResistLevel * 0.1f) * (1 + (100 - water) / 100);
 
+            }
             UserInterfaceManager.Inst().updateInGameCanvas();
 
             if (health < 0) //player dead
@@ -180,33 +213,43 @@ public class InGameSystemManager : SingletonBehaviour<InGameSystemManager> {
     public void playerDead()
     {
         isGameOver = true;
+        StartCoroutine(FadeOutBGM());
         Invoke("GameOver", 3);
         UserInterfaceManager.Inst().disableCanvas(UserInterfaceManager.Inst().InGameCanvas);
         PlayerManager.Inst().player.GetComponent<Animator>().SetTrigger("FAINT");
+        GameManager.Inst().money += (int)(distance * 5);
     }
 
     public void playerDeadByCar()
     {
         isGameOver = true;
+        deadByCar = true;
+        StartCoroutine(FadeOutBGM());
         Invoke("GameOver", 3);
         UserInterfaceManager.Inst().disableCanvas(UserInterfaceManager.Inst().InGameCanvas);
-        Invoke("car",0.1f);
-    }
-
-    private void GameOver()
-    {
-        UserInterfaceManager.Inst().updateInGameCanvas();
-        GameManager.Inst().money += (int)(distance * 5);
-    }
-
-    public void useCoroutine(IEnumerator coroutine)
-    {
-        StartCoroutine(coroutine);
+        GameManager.Inst().money = Mathf.Max(GameManager.Inst().money - 1000, 0);
+        car();
     }
 
     private void car()
     {
         StartCoroutine(carAccident());
+    }
+
+    public void GameClear()
+    {
+
+    }
+
+    private void GameOver()
+    {
+        UserInterfaceManager.Inst().updateInGameCanvas();
+        GameManager.Inst().SaveGameState();
+    }
+
+    public void useCoroutine(IEnumerator coroutine)
+    {
+        StartCoroutine(coroutine);
     }
 
     IEnumerator carAccident()
@@ -219,6 +262,7 @@ public class InGameSystemManager : SingletonBehaviour<InGameSystemManager> {
                 cross = (CrossWalk)item;
             }
         }
+        Invoke("Faint", 1.5f);
         if (PlayerController.isMoving)
         {
             if (PlayerManager.Inst().player.transform.position.x < cross.transform.position.x)
@@ -238,6 +282,10 @@ public class InGameSystemManager : SingletonBehaviour<InGameSystemManager> {
                 }
             }
         }
+    }
+
+    private void Faint()
+    {
         PlayerManager.Inst().player.GetComponent<Animator>().SetTrigger("FAINT");
     }
 
@@ -254,5 +302,14 @@ public class InGameSystemManager : SingletonBehaviour<InGameSystemManager> {
     {
         if (battery > 0)
             isFan = !isFan;
+    }
+    
+    IEnumerator FadeOutBGM()
+    {
+        for (float i=SoundManager.Inst().getBGM().volume; i> SoundManager.Inst().getBGM().volume / 2; i-=0.02f)
+        {
+            SoundManager.Inst().getBGM().volume = i;
+            yield return null;
+        }
     }
 }

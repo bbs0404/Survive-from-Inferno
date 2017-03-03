@@ -45,7 +45,7 @@ public class Shop : MonoBehaviour {
         else if (GameManager.Inst().money < cost[num]) Debug.Log("You don't have enough money");
         else
         {
-            if (GameManager.Inst().itemList.Contains(GameManager.Inst().all_Items[itemList.WATERBOTTLE])) ;
+            if (GameManager.Inst().itemList.Contains(GameManager.Inst().all_Items[itemList.WATERBOTTLE]));
             else
                 GameManager.Inst().itemList.Add(GameManager.Inst().all_Items[itemList.WATERBOTTLE]);
 
@@ -61,7 +61,7 @@ public class Shop : MonoBehaviour {
         if (num >= 3) Debug.Log("You can't have this item more than now");
         else if (GameManager.Inst().money < cost[num]) Debug.Log("You don't have enough money");
         else {
-            if (GameManager.Inst().itemList.Contains(GameManager.Inst().all_Items[itemList.BATTERY])) ;
+            if (GameManager.Inst().itemList.Contains(GameManager.Inst().all_Items[itemList.BATTERY]));
             else
                 GameManager.Inst().itemList.Add(GameManager.Inst().all_Items[itemList.BATTERY]);
 
@@ -77,7 +77,7 @@ public class Shop : MonoBehaviour {
         if (num >= 1) Debug.Log("You can't have this item more than now");
         else if (GameManager.Inst().money < cost[num]) Debug.Log("You don't have enough money");
         else {
-            if (GameManager.Inst().itemList.Contains(GameManager.Inst().all_Items[itemList.BBONG])) ;
+            if (GameManager.Inst().itemList.Contains(GameManager.Inst().all_Items[itemList.BBONG]));
             else
                 GameManager.Inst().itemList.Add(GameManager.Inst().all_Items[itemList.BBONG]);
 
@@ -93,7 +93,7 @@ public class Shop : MonoBehaviour {
         if (num >= 2) Debug.Log("You can't have this item more than now");
         else if (GameManager.Inst().money < cost[num]) Debug.Log("You don't have enough money");
         else {
-            if (GameManager.Inst().itemList.Contains(GameManager.Inst().all_Items[itemList.INVISIBLESOMETHING])) ;
+            if (GameManager.Inst().itemList.Contains(GameManager.Inst().all_Items[itemList.INVISIBLESOMETHING]));
             else
                 GameManager.Inst().itemList.Add(GameManager.Inst().all_Items[itemList.INVISIBLESOMETHING]);
 

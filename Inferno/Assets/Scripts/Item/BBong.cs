@@ -32,11 +32,14 @@ public class BBong : Item {
     } 
 
     IEnumerator effect1() {
-        GameManager.Inst().speedLevel += 10;
-        GameManager.Inst().hitResistLevel += 50;
+        InGameSystemManager.Inst().isBbong = true;
+        SoundManager.Inst().getBGM().pitch = 1.2f;
         yield return new WaitForSeconds(5);
-        GameManager.Inst().speedLevel -= 10;
-        GameManager.Inst().hitResistLevel -= 50;
+        InGameSystemManager.Inst().isBbong = false;
+        InGameSystemManager.Inst().isBbongSideEffect = true;
+        SoundManager.Inst().getBGM().pitch = 1;
+        yield return new WaitForSeconds(5);
+        InGameSystemManager.Inst().isBbongSideEffect = false;
         Debug.Log("수분고정은 나중에");
     }
 }

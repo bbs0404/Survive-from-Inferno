@@ -73,6 +73,8 @@ public class UserInterfaceManager : SingletonBehaviour<UserInterfaceManager>
         {
             GameObject.Find("DistanceText").GetComponent<Text>().text = "목적지까지의 거리 : " + (1000 - InGameSystemManager.Inst().distance).ToString(string.Format("F1")) + "m";
         }
+        if (Input.GetKeyDown(KeyCode.Escape))
+            Application.Quit();
     }
 
     public void disableCanvas(Canvas canvas)
@@ -96,7 +98,10 @@ public class UserInterfaceManager : SingletonBehaviour<UserInterfaceManager>
             disableCanvas(PauseCanvas);
             disableCanvas(InGameCanvas);
             enableCanvas(GameOverCanvas);
-            GameOverCanvas.transform.GetChild(0).transform.FindChild("MoneyText").GetComponent<Text>().text = ((int)InGameSystemManager.Inst().distance * 5).ToString();
+            if (InGameSystemManager.Inst().deadByCar)
+                GameOverCanvas.transform.GetChild(0).transform.FindChild("MoneyText").GetComponent<Text>().text = "-1000";
+            else
+                GameOverCanvas.transform.GetChild(0).transform.FindChild("MoneyText").GetComponent<Text>().text = ((int)InGameSystemManager.Inst().distance * 5).ToString();
         }
         else if (InGameSystemManager.Inst().isPaused)
         {
@@ -128,7 +133,7 @@ public class UserInterfaceManager : SingletonBehaviour<UserInterfaceManager>
             InGameCanvas.transform.FindChild("HP Bar").FindChild("HealthText").GetComponent<Text>().text = ((int)InGameSystemManager.Inst().health).ToString();
             InGameCanvas.transform.FindChild("Water Bar").FindChild("Mask").FindChild("Water").GetComponent<RectTransform>().sizeDelta = new Vector2(InGameSystemManager.Inst().water * 5, 85);
             InGameCanvas.transform.FindChild("HP Bar").FindChild("Stamina").GetComponent<RectTransform>().sizeDelta = new Vector2(InGameSystemManager.Inst().stamina * 3, 7.5f);
-            InGameCanvas.transform.FindChild("Battery").GetComponent<RectTransform>().sizeDelta = new Vector2(InGameSystemManager.Inst().battery, 20);
+            InGameCanvas.transform.FindChild("Battery").GetComponent<RectTransform>().sizeDelta = new Vector2(100 * InGameSystemManager.Inst().battery /InGameSystemManager.Inst().batteryCapacity , 20);
             InGameCanvas.transform.FindChild("Money").GetComponent<Text>().text = GameManager.Inst().money.ToString();
         }
         InGameCanvas.transform.FindChild("Emergency").GetComponent<Image>().color = new Color(1, 1, 1, 0.5f - InGameSystemManager.Inst().health / (InGameSystemManager.Inst().maxHealth * 2));

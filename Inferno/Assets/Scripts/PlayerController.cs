@@ -17,13 +17,18 @@ public class PlayerController : MonoBehaviour {
 
     void Update()
     {
-        if(InGameSystemManager.Inst().stamina < 10)
+        constant = 1;
+        if(InGameSystemManager.Inst().stamina < 5)
         {
-            constant = 0.5f;
+            constant *= 0.5f;
         }
-        else
+        if (InGameSystemManager.Inst().water < 5)
         {
-            constant = 1;
+            constant *= 0.75f;
+        }
+        if (InGameSystemManager.Inst().isBbong)
+        {
+            constant *= 1.4f;
         }
         if (!InGameSystemManager.Inst().isGameOver)
         {
@@ -34,13 +39,13 @@ public class PlayerController : MonoBehaviour {
             if (scrollController.rectTransform.localPosition.x > 1)
             {
                 player.transform.localPosition += new Vector3(scrollController.rectTransform.localPosition.x * 0.008f * (1 + GameManager.Inst().speedLevel * 0.125f), 0) * constant;
-                background.transform.localPosition += new Vector3(scrollController.rectTransform.localPosition.x * 0.008f * (1 + GameManager.Inst().speedLevel * 0.125f) *constant * 4 / 5f, 0);
+                background.transform.localPosition += new Vector3(scrollController.rectTransform.localPosition.x * 0.008f * (1 + GameManager.Inst().speedLevel * 0.125f) *constant * 9 / 10f, 0);
                 InGameSystemManager.Inst().distance += scrollController.rectTransform.localPosition.x * 0.008f * (1 + GameManager.Inst().speedLevel * 0.125f);
                 playerAnimator.SetBool("RUN_right", true);
                 playerAnimator.SetBool("RUN_left", false);
                 PlayerManager.Inst().player.GetComponent<SpriteRenderer>().flipX = false;
                 if (scrollController.rectTransform.localPosition.x > 10)
-                    InGameSystemManager.Inst().stamina -= scrollController.rectTransform.localPosition.x * 0.008f * (1 + GameManager.Inst().speedLevel * 0.125f) * 2;
+                    InGameSystemManager.Inst().stamina -= scrollController.rectTransform.localPosition.x * 0.008f * (1 + GameManager.Inst().speedLevel * 0.125f) * 3 / 2f;
                 if (InGameSystemManager.Inst().stamina < 0)
                     InGameSystemManager.Inst().stamina = 0;
                 isMoving = true;
@@ -52,7 +57,7 @@ public class PlayerController : MonoBehaviour {
                     player.transform.localPosition -= new Vector3(scrollController.rectTransform.localPosition.x * 0.008f * (1 + GameManager.Inst().speedLevel * 0.125f), 0) * constant;
                 else
                 {
-                    background.transform.localPosition += new Vector3(scrollController.rectTransform.localPosition.x * 0.008f * (1 + GameManager.Inst().speedLevel * 0.125f) * constant * 4 / 5f, 0);
+                    background.transform.localPosition += new Vector3(scrollController.rectTransform.localPosition.x * 0.008f * (1 + GameManager.Inst().speedLevel * 0.125f) * constant * 9 / 10f, 0);
                     InGameSystemManager.Inst().distance += scrollController.rectTransform.localPosition.x * 0.008f * (1 + GameManager.Inst().speedLevel * 0.125f);
                     playerAnimator.SetBool("RUN_left", true);
                     playerAnimator.SetBool("RUN_right", false);
