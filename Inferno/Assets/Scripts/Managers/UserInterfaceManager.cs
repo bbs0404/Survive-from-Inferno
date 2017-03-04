@@ -7,6 +7,8 @@ using UnityEngine.SceneManagement;
 public class UserInterfaceManager : SingletonBehaviour<UserInterfaceManager>
 {
     [SerializeField]
+    public Canvas TitleCanvas = null;
+    [SerializeField]
     public Canvas InGameCanvas = null;
     [SerializeField]
     private Canvas PauseCanvas = null;
@@ -44,14 +46,16 @@ public class UserInterfaceManager : SingletonBehaviour<UserInterfaceManager>
                 GameOverCanvas = item;
             else if (item.gameObject.name == "ShopCanvas")
                 shopCanvas = item;
+            else if (item.gameObject.name == "TitleCanvas")
+                TitleCanvas = item;
         }
         setStatic();
-        if (SceneManager.GetActiveScene().buildIndex == 0)
+        if (SceneManager.GetActiveScene().buildIndex == 1)
         {
             disableCanvas(shopCanvas);
             enableCanvas(UpgradeCanvas);
         }
-        else if(SceneManager.GetActiveScene().buildIndex == 1)
+        else if(SceneManager.GetActiveScene().buildIndex == 2)
         {
             enableCanvas(InGameCanvas);
             disableCanvas(PauseCanvas);
@@ -61,7 +65,7 @@ public class UserInterfaceManager : SingletonBehaviour<UserInterfaceManager>
 
     private void AssignSprites(Scene arg0, LoadSceneMode arg1)
     {
-        if (arg0.buildIndex == 1) // InGameScene
+        if (arg0.buildIndex == 2) // InGameScene
         {
             spriteOfItems = GameObject.FindObjectOfType<DataForIngame>().spriteOfItems;
         }
@@ -204,5 +208,18 @@ public class UserInterfaceManager : SingletonBehaviour<UserInterfaceManager>
     {
         UpgradeCanvas.gameObject.SetActive(!UpgradeCanvas.gameObject.activeSelf);
         shopCanvas.gameObject.SetActive(!shopCanvas.gameObject.activeSelf);
+    }
+    
+    public void newGame()
+    {
+        GameManager.Inst();
+        SceneController.Inst().ChangeScene(1);
+    }
+
+    public void loadGame()
+    {
+        GameManager.Inst();
+        GameManager.Inst().LoadGameState();
+        SceneController.Inst().ChangeScene(1);
     }
 }

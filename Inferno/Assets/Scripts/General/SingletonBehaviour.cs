@@ -1,6 +1,8 @@
-﻿using System.Collections;
+﻿using System;
+using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using UnityEngine.SceneManagement;
 
 public class SingletonBehaviour<T> : MonoBehaviour where T : MonoBehaviour{
 
@@ -14,7 +16,7 @@ public class SingletonBehaviour<T> : MonoBehaviour where T : MonoBehaviour{
 
             if (FindObjectsOfType(typeof(T)).Length > 1)
             {
-                Debug.LogError("Multiple Singletons Exist");
+                Debug.LogAssertion("Multiple Singletons Exist");
             }
         }
         if (inst == null)

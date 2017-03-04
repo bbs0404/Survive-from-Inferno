@@ -42,6 +42,7 @@ public class GameManager
     public int fanChargerLevel; //충전기 성능
     public int fanEnergyConsumeLevel; //에너지 효율
     public int money;
+    public int spentMoney;
 
     public int maxDistance; //최대 거리
     public int maxStage; //클리어한 스테이지
@@ -102,7 +103,7 @@ public class GameManager
             foreach(Item i in itemList)
             {
                 writer.WriteStartElement("item");
-                writer.WriteAttributeString("amount", i.amount.ToString());
+                //writer.WriteAttributeString("amount", i.amount.ToString());
                 writer.WriteAttributeString("type", i.type.ToString());
                 writer.WriteEndElement();
             }
@@ -133,6 +134,7 @@ public class GameManager
             //돈 기록
             writer.WriteStartElement("asset");
             writer.WriteAttributeString("money", this.money.ToString());
+            writer.WriteAttributeString("spentMoney", spentMoney.ToString());
             writer.WriteEndElement();
 
             //최대거리, 스테이지 기록
@@ -166,11 +168,12 @@ public class GameManager
         //전체 아이템리스트 로드
         foreach (XmlElement e in content["allItems"])
         {
-            KeyValuePair<itemList, Item> i = new KeyValuePair<itemList, Item>();
+            itemList type = TryParseType(e.GetAttribute("type"));
+            //KeyValuePair<itemList, Item> i = new KeyValuePair<itemList, Item>();
             //Item i = new Item();
-            i.Value.amount = System.Convert.ToInt32(e.GetAttribute("amount"));
-            i.Value.type = TryParseType(e.GetAttribute("type"));
-            all_Items[i.Value.type] = i.Value;
+
+            all_Items[type].amount = System.Convert.ToInt32(e.GetAttribute("amount"));
+            all_Items[type].type = TryParseType(e.GetAttribute("type"));
             // all_Items.Add(i.Key,i.Value); 
         }
 
@@ -186,10 +189,10 @@ public class GameManager
         //아이템리스트 로드
         foreach (XmlElement e in content["items"])
         {
-            Item i = new Item();
-            i.amount = System.Convert.ToInt32(e.GetAttribute("amount"));
-            i.type = TryParseType(e.GetAttribute("type"));
-            itemList.Add(i);
+            //Item i = new Item();
+            //i.amount = System.Convert.ToInt32(e.GetAttribute("amount"));
+            //i.type = TryParseType(e.GetAttribute("type"));
+            itemList.Add(all_Items[TryParseType(e.GetAttribute("type"))]);
         }
 
         //그 외 로드
@@ -203,6 +206,7 @@ public class GameManager
         this.fanChargerLevel = System.Convert.ToInt32(content["charger"].GetAttribute("fanChargerLevel"));
         this.fanEnergyConsumeLevel = System.Convert.ToInt32(content["charger"].GetAttribute("fanEnergyConsumeLevel"));
         this.money = System.Convert.ToInt32(content["asset"].GetAttribute("money"));
+        this.spentMoney = System.Convert.ToInt32(content["asset"].GetAttribute("spentMoney"));
         this.maxDistance = System.Convert.ToInt32(content["maximum"].GetAttribute("maxDistance"));
         this.maxStage = System.Convert.ToInt32(content["maximum"].GetAttribute("maxStage"));
         

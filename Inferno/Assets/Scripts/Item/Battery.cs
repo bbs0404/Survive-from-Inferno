@@ -24,6 +24,8 @@ public class Battery : Item {
 
 	public override void use()
 	{
+        if (!InGameSystemManager.Inst().isFan)
+            return;
         InGameSystemManager.Inst().battery = Mathf.Min(InGameSystemManager.Inst().battery + 100, InGameSystemManager.Inst().batteryCapacity);
 
         GameManager.Inst().all_Items[itemList.BATTERY].amount--;

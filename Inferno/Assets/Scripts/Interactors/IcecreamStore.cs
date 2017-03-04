@@ -24,6 +24,7 @@ public class IcecreamStore : Interactor {
         }
         on = false;
         gameObject.GetComponent<SpriteRenderer>().color = new Color(0.7f, 0.7f, 0.7f);
+        GetComponent<AudioSource>().Play();
         UserInterfaceManager.Inst().updateInGameCanvas();
     }
 }
