@@ -10,7 +10,7 @@ public class Parasol : Interactor {
     private void Awake()
     {
         animator = this.GetComponent<Animator>();
-        count = 3;
+        count = 1;
     }
 
     public override void interact()

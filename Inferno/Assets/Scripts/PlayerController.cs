@@ -22,7 +22,7 @@ public class PlayerController : MonoBehaviour {
         {
             constant *= 0.5f;
         }
-        if (InGameSystemManager.Inst().water < 5)
+        if (InGameSystemManager.Inst().water < 5 && !InGameSystemManager.Inst().isHappy)
         {
             constant *= 0.75f;
         }

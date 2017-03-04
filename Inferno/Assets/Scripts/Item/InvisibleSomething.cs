@@ -8,7 +8,7 @@ public class InvisibleSomething : Item {
     {
         type = itemList.INVISIBLESOMETHING;
         amount = 0;
-        int[] temp = { 1000, 2000 };
+        int[] temp = { 500, 1000 };
         cost = temp;
         label = "보이지않는 무언가";
     }
@@ -17,7 +17,7 @@ public class InvisibleSomething : Item {
     {
         type = itemList.INVISIBLESOMETHING;
         amount = num;
-        int[] temp = { 1000, 2000 };
+        int[] temp = { 500, 1000 };
         cost = temp;
         label = "보이지않는 무언가";
     }
@@ -32,10 +32,8 @@ public class InvisibleSomething : Item {
 
     IEnumerator invisible()
     {
-        PlayerManager.Inst().GetComponent<SpriteRenderer>().color -= new Color(0, 0, 0, 0.5f);
         InGameSystemManager.Inst().isInvisible = true;
-        yield return new WaitForSeconds(5);
+        yield return new WaitForSeconds(20);
         InGameSystemManager.Inst().isInvisible = false;
-        PlayerManager.Inst().GetComponent<SpriteRenderer>().color += new Color(0, 0, 0, 0.5f);
     }
 }

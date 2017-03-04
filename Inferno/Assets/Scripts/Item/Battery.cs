@@ -8,7 +8,7 @@ public class Battery : Item {
     {
         type = itemList.BATTERY;
         amount = 0;
-        int[] temp = { 500, 1000, 2500 };
+        int[] temp = { 500, 1000, 1500 };
         cost = temp;
         label = "배터리";
     }
@@ -17,14 +17,14 @@ public class Battery : Item {
     {
         type = itemList.BATTERY;
         amount = num;
-        int[] temp = { 500, 1000, 2500 };
+        int[] temp = { 500, 1000, 1500 };
         cost = temp;
         label = "배터리";
     }
 
 	public override void use()
 	{
-        if (!InGameSystemManager.Inst().isFan)
+        if (!GameManager.Inst().fan)
             return;
         InGameSystemManager.Inst().battery = Mathf.Min(InGameSystemManager.Inst().battery + 100, InGameSystemManager.Inst().batteryCapacity);
 

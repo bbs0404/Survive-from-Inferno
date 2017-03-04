@@ -82,18 +82,28 @@ public class CrossWalk : Field {
     {
         if (!green)
         {
-            if (Random.Range(0, 100) >= 95)
+            if (InGameSystemManager.Inst().isInvisible)
             {
-                InGameSystemManager.Inst().playerDeadByCar();
-                crashSFX.Play();
+                if (Random.Range(0, 100) >= 90)
+                {
+                    InGameSystemManager.Inst().playerDeadByCar();
+                    crashSFX.Play();
+                    return;
+                }
             }
             else
             {
-                GameManager.Inst().money -= 300;
-                if (GameManager.Inst().money < 0)
-                    GameManager.Inst().money = 0;
-                Debug.Log(GameManager.Inst().money.ToString());
+                if (Random.Range(0, 100) >= 95)
+                {
+                    InGameSystemManager.Inst().playerDeadByCar();
+                    crashSFX.Play();
+                    return;
+                }
             }
+            GameManager.Inst().money -= 300;
+            if (GameManager.Inst().money < 0)
+                GameManager.Inst().money = 0;
+            Debug.Log(GameManager.Inst().money.ToString());
         }
     }
 

@@ -8,7 +8,7 @@ public class HappinessCircuit : Item {
     {
         type = itemList.HAPPINESSCIRCUIT;
         amount = 0;
-        int[] temp = { 2000 };
+        int[] temp = { 1000 };
         cost = temp;
         label = "행복회로";
     }
@@ -17,7 +17,7 @@ public class HappinessCircuit : Item {
     {
         type = itemList.HAPPINESSCIRCUIT;
         amount = num;
-        int[] temp = { 2000 };
+        int[] temp = { 1000 };
         cost = temp;
         label = "행복회로";
     }

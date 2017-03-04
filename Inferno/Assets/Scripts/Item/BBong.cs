@@ -8,7 +8,7 @@ public class BBong : Item {
     {
         type = itemList.BBONG;
         amount = 0;
-        int[] temp = { 3000 };
+        int[] temp = { 1500 };
         cost = temp;
         label = "간다 간다 뿅간다!";
     }
@@ -17,7 +17,7 @@ public class BBong : Item {
     {
         type = itemList.BBONG;
         amount = num;
-        int[] temp = { 3000 };
+        int[] temp = { 1500 };
         cost = temp;
         label = "간다 간다 뿅간다!";
     }
@@ -34,7 +34,7 @@ public class BBong : Item {
     IEnumerator effect1() {
         InGameSystemManager.Inst().isBbong = true;
         SoundManager.Inst().getBGM().pitch = 1.2f;
-        yield return new WaitForSeconds(5);
+        yield return new WaitForSeconds(10);
         InGameSystemManager.Inst().isBbong = false;
         InGameSystemManager.Inst().isBbongSideEffect = true;
         SoundManager.Inst().getBGM().pitch = 1;

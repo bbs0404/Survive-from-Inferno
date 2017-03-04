@@ -45,12 +45,12 @@ public class Shop : MonoBehaviour {
         else if (GameManager.Inst().money < cost[num]) Debug.Log("You don't have enough money");
         else
         {
-            if (GameManager.Inst().itemList.Contains(GameManager.Inst().all_Items[itemList.WATERBOTTLE]));
-            else
+            if (!GameManager.Inst().itemList.Contains(GameManager.Inst().all_Items[itemList.WATERBOTTLE]) && GameManager.Inst().itemList.Count < 3)
                 GameManager.Inst().itemList.Add(GameManager.Inst().all_Items[itemList.WATERBOTTLE]);
 
             GameManager.Inst().all_Items[itemList.WATERBOTTLE].amount++;
             GameManager.Inst().money -= cost[num];
+            GameManager.Inst().spentMoney += cost[num];
         }
     }
 
@@ -61,12 +61,12 @@ public class Shop : MonoBehaviour {
         if (num >= 3) Debug.Log("You can't have this item more than now");
         else if (GameManager.Inst().money < cost[num]) Debug.Log("You don't have enough money");
         else {
-            if (GameManager.Inst().itemList.Contains(GameManager.Inst().all_Items[itemList.BATTERY]));
-            else
+            if (!GameManager.Inst().itemList.Contains(GameManager.Inst().all_Items[itemList.BATTERY]) && GameManager.Inst().itemList.Count < 3)
                 GameManager.Inst().itemList.Add(GameManager.Inst().all_Items[itemList.BATTERY]);
 
             GameManager.Inst().all_Items[itemList.BATTERY].amount++;
             GameManager.Inst().money -= cost[num];
+            GameManager.Inst().spentMoney += cost[num];
         }
     }
 
@@ -77,12 +77,12 @@ public class Shop : MonoBehaviour {
         if (num >= 1) Debug.Log("You can't have this item more than now");
         else if (GameManager.Inst().money < cost[num]) Debug.Log("You don't have enough money");
         else {
-            if (GameManager.Inst().itemList.Contains(GameManager.Inst().all_Items[itemList.BBONG]));
-            else
+            if (!GameManager.Inst().itemList.Contains(GameManager.Inst().all_Items[itemList.BBONG]) && GameManager.Inst().itemList.Count < 3)
                 GameManager.Inst().itemList.Add(GameManager.Inst().all_Items[itemList.BBONG]);
 
             GameManager.Inst().all_Items[itemList.BBONG].amount++;
             GameManager.Inst().money -= cost[num];
+            GameManager.Inst().spentMoney += cost[num];
         }
     }
 
@@ -93,12 +93,12 @@ public class Shop : MonoBehaviour {
         if (num >= 2) Debug.Log("You can't have this item more than now");
         else if (GameManager.Inst().money < cost[num]) Debug.Log("You don't have enough money");
         else {
-            if (GameManager.Inst().itemList.Contains(GameManager.Inst().all_Items[itemList.INVISIBLESOMETHING]));
-            else
+            if (!GameManager.Inst().itemList.Contains(GameManager.Inst().all_Items[itemList.INVISIBLESOMETHING]) && GameManager.Inst().itemList.Count < 3)
                 GameManager.Inst().itemList.Add(GameManager.Inst().all_Items[itemList.INVISIBLESOMETHING]);
 
             GameManager.Inst().all_Items[itemList.INVISIBLESOMETHING].amount++;
             GameManager.Inst().money -= cost[num];
+            GameManager.Inst().spentMoney += cost[num];
         }
     }
 
@@ -109,12 +109,12 @@ public class Shop : MonoBehaviour {
         if (num >= 1) Debug.Log("You can't have this item more than now");
         else if (GameManager.Inst().money < cost[num]) Debug.Log("You don't have enough money");
         else {
-            if (GameManager.Inst().itemList.Contains(GameManager.Inst().all_Items[itemList.HAPPINESSCIRCUIT])) ;
-            else
+            if (!GameManager.Inst().itemList.Contains(GameManager.Inst().all_Items[itemList.HAPPINESSCIRCUIT]) && GameManager.Inst().itemList.Count < 3)
                 GameManager.Inst().itemList.Add(GameManager.Inst().all_Items[itemList.HAPPINESSCIRCUIT]);
 
             GameManager.Inst().all_Items[itemList.HAPPINESSCIRCUIT].amount++;
             GameManager.Inst().money -= cost[num];
+            GameManager.Inst().spentMoney += cost[num];
         }
     }
 }

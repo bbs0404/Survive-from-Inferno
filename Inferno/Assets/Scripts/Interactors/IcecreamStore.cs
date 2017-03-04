@@ -15,12 +15,14 @@ public class IcecreamStore : Interactor {
         {
             GameManager.Inst().all_Items[itemList.ICECREAM].amount++;
             GameManager.Inst().money -= cost;
+            GameManager.Inst().spentMoney += cost;
         }
         else if(GameManager.Inst().itemList.Count < 3)
         {
             GameManager.Inst().all_Items[itemList.ICECREAM].amount++;
             GameManager.Inst().itemList.Add(GameManager.Inst().all_Items[itemList.ICECREAM]);
             GameManager.Inst().money -= cost;
+            GameManager.Inst().spentMoney += cost;
         }
         on = false;
         gameObject.GetComponent<SpriteRenderer>().color = new Color(0.7f, 0.7f, 0.7f);

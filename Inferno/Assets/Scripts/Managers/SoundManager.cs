@@ -2,6 +2,7 @@
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine.SceneManagement;
+using UnityEngine.UI;
 
 public class SoundManager : SingletonBehaviour<SoundManager> {
 
@@ -16,7 +17,6 @@ public class SoundManager : SingletonBehaviour<SoundManager> {
 
     private void OnEnable()
     {
-        setStatic();
         SceneManager.sceneLoaded += Initialize;
     }
     private void Initialize(Scene arg0, LoadSceneMode arg1)
@@ -54,14 +54,25 @@ public class SoundManager : SingletonBehaviour<SoundManager> {
         BGM.clip = newBGM;
     }
 
-    public void setSFX_Volume(float volume)
+    public void setSFX_Volume(Scrollbar slider)
     {
-        SFX_Volume = volume;
+        SFX_Volume = slider.value;
+        SFX_List = (AudioSource[])GameObject.FindObjectsOfType(typeof(AudioSource));
+        foreach (var item in SFX_List)
+        {
+            if (item.transform.gameObject.name.Substring(0, 3) == "BGM")
+            {
+                continue;
+            }
+            else
+                item.volume = SFX_Volume;
+        }
     }
 
-    public void setBGM_Volume(float volume)
+    public void setBGM_Volume(Scrollbar slider)
     {
-        BGM_Volume = volume;
+        BGM_Volume = slider.value;
+        BGM.volume = BGM_Volume;
     }
     
     public AudioSource getBGM()

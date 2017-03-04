@@ -24,6 +24,7 @@ public class InGameSystemManager : SingletonBehaviour<InGameSystemManager> {
     public bool isFan; //선풍기 사용 여부
     public bool isGameOver;
     public bool isPaused;
+    public bool isClear;
     public float distance;
     public float stamina;
     public float stamCharge = 30;
@@ -64,6 +65,7 @@ public class InGameSystemManager : SingletonBehaviour<InGameSystemManager> {
         isPaused = false;
         isBbong = false;
         isHappy = false;
+        isClear = false;
         isInvisible = false;
         isBbongSideEffect = false;
         sideEffectTimer = 5;
@@ -71,7 +73,7 @@ public class InGameSystemManager : SingletonBehaviour<InGameSystemManager> {
 
         if (GameManager.Inst().fan)
         {
-            batteryCapacity = 100 * (GameManager.Inst().fanBatteryLevel + 1);
+            batteryCapacity = 100 + 50 * GameManager.Inst().fanBatteryLevel;
             battery = (float)batteryCapacity;
         }
         else
@@ -81,7 +83,7 @@ public class InGameSystemManager : SingletonBehaviour<InGameSystemManager> {
         }
         if (GameManager.Inst().fanCharger)
         {
-            chargePerSec = 10 + 5 * GameManager.Inst().fanChargerLevel;
+            chargePerSec = 5 + 2 * GameManager.Inst().fanChargerLevel;
         }
         time = DayNight.Day;
         timeRemain = 10f;
@@ -89,7 +91,7 @@ public class InGameSystemManager : SingletonBehaviour<InGameSystemManager> {
 
     private void Update()
     {
-        if (!isGameOver && !isPaused)
+        if (!isGameOver && !isPaused && !isClear)
         {
             if (isBbongSideEffect)
                 water = 0;
@@ -153,7 +155,7 @@ public class InGameSystemManager : SingletonBehaviour<InGameSystemManager> {
                 if (!inShadow) //그림자에 있지 않는 경우
                 {
                     if (GameManager.Inst().fanCharger)
-                        battery += Mathf.Min(battery + 10 + chargePerSec * Gametime.deltaTime, batteryCapacity);
+                        battery = Mathf.Min(battery + chargePerSec * Gametime.deltaTime, batteryCapacity);
                     water -= 0.1f;
                     if (water < 0)
                         water = 0;
@@ -171,7 +173,7 @@ public class InGameSystemManager : SingletonBehaviour<InGameSystemManager> {
 
             if (isFan)
             {
-                float consume = 10 * Mathf.Pow(0.9f, GameManager.Inst().fanEnergyConsumeLevel) * Gametime.deltaTime; // 배터리 소모량
+                float consume = 20 * Mathf.Pow(0.9f, GameManager.Inst().fanEnergyConsumeLevel) * Gametime.deltaTime; // 배터리 소모량
                 if (battery < consume)
                     lossHealth -= (4 + GameManager.Inst().fanPerformLevel * 0.4f) * (battery / consume);
                 else
@@ -195,6 +197,9 @@ public class InGameSystemManager : SingletonBehaviour<InGameSystemManager> {
                 playerDead();
             }
 
+            if (distance >= 1000)
+                GameClear();
+
             if (cloudTimer < 0)
             {
                 cloudTimer = Random.Range(5f, 10);
@@ -217,7 +222,7 @@ public class InGameSystemManager : SingletonBehaviour<InGameSystemManager> {
         Invoke("GameOver", 3);
         UserInterfaceManager.Inst().disableCanvas(UserInterfaceManager.Inst().InGameCanvas);
         PlayerManager.Inst().player.GetComponent<Animator>().SetTrigger("FAINT");
-        GameManager.Inst().money += (int)(distance * 5);
+        GameManager.Inst().money += (int)(distance * 3);
     }
 
     public void playerDeadByCar()
@@ -238,7 +243,16 @@ public class InGameSystemManager : SingletonBehaviour<InGameSystemManager> {
 
     public void GameClear()
     {
+        isClear = true;
+        PlayerManager.Inst().player.GetComponent<Animator>().SetBool("RUN_right", false);
+        PlayerManager.Inst().player.GetComponent<Animator>().SetBool("RUN_left", false);
+        UserInterfaceManager.Inst().disableCanvas(UserInterfaceManager.Inst().InGameCanvas);
+        Invoke("clear", 3);
+    }
 
+    public void clear()
+    {
+        UserInterfaceManager.Inst().updateInGameCanvas();
     }
 
     private void GameOver()
@@ -306,9 +320,11 @@ public class InGameSystemManager : SingletonBehaviour<InGameSystemManager> {
     
     IEnumerator FadeOutBGM()
     {
-        for (float i=SoundManager.Inst().getBGM().volume; i> SoundManager.Inst().getBGM().volume / 2; i-=0.02f)
+        float j = SoundManager.Inst().getBGM().pitch;
+        for (float i=SoundManager.Inst().getBGM().volume; i> SoundManager.Inst().getBGM().volume / 2; i-=0.002f, j -= 0.002f)
         {
             SoundManager.Inst().getBGM().volume = i;
+            SoundManager.Inst().getBGM().pitch = j;
             yield return null;
         }
     }
