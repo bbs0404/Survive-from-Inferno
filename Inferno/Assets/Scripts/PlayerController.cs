@@ -39,8 +39,8 @@ public class PlayerController : MonoBehaviour {
             if (scrollController.rectTransform.localPosition.x > 1)
             {
                 player.transform.localPosition += new Vector3(scrollController.rectTransform.localPosition.x * 0.008f * (1 + GameManager.Inst().speedLevel * 0.125f), 0) * constant;
-                background.transform.localPosition += new Vector3(scrollController.rectTransform.localPosition.x * 0.008f * (1 + GameManager.Inst().speedLevel * 0.125f) *constant * 94 / 100f, 0);
-                InGameSystemManager.Inst().distance += scrollController.rectTransform.localPosition.x * 0.008f * (1 + GameManager.Inst().speedLevel * 0.125f);
+                background.transform.localPosition += new Vector3(scrollController.rectTransform.localPosition.x * 0.008f * (1 + GameManager.Inst().speedLevel * 0.125f) * constant * 94 / 100f, 0);
+                InGameSystemManager.Inst().distance = PlayerManager.Inst().player.transform.position.x;
                 playerAnimator.SetBool("RUN_right", true);
                 playerAnimator.SetBool("RUN_left", false);
                 PlayerManager.Inst().player.GetComponent<SpriteRenderer>().flipX = false;
@@ -58,7 +58,7 @@ public class PlayerController : MonoBehaviour {
                 else
                 {
                     background.transform.localPosition += new Vector3(scrollController.rectTransform.localPosition.x * 0.008f * (1 + GameManager.Inst().speedLevel * 0.125f) * constant * 94 / 100f, 0);
-                    InGameSystemManager.Inst().distance += scrollController.rectTransform.localPosition.x * 0.008f * (1 + GameManager.Inst().speedLevel * 0.125f);
+                    InGameSystemManager.Inst().distance = PlayerManager.Inst().player.transform.position.x;
                     playerAnimator.SetBool("RUN_left", true);
                     playerAnimator.SetBool("RUN_right", false);
                     PlayerManager.Inst().player.GetComponent<SpriteRenderer>().flipX = true;
